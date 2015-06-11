@@ -53,6 +53,9 @@ Implemented software source code and report.
 
 -------------------------------------------------
 [0] Turing, Alan Mathison. "On computable numbers, with an application to the Entscheidungsproblem." J. of Math 58.345-363 (1936): 5.
+
 [1] Graves, Alex, Greg Wayne, and Ivo Danihelka. "Neural Turing Machines." arXiv preprint arXiv:1410.5401 (2014).
+
 [2] Ziemke, Tom. "Remembering how to behave: Recurrent neural networks for adaptive robot behavior." (1999).
+
 [3] Soltoggio, Andrea, et al. "Evolutionary advantages of neuromodulated plasticity in dynamic, reward-based scenarios." Proceedings of the 11th International Conference on Artificial Life (Alife XI). No. LIS-CONF-2008-012. MIT Press, 2008.
