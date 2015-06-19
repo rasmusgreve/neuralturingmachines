@@ -57,4 +57,5 @@ hs_err_pid*
 
 # ANJI
 
-db/
+anji_2_01/db/*
+anji_2_01/nevt/*
