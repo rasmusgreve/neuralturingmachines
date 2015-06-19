@@ -1,0 +1,18 @@
+<chromosome id="5308" primary-parent-id="3733"><neuron id="0" type="in" activation="linear"/>
+<neuron id="1" type="in" activation="linear"/>
+<neuron id="2" type="in" activation="linear"/>
+<neuron id="3" type="out" activation="sigmoid"/>
+<connection id="4" src-id="0" dest-id="3" weight="1.8837062631073893"/>
+<neuron id="167" type="hid" activation="sigmoid"/>
+<connection id="168" src-id="2" dest-id="167" weight="-2.772581108181709"/>
+<neuron id="301" type="hid" activation="sigmoid"/>
+<connection id="302" src-id="1" dest-id="301" weight="-1.8433929978163444"/>
+<connection id="303" src-id="301" dest-id="3" weight="-6.130080210128935"/>
+<neuron id="549" type="hid" activation="sigmoid"/>
+<connection id="550" src-id="167" dest-id="549" weight="-0.2682290813166399"/>
+<connection id="551" src-id="549" dest-id="3" weight="11.37788491209812"/>
+<neuron id="677" type="hid" activation="sigmoid"/>
+<connection id="678" src-id="2" dest-id="677" weight="2.3362955315802205"/>
+<connection id="679" src-id="677" dest-id="301" weight="2.067639224272967"/>
+<connection id="1566" src-id="167" dest-id="677" weight="-2.3775988144341205"/>
+</chromosome>

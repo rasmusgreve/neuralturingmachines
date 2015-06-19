@@ -1,0 +1,15 @@
+<html>
+<head><title>com.anji.tournament</title></head>
+<body>
+<code>com.anji.tournament</code> contains classes to handle tournaments and games.  
+A <code>Tournament</code> is a series of matches between a population of 
+<code>Player</code> objects, where the particular tournament logic determines who 
+plays whom, and how many times.  A <code>Game</code> is an individual contest between 
+two players.  <code>Game</code> and <code>IteratedGame</code> form a 
+<a href="http://www.javaworld.com/javaworld/jw-09-2002/jw-0913-designpatterns.html">composite</a> 
+design pattern.  An <code>IteratedGame</code> might represent a match, or a series of
+trials, or any hierarchy of contests and sub-contests.  
+<code>TournamentFitnessFunction</code> ties this all to the genetic algorithm 
+framework.
+</body>
+</html>

@@ -1,0 +1,267 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>ANJI Quick Start</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<script language="JavaScript" type="text/JavaScript">
+<!--
+function MM_reloadPage(init) {  //reloads the window if Nav4 resized
+  if (init==true) with (navigator) {if ((appName=="Netscape")&&(parseInt(appVersion)==4)) {
+    document.MM_pgW=innerWidth; document.MM_pgH=innerHeight; onresize=MM_reloadPage; }}
+  else if (innerWidth!=document.MM_pgW || innerHeight!=document.MM_pgH) location.reload();
+}
+MM_reloadPage(true);
+//-->
+</script>
+</head>
+
+<body>
+<p><img src="images/banner_orange_small.gif" width="300" height="62"> </p>
+<p><font size="3" face="Arial, Helvetica, sans-serif"><strong>Quick Start Instructions</strong></font></p>
+<p><strong><font size="2" face="Arial, Helvetica, sans-serif">Follow the steps 
+  below to perform an evolutionary run to solve XOR.</font></strong></p>
+<table width="95%" border="1" cellpadding="1">
+  <tr> 
+    <td width="13%"><div align="center"><font size="2" face="Arial, Helvetica, sans-serif"><strong>Step</strong></font></div></td>
+    <td width="87%"><div align="center"><strong><font size="2" face="Arial, Helvetica, sans-serif">Procedure</font></strong></div></td>
+  </tr>
+  <tr> 
+    <td><div align="center"><font size="2" face="Arial, Helvetica, sans-serif"><strong>1</strong></font></div></td>
+    <td><p><font size="2" face="Arial, Helvetica, sans-serif">ANJI requires <strong>JRE 
+        (Java Runtime Environment) version 1.4.2</strong> or greater installed. 
+        The appropriate JRE can be downloaded here:</font></p>
+      <p><a href="http://java.sun.com/j2se/downloads" target="_blank"><font size="2" face="Arial, Helvetica, sans-serif">http://java.sun.com/j2se/downloads</font></a></p></td>
+  </tr>
+  <tr> 
+    <td><div align="center"><font size="2" face="Arial, Helvetica, sans-serif"><strong>2</strong></font></div></td>
+    <td><font size="2" face="Arial, Helvetica, sans-serif">Make sure that the 
+      java executable is in your system <strong>PATH</strong>.</font></td>
+  </tr>
+  <tr> 
+    <td><div align="center"><font size="2" face="Arial, Helvetica, sans-serif"><strong>3</strong></font></div></td>
+    <td><font size="2" face="Arial, Helvetica, sans-serif">Extract files from 
+      <strong>anji_2_01.zip</strong> into a local directory. This will create 
+      a new directory named <strong>anji_2_01/</strong>.</font></td>
+  </tr>
+  <tr> 
+    <td> <div align="center"><font size="2" face="Arial, Helvetica, sans-serif"><strong>4</strong></font></div></td>
+    <td><font size="2" face="Arial, Helvetica, sans-serif"><strong>Windows:</strong> 
+      <br>
+      1)<strong> </strong>Open a command shell (from the Start menu select <strong>Run</strong>..., 
+      type &quot;cmd&quot;, select <strong>OK</strong>).<br>
+      2) Navigate to the <strong>anji_2_01/</strong> directory.<br>
+      3) Type &quot;evolve.bat xor.properties&quot; and press <strong>Enter</strong>.</font> 
+      <p><font size="2" face="Arial, Helvetica, sans-serif"><strong>Unix:</strong> 
+        <br>
+        1)<strong> </strong>Open a command shell.<br>
+        2) Navigate to the <strong>anji_2_01/</strong> directory.<br>
+        3) Type &quot;evolve.sh xor.properties&quot; and press <strong>Enter</strong>.</font></p></td>
+  </tr>
+  <tr> 
+    <td> <div align="center"><font size="2" face="Arial, Helvetica, sans-serif"><strong>5</strong></font></div></td>
+    <td><p><font size="2" face="Arial, Helvetica, sans-serif">The format of the 
+        output is determined by the <strong>log4j</strong> configuration in xor.properties.<br>
+        For more information regarding log4j, visit:</font></p>
+      <p><font size="2" face="Arial, Helvetica, sans-serif"><a href="http://logging.apache.org/log4j/docs/manual.html" target="_blank">http://logging.apache.org/log4j/docs/manual.html</a><br>
+        <br>
+        The default display property for <strong>log4j</strong> is to print to 
+        screen. ANJI will first display copyright and version, then print all 
+        the properties for the run. Then, for each generation, information such 
+        as the following will be displayed:</font></p>
+      <table width="100%" border="0" cellpadding="1" bordercolor="#000000" bgcolor="#000000">
+        <tr> 
+          <td bgcolor="#CCCCCC"> <p><font size="2" face="Arial, Helvetica, sans-serif"><font face="Courier New, Courier, mono"><br>
+              INFO Generation 0: start<br>
+              INFO connection-&gt;neuron id map size == 2<br>
+              INFO neurons-&gt;connection id map size == 16<br>
+              INFO species count: 3<br>
+              INFO # chromosomes with max fitness: 0<br>
+              INFO champ: id=98 score=0.5592439375 size=7<br>
+              INFO Generation 0: end [10:10:55 - 10:10:56] [391]</font><font size="1" face="Courier New, Courier, mono"><br>
+              <br>
+              </font></font></p></td>
+        </tr>
+      </table>
+      <p><br>
+        <font size="2" face="Arial, Helvetica, sans-serif">The <strong>id map</strong> 
+        info indicates the number of unique topological features for that generation.</font><font size="2" face="Arial, Helvetica, sans-serif"> 
+        With very high mutation rates, these mappings can get very large and cause 
+        memory overloads.<br>
+        <br>
+        The <strong>species count</strong> indicates the number of species in 
+        that generation. The next line indicates how many chromosomes have attained 
+        maximum fitness. The next line displays the <strong>size</strong> and 
+        <strong>chromosome id</strong> of the best performer in this generation, 
+        its score as computed by the fitness function (in this case the real mean 
+        squared error for the network outputs based on the four sets of XOR inputs). 
+        The last line indicates the time range and length of the generation in 
+        milliseconds.<br>
+        <br>
+        The information that displays or prints to file for a run is configurable. 
+        Again, visit the link in this section for more information.</font></p></td>
+  </tr>
+  <tr> 
+    <td> <div align="center"><font size="2" face="Arial, Helvetica, sans-serif"><strong>6</strong></font></div></td>
+    <td><font size="2" face="Arial, Helvetica, sans-serif">Once a solution has 
+      been found, you should see output similar to the following:<br>
+      <br>
+      </font> <table width="100%" border="0" cellpadding="1" bordercolor="#000000" bgcolor="#000000">
+        <tr> 
+          <td bgcolor="#CCCCCC"> <p><font size="2" face="Arial, Helvetica, sans-serif"><font size="2" face="Arial, Helvetica, sans-serif"><font face="Courier New, Courier, mono"><br>
+              INFO Generation 30: start<br>
+              INFO connection-&gt;neuron id map size == 23<br>
+              INFO neurons-&gt;connection id map size == 191<br>
+              INFO species count: 35<br>
+              INFO max: id=3892 score=1.0 size=13<br>
+              INFO # chromosomes with max fitness: 1<br>
+              INFO champ: id=3892 score=1.0 size=13<br>
+              INFO Generation 30: end [10:11:07 - 10:11:07] [437]<br>
+              INFO generation of first solution == 30<br>
+              INFO champ # connections == 7<br>
+              INFO champ # hidden nodes == 2<br>
+              INFO Run: end [10:10:55 - 10:11:08] [12250]</font></font><font size="2" face="Courier New, Courier, mono"><br>
+              </font><font size="1" face="Courier New, Courier, mono"><br>
+              </font></font></p></td>
+        </tr>
+      </table>
+      <p><font size="2" face="Arial, Helvetica, sans-serif"> In this case, the 
+        first solution to have solved XOR (determined by the fitness.threshold 
+        parameter) was Generation 30.. The number of connections and hidden neurons 
+        in the champion also are listed. Finally, the start and end time, and 
+        length of the run are displayed.<br>
+        </font></p></td>
+  </tr>
+  <tr> 
+    <td> <div align="center"><font size="2" face="Arial, Helvetica, sans-serif"><strong>7</strong></font></div></td>
+    <td><font size="2" face="Arial, Helvetica, sans-serif">In the previous example, 
+      the champion chromosome had ID 3892. To verify that the champion has solved 
+      XOR, run the following from the anji_2_01 directory:</font> <p><font size="2" face="Arial, Helvetica, sans-serif"><strong>Windows:<br>
+        </strong></font><font size="2" face="Arial, Helvetica, sans-serif">Type 
+        &quot;activate.bat xor.properties 3892&quot; and press <strong>Enter</strong>.<br>
+        <strong><br>
+        </strong> </font><font size="2" face="Arial, Helvetica, sans-serif"><strong>Unix:</strong> 
+        <br>
+        Type &quot;activate.sh xor.properties 3892&quot; and press <strong>Enter</strong>.</font></p></td>
+  </tr>
+  <tr> 
+    <td><div align="center"><font size="2" face="Arial, Helvetica, sans-serif"><strong>9</strong></font></div></td>
+    <td><p><font size="2" face="Arial, Helvetica, sans-serif">You should see output 
+        similar to the following:</font></p>
+      <table width="100%" border="0" cellpadding="1" bordercolor="#000000" bgcolor="#000000">
+        <tr> 
+          <td bgcolor="#CCCCCC"> <p><font size="2" face="Arial, Helvetica, sans-serif"><font face="Courier New, Courier, mono"><br>
+              INFO loaded properties from xor.properties<br>
+              INFO Properties: random.seed == null [1124289108796]<br>
+              INFO Properties: persistence.class == com.anji.persistence.FilePersistence<br>
+              INFO Properties: base.dir == ./db<br>
+              INFO Properties: ann.type == anji<br>
+              INFO Properties: recurrent.cycles == 1<br>
+              INFO Properties: recurrent == disallowed<br>
+              INFO Properties: stimuli.file == sigmoid_xor_stimuli.txt<br>
+              INFO Properties: targets.file == sigmoid_xor_targets.txt<br>
+              INFO<br>
+              0: IN (0.0, 0.0, 1.0) OUT (4.0755467194904E-4) TARGET (0.0)<br>
+              1: IN (0.0, 1.0, 1.0) OUT (0.9998126586761057) TARGET (1.0)<br>
+              2: IN (1.0, 0.0, 1.0) OUT (0.9921851733246422) TARGET (1.0)<br>
+              3: IN (1.0, 1.0, 1.0) OUT (0.050401452692758975) TARGET (0.0)</font><font size="1" face="Courier New, Courier, mono"><br>
+              <br>
+              </font></font></p></td>
+        </tr>
+      </table>
+      <p><br>
+        <font size="2" face="Arial, Helvetica, sans-serif">ANJI again displays some basic properties, then shows the 
+        results of the 4 network activations. In the first activation, the inputs 
+        are (0.0, 0.0, 1.0). This last value is the input for the bias, which 
+        is always at 1.0. The output of the network is 0.000408, displayed in 
+        scientific notation. The target is 0. From this you can see that the algorithm 
+        has solved the problem and this network now functions as an XOR gate. 
+        The sequence of the XOR inputs is randomized every activation (to ensure 
+        that the network is not simply memorizing a sequence), although they are 
+        always displayed in this order.</font></p></td>
+  </tr>
+  <tr> 
+    <td><div align="center"><font face="Arial, Helvetica, sans-serif"><font size="2"><strong>10</strong></font></font></div></td>
+    <td><font size="2" face="Arial, Helvetica, sans-serif">Chromosomes are stored 
+      in the <strong>anji_2_01/db/chromosome/</strong> directory. These are the 
+      champions of each generation. In addition to generational champions, ANJI 
+      can be configured to persist all chromosomes of the final generation, or 
+      all chromosomes of every generation.<br>
+      <br>
+      The <strong>anji_2_01/db/</strong> directory now contains the <strong>id.xml</strong> 
+      and<strong> neatid.xml</strong> files. These persist data relative to unique 
+      chromosome and innovation IDs between runs. These files are necessary to 
+      begin a run with an existing population, or to avoid overwriting previously 
+      generated chromosomes.</font></td>
+  </tr>
+  <tr> 
+    <td><div align="center"><strong><font face="Arial, Helvetica, sans-serif"><font size="2">11</font></font></strong></div></td>
+    <td><p><font size="2" face="Arial, Helvetica, sans-serif">To clear out the 
+        persistence directories and start fresh, run the following from the anji_2_01 
+        directory:</font> </p>
+      <p><font size="2" face="Arial, Helvetica, sans-serif"><strong>Windows:<br>
+        </strong></font><font size="2" face="Arial, Helvetica, sans-serif">Type 
+        &quot;reset.bat xor.properties&quot; and press <strong>Enter</strong>.<br>
+        <strong><br>
+        </strong> </font><font size="2" face="Arial, Helvetica, sans-serif"><strong>Unix:</strong> 
+        <br>
+        Type &quot;reset.sh xor.properties&quot; and press <strong>Enter</strong>.</font></p>
+      <p><font size="2" face="Arial, Helvetica, sans-serif">The following will 
+        display:</font></p>
+      <table width="100%" border="0" cellpadding="1" bordercolor="#000000" bgcolor="#000000">
+        <tr> 
+          <td bgcolor="#CCCCCC"> <p><font size="2" face="Arial, Helvetica, sans-serif"><font face="Courier New, Courier, mono"><br>
+              ANJI v1.0, Copyright (C) 2004 Derek James and Philip Tucker<br>
+              ANJI comes with ABSOLUTELY NO WARRANTY<br>
+              This is free software, and you are welcome to redistribute it<br>
+              under the conditions of the GNU General Public License.<br>
+              Delete all? </font><font size="1" face="Courier New, Courier, mono"><br>
+              <br>
+              </font></font></p></td>
+        </tr>
+      </table>
+      <p> <font size="2" face="Arial, Helvetica, sans-serif">Type &quot;y&quot; 
+        to delete all persisted data associated with the run.</font></p></td>
+  </tr>
+  <tr> 
+    <td><div align="center"><strong><font size="2" face="Arial, Helvetica, sans-serif">12</font></strong></div></td>
+    <td><p><font size="2" face="Arial, Helvetica, sans-serif">To view graphical 
+        information regarding the run, open the following from Internet Explorer 
+        (or any web browser supporting the &lt;?xml-stylesheet?&gt; tag):<br>
+        <br>
+        <strong>anji_2_01/nevt/fitness/fitness.xml</strong><br>
+        max, min, and average fitness for each generation throughout the run <br>
+        <strong><br>
+        anji_2_01/nevt/species/species.xml</strong><br>
+        # species and size of each specie for each generation throughout the run 
+        <br>
+        <br>
+        <strong>anji_2_01/nevt/complexity/complexity.xml</strong><br>
+        max, min, and average complexity (i.e., # genes per chromosome) for each 
+        generation throughout the run </font></p>
+      <p><font size="2" face="Arial, Helvetica, sans-serif">For example, opening 
+        the <strong>fitness.xml</strong> in IE will display the following graph:</font></p>
+      <p><font size="2" face="Arial, Helvetica, sans-serif"><img src="images/xor_fitness.gif" width="571" height="383"></font></p>
+      <p><font size="2" face="Arial, Helvetica, sans-serif">The blue line for 
+        each generation shows the min and max fitness for that generation. The 
+        black dot indicates the average fitness for the population. This graph 
+        shows that XOR was solved at generation 30.</font></p></td>
+  </tr>
+  <tr>
+    <td><div align="center"><strong><font size="2" face="Arial, Helvetica, sans-serif">13</font></strong></div></td>
+    <td><p><font size="2" face="Arial, Helvetica, sans-serif">You may wish to 
+        run XOR multiple times in order to verify that it is working properly 
+        on your machine.</font></p>
+      <p><font size="2" face="Arial, Helvetica, sans-serif"> In rare cases, XOR 
+        may not be solved. But the solve rate should be well above 95%. </font></p>
+      <p><font size="2" face="Arial, Helvetica, sans-serif">At this point, you 
+        may wish to edit the population size, mutation rates, etc. to see what 
+        effect these parameters have. All parameters are editable in the properties 
+        file associated with each domain. For an overview of these parameters 
+        and recommended settings see <a href="javadoc/params.htm" target="_blank">here</a>.</font></p>
+      </td>
+  </tr>
+</table>
+<p><font size="2" face="Arial, Helvetica, sans-serif"><br>
+  </font> </p>
+</body>
+</html>

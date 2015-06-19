@@ -1,0 +1,10 @@
+<chromosome id="3087" primary-parent-id="767"><neuron id="0" type="in" activation="linear"/>
+<neuron id="1" type="in" activation="linear"/>
+<neuron id="2" type="in" activation="linear"/>
+<neuron id="3" type="out" activation="sigmoid"/>
+<connection id="4" src-id="0" dest-id="3" weight="1.196988599548698"/>
+<connection id="5" src-id="1" dest-id="3" weight="1.276844142433323"/>
+<neuron id="167" type="hid" activation="sigmoid"/>
+<connection id="168" src-id="2" dest-id="167" weight="0.32016133940491676"/>
+<connection id="169" src-id="167" dest-id="3" weight="-0.9221770678273667"/>
+</chromosome>

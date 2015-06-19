@@ -1,0 +1,15 @@
+<chromosome id="6092" primary-parent-id="2158"><neuron id="0" type="in" activation="linear"/>
+<neuron id="1" type="in" activation="linear"/>
+<neuron id="2" type="in" activation="linear"/>
+<neuron id="3" type="out" activation="sigmoid"/>
+<connection id="4" src-id="0" dest-id="3" weight="-2.1665385060160895"/>
+<neuron id="167" type="hid" activation="sigmoid"/>
+<connection id="168" src-id="2" dest-id="167" weight="1.8407001157036522"/>
+<connection id="169" src-id="167" dest-id="3" weight="2.946721240033147"/>
+<neuron id="301" type="hid" activation="sigmoid"/>
+<connection id="302" src-id="1" dest-id="301" weight="6.823505703804534"/>
+<connection id="303" src-id="301" dest-id="3" weight="-0.9106202897553177"/>
+<neuron id="677" type="hid" activation="sigmoid"/>
+<connection id="678" src-id="2" dest-id="677" weight="3.538856534215568"/>
+<connection id="679" src-id="677" dest-id="301" weight="-0.1389102611402937"/>
+</chromosome>

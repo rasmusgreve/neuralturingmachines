@@ -1,0 +1,25 @@
+<!--run.dtd-->
+
+<!ELEMENT run  (parameters, generation+) >
+
+<!ELEMENT parameters  (pop_size, num_generations) >
+
+<!ELEMENT pop_size  (#PCDATA) >
+
+<!ELEMENT num_generations  (#PCDATA) >
+
+<!ELEMENT generation  (fitness, species+) >
+
+<!ELEMENT fitness  (max, min, avg) >
+
+<!ELEMENT max  (#PCDATA) >
+
+<!ELEMENT min  (#PCDATA) >
+
+<!ELEMENT avg  (#PCDATA) >
+
+<!ELEMENT species  (count, fitness) >
+
+<!ELEMENT count  (#PCDATA) >
+
+

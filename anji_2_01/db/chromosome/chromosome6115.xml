@@ -1,0 +1,15 @@
+<chromosome id="6115" primary-parent-id="5730"><neuron id="0" type="in" activation="linear"/>
+<neuron id="1" type="in" activation="linear"/>
+<neuron id="2" type="in" activation="linear"/>
+<neuron id="3" type="out" activation="sigmoid"/>
+<connection id="6" src-id="2" dest-id="3" weight="2.219783574156283"/>
+<neuron id="170" type="hid" activation="sigmoid"/>
+<connection id="171" src-id="0" dest-id="170" weight="-3.4190187791166524"/>
+<connection id="172" src-id="170" dest-id="3" weight="-3.812721432726003"/>
+<neuron id="301" type="hid" activation="sigmoid"/>
+<connection id="302" src-id="1" dest-id="301" weight="-4.198473564285417"/>
+<connection id="303" src-id="301" dest-id="3" weight="-1.6229441382295775"/>
+<connection id="548" src-id="2" dest-id="301" weight="0.6861513403716093"/>
+<connection id="931" src-id="0" dest-id="301" weight="4.7542296403243"/>
+<connection id="1057" src-id="170" dest-id="301" weight="-1.916352347265272"/>
+</chromosome>

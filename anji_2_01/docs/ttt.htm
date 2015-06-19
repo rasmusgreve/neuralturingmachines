@@ -1,0 +1,181 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Tic-Tac-Toe Tutorial</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<script language="JavaScript" type="text/JavaScript">
+<!--
+function MM_reloadPage(init) {  //reloads the window if Nav4 resized
+  if (init==true) with (navigator) {if ((appName=="Netscape")&&(parseInt(appVersion)==4)) {
+    document.MM_pgW=innerWidth; document.MM_pgH=innerHeight; onresize=MM_reloadPage; }}
+  else if (innerWidth!=document.MM_pgW || innerHeight!=document.MM_pgH) location.reload();
+}
+MM_reloadPage(true);
+//-->
+</script>
+</head>
+
+<body>
+<p><img src="images/banner_orange_small.gif" width="300" height="62"> </p>
+<p><font size="3" face="Arial, Helvetica, sans-serif"><strong>Tic-Tac-Toe</strong></font></p>
+<p><strong><font size="2" face="Arial, Helvetica, sans-serif">It is strongly suggested 
+  before running any other experiments that you first do a run or two with <a href="qstart.htm">XOR</a> 
+  to verify that everything is set up and working properly.</font></strong></p>
+<p><font size="2" face="Arial, Helvetica, sans-serif">Tic-Tac-Toe is a traditional 
+  2-player game in which players take turns placing tokens on a 3x3 grid with 
+  the goal of being the first to place 3 tokens in a row horizontally, vertically, 
+  or diagonally.</font></p>
+<p><font size="2" face="Arial, Helvetica, sans-serif"><img src="images/ttt.gif" width="213" height="213"></font></p>
+<p><font size="2" face="Arial, Helvetica, sans-serif">It is a simple and useful 
+  domain to use as a jumping off point for board games in general. At the GECCO 
+  2004 conference we presented a paper entitled <a href="docs/james_gecco04.pdf">&quot;A 
+  Comparative Analysis of Simplification and Complexification in the Evolution 
+  of Neural Network Topologies&quot;</a> which uses Tic-Tac-Toe as an experimental 
+  domain. We recommend reading this paper, as it includes a full description of 
+  our primary representation, as well as a good overview of NEAT.</font></p>
+<p><font size="2" face="Arial, Helvetica, sans-serif">Before doing any run, it 
+  is a good idea to look at the properties file for any domain in ANJI and become 
+  familiar with them. Please see the <a href="javadoc/params.htm" target="_blank">Parameter 
+  Descriptions</a> page first (scroll down for parameters specific to game domains 
+  such as Roshambo and Tic-Tac-Toe). In the current ttt.properties file, the follow 
+  settings for properties are listed:</font></p>
+<p><font size="2" face="Arial, Helvetica, sans-serif"><strong>tournament.class=com.anji.tournament.DirectTournament<br>
+  tournament.direct.opponents=bad, best</strong></font></p>
+<p><font size="2" face="Arial, Helvetica, sans-serif">This means that neural network 
+  members of the population will have their fitness assigned each generation based 
+  on their performance against hand-coded players, in this case &quot;bad&quot; 
+  and &quot;best&quot; (see the paper above for descriptions of how these players 
+  play).</font></p>
+<p><font size="2" face="Arial, Helvetica, sans-serif"><strong>tournament.component=match<br>
+  match.class=com.anji.tournament.IteratedGame<br>
+  match.players.reset=true<br>
+  match.log=true<br>
+  match.component.count=100<br>
+  match.component=game<br>
+  game.class=com.anji.ttt.TttGame<br>
+  game.players.reset=true<br>
+  game.log=false</strong></font></p>
+<p><font size="2" face="Arial, Helvetica, sans-serif">These properties indicate 
+  the hierarchical structure of tournaments in ANJI. In this example, each neural 
+  network each generation will play one match of 100 games against each hand-coded 
+  player. The networks will be reset between each game (i.e., values from recurrent 
+  activations will be flushed out). Results will be logged at the match level, 
+  but the results for every individual game will not be displayed. In games in 
+  which players take turns, players alternate going first every other game.</font></p>
+<p><font size="2" face="Arial, Helvetica, sans-serif">To perform a run with Tic-Tac-Toe 
+  using these parameters, follow the steps below.</font></p>
+<table width="95%" border="1" cellpadding="1">
+  <tr> 
+    <td width="13%"><div align="center"><font size="2" face="Arial, Helvetica, sans-serif"><strong>Step</strong></font></div></td>
+    <td width="87%"><div align="center"><strong><font size="2" face="Arial, Helvetica, sans-serif">Procedure</font></strong></div></td>
+  </tr>
+  <tr> 
+    <td> <div align="center"><font size="2" face="Arial, Helvetica, sans-serif"><strong>1</strong></font></div></td>
+    <td><font size="2" face="Arial, Helvetica, sans-serif"><strong>Windows:</strong> 
+      <br>
+      1)<strong> </strong>Open a command shell (from the Start menu select <strong>Run</strong>..., 
+      type &quot;cmd&quot;, select <strong>OK</strong>).<br>
+      2) Navigate to the <strong>anji_2_01/</strong> directory.<br>
+      3) Type &quot;evolve.bat ttt.properties&quot; and press <strong>Enter</strong>.</font> 
+      <p><font size="2" face="Arial, Helvetica, sans-serif"><strong>Unix:</strong> 
+        <br>
+        1)<strong> </strong>Open a command shell.<br>
+        2) Navigate to the <strong>anji_2_01/</strong> directory.<br>
+        3) Type &quot;evolve.sh ttt.properties&quot; and press <strong>Enter</strong>.</font></p></td>
+  </tr>
+  <tr> 
+    <td> <div align="center"><font size="2" face="Arial, Helvetica, sans-serif"><strong>2</strong></font></div></td>
+    <td><p><font size="2" face="Arial, Helvetica, sans-serif">ANJI will first 
+        display copyright and version, then print all the properties for the run. 
+        Then, for each generation, information such as the following will be displayed:</font></p>
+      <table width="100%" border="0" cellpadding="1" bordercolor="#000000" bgcolor="#000000">
+        <tr> 
+          <td bgcolor="#CCCCCC"> <p><font size="2" face="Arial, Helvetica, sans-serif"><font face="Courier New, Courier, mono"><br>
+              INFO Run: start<br>
+              INFO Generation 0: start<br>
+              INFO match. 109 vs TTT Best Player: 0-100-0: 0 vs 100-0-0: 078 ms<br>
+              INFO match. 109 vs TTT Bad Player: 70-22-8: 0 vs 22-70-8: 063 ms<br>
+              INFO match. 110 vs TTT Bad Player: 53-47-0: 0 vs 47-53-0: 031 ms<br>
+              INFO match. 110 vs TTT Best Player: 0-100-0: 0 vs 100-0-0: 063 ms</font><font size="1" face="Courier New, Courier, mono"><br>
+              <br>
+              </font></font></p></td>
+        </tr>
+      </table>
+      <p><br>
+        <font size="2" face="Arial, Helvetica, sans-serif">ANJI logs the results 
+        at the match level. Win-Loss-Tie records are displayed, along with time 
+        elapsed. In this case, Chromosome 109 lost every game to the Best player, 
+        but had 70 wins, 22 losses, and 8 ties against Bad. Chromosome 110 performed 
+        even worse against Bad and lost every game against Best.</font></p></td>
+  </tr>
+  <tr> 
+    <td> <div align="center"><font size="2" face="Arial, Helvetica, sans-serif"><strong>3</strong></font></div></td>
+    <td><font size="2" face="Arial, Helvetica, sans-serif">At the end of each 
+      generation the following information will be displayed:<br>
+      <br>
+      </font> <table width="100%" border="0" cellpadding="1" bordercolor="#000000" bgcolor="#000000">
+        <tr> 
+          <td bgcolor="#CCCCCC"> <p><font size="2" face="Arial, Helvetica, sans-serif"><font size="2" face="Arial, Helvetica, sans-serif"><font face="Courier New, Courier, mono"><br>
+              INFO connection-&gt;neuron id map size == 15<br>
+              INFO neurons-&gt;connection id map size == 192<br>
+              INFO species count: 1<br>
+              INFO # chromosomes with max fitness: 0<br>
+              INFO champ: id=163 score=0.625 size=109<br>
+              INFO Generation 0: end [09:55:49 - 09:55:55] [5469]</font></font><font size="2" face="Courier New, Courier, mono"><br>
+              </font><font size="1" face="Courier New, Courier, mono"><br>
+              </font></font></p></td>
+        </tr>
+      </table>
+      <p><font size="2" face="Arial, Helvetica, sans-serif"> The size of the neuron 
+        and connection id maps are displayed to give an idea of how much new topology 
+        is being added. The number of species in the population is displayed, 
+        along with the number of chromosomes to reach max fitness. The fittest 
+        individual is listed, along with its score (which is a percentage of the 
+        maximum possible fitness of 1), and its size, or number of neurons and 
+        connections, is listed. The start and end time and total elapsed time 
+        are all shown for the generation.<br>
+        </font></p></td>
+  </tr>
+  <tr> 
+    <td> <div align="center"><font size="2" face="Arial, Helvetica, sans-serif"><strong>4</strong></font></div></td>
+    <td><font size="2" face="Arial, Helvetica, sans-serif">In the above example, 
+      the champion chromosome had ID 163. To evaluate the performance of the chromosome 
+      using the settings in the properties file:</font> <p><font size="2" face="Arial, Helvetica, sans-serif"><strong>Windows:<br>
+        </strong></font><font size="2" face="Arial, Helvetica, sans-serif">Type 
+        &quot;evaluate.bat ttt.properties 163&quot; and press <strong>Enter</strong>.<br>
+        <strong><br>
+        </strong> </font><font size="2" face="Arial, Helvetica, sans-serif"><strong>Unix:</strong> 
+        <br>
+        Type &quot;evaluate.sh ttt.properties 163&quot; and press <strong>Enter</strong>.</font></p></td>
+  </tr>
+  <tr> 
+    <td><div align="center"><font size="2" face="Arial, Helvetica, sans-serif"><strong>5</strong></font></div></td>
+    <td><p><font size="2" face="Arial, Helvetica, sans-serif">After ANJI displays 
+        the properties for the evaluation, you should see output similar to the 
+        following:</font></p>
+      <table width="100%" border="0" cellpadding="1" bordercolor="#000000" bgcolor="#000000">
+        <tr> 
+          <td bgcolor="#CCCCCC"> <p><font size="2" face="Arial, Helvetica, sans-serif"><font face="Courier New, Courier, mono"><br>
+              INFO match. 163 vs TTT Best Player: 0-42-58: 0 vs 42-0-58: 0109 
+              ms<br>
+              INFO match. 163 vs TTT Bad Player: 97-2-1: 0 vs 2-97-1: 063 ms<br>
+              INFO opponent 1: TTT Best Player: 42-0-58: 0: 42.0<br>
+              INFO opponent 2: TTT Bad Player: 2-97-1: 0: -95.0<br>
+              INFO Chromosome 163: fitness = 63250/100000</font><font size="1" face="Courier New, Courier, mono"><br>
+              <br>
+              </font></font></p></td>
+        </tr>
+      </table>
+      <p><br>
+        <font size="2" face="Arial, Helvetica, sans-serif">This individual has 
+        already evolved to a point where it can tie Best about half the time and 
+        beat Bad consistently. Its fitness is 63.25% of the maximum.</font></p>
+      <p><font size="2" face="Arial, Helvetica, sans-serif">If you wanted to evaluate 
+        the chromosomes against other hand-coded players, simply add or change 
+        the <strong>tournament.direct.opponents</strong> property.</font></p></td>
+  </tr>
+</table>
+<p><font size="2" face="Arial, Helvetica, sans-serif"><br>
+  </font> </p>
+</body>
+</html>

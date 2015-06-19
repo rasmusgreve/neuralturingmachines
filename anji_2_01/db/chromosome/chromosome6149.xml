@@ -1,0 +1,17 @@
+<chromosome id="6149" primary-parent-id="5132"><neuron id="0" type="in" activation="linear"/>
+<neuron id="1" type="in" activation="linear"/>
+<neuron id="2" type="in" activation="linear"/>
+<neuron id="3" type="out" activation="sigmoid"/>
+<connection id="5" src-id="1" dest-id="3" weight="2.6009291693076375"/>
+<neuron id="167" type="hid" activation="sigmoid"/>
+<connection id="169" src-id="167" dest-id="3" weight="1.9718814015562076"/>
+<neuron id="170" type="hid" activation="sigmoid"/>
+<connection id="172" src-id="170" dest-id="3" weight="-8.892501061346817"/>
+<neuron id="805" type="hid" activation="sigmoid"/>
+<connection id="806" src-id="0" dest-id="805" weight="-1.5292581611012959"/>
+<connection id="807" src-id="805" dest-id="170" weight="5.237169785110581"/>
+<neuron id="1716" type="hid" activation="sigmoid"/>
+<connection id="1717" src-id="2" dest-id="1716" weight="4.458837790310799"/>
+<connection id="1718" src-id="1716" dest-id="167" weight="3.821959063082832"/>
+<connection id="2104" src-id="1" dest-id="805" weight="-1.798320752707045"/>
+</chromosome>

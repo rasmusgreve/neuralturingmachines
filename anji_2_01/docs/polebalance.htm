@@ -1,0 +1,171 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Pole Balancing Tutorial</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<script language="JavaScript" type="text/JavaScript">
+<!--
+function MM_reloadPage(init) {  //reloads the window if Nav4 resized
+  if (init==true) with (navigator) {if ((appName=="Netscape")&&(parseInt(appVersion)==4)) {
+    document.MM_pgW=innerWidth; document.MM_pgH=innerHeight; onresize=MM_reloadPage; }}
+  else if (innerWidth!=document.MM_pgW || innerHeight!=document.MM_pgH) location.reload();
+}
+MM_reloadPage(true);
+
+function MM_openBrWindow(theURL,winName,features) { //v2.0
+  window.open(theURL,winName,features);
+}
+//-->
+</script>
+</head>
+
+<body>
+<p><img src="images/banner_orange_small.gif" width="300" height="62"> </p>
+<p><font size="2" face="Arial, Helvetica, sans-serif">Pole balancing is an control benchmark 
+  historically used in engineering. It involves a pole affixed to a cart via a 
+  joint which allows movement along a single axis. The cart is able to move along 
+  a track of fixed length.</font></p>
+<p><img src="images/polebalance.gif" width="400" height="204"></p>
+<p><font size="2" face="Arial, Helvetica, sans-serif">A trial typically begins 
+  with the pole off-center by a certain number of degrees. The goal is to keep 
+  the pole from falling over by moving the cart in either direction, without falling 
+  off either edge of the track. A more difficult extension of this problem involves 
+  two poles, both affixed at the same point on the cart.<br>
+  <br>
+  <img src="images/doublepolebalance.gif" width="400" height="204"> </font></p>
+<p><font size="2" face="Arial, Helvetica, sans-serif">Typically the controller, 
+  in this case a neural network, receives as input information about the system 
+  at each time step, such as the positions of the poles, their respective velocities, 
+  the position and velocity of the cart, etc. An even more difficult extension 
+  of this problem involves not providing the velocities explicitly as input into 
+  the neural network. Also, because there are no constraints in the physical simulation 
+  on things such as energy used or friction between the cart and the track, solutions 
+  may be found which simply involve rapid wiggling. In order to avoid such unrealistic 
+  solutions from emerging, one method is to penalize such oscillations in the 
+  fitness function.</font></p>
+<p><font size="2" face="Arial, Helvetica, sans-serif">These 3 variations: Double 
+  Pole Balancing, DP with no velocities, and DPNV with anti-wiggling are all implemented 
+  in ANJI, along with graphical visualization. Below are links to movies showing 
+  a solution to the most difficult problem, DPNV with anti-wiggling:</font></p>
+<p><font size="2" face="Arial, Helvetica, sans-serif"><a href="#" onClick="MM_openBrWindow('polebalancingmovie.htm','','width=600,height=200')">Double 
+  Pole Balancing Movie</a> (Flash format)<strong><br>
+  </strong><a href="movies/dpnvaw1.avi">Double Pole Balancing Movie</a> (avi format) 
+  </font></p>
+<p><font size="3" face="Arial, Helvetica, sans-serif"><strong>Quick Start Instructions</strong></font></p>
+<p><strong><font size="2" face="Arial, Helvetica, sans-serif">Follow the steps 
+  below to perform an evolutionary run to solve Double Pole Balancing With Velocities.</font></strong></p>
+<table width="95%" border="1" cellpadding="1">
+  <tr> 
+    <td width="13%"><div align="center"><font size="2" face="Arial, Helvetica, sans-serif"><strong>Step</strong></font></div></td>
+    <td width="87%"><div align="center"><strong><font size="2" face="Arial, Helvetica, sans-serif">Procedure</font></strong></div></td>
+  </tr>
+  <tr> 
+    <td> <div align="center"><font size="2" face="Arial, Helvetica, sans-serif"><strong>1</strong></font></div></td>
+    <td><font size="2" face="Arial, Helvetica, sans-serif"><strong>Windows:</strong> 
+      <br>
+      1)<strong> </strong>Open a command shell (from the Start menu select <strong>Run</strong>..., 
+      type &quot;cmd&quot;, select <strong>OK</strong>).<br>
+      2) Navigate to the <strong>anji_2_01/</strong> directory.<br>
+      3) Type &quot;evolve.bat dpbalance.properties&quot; and press <strong>Enter</strong>.</font> 
+      <p><font size="2" face="Arial, Helvetica, sans-serif"><strong>Unix:</strong> 
+        <br>
+        1)<strong> </strong>Open a command shell.<br>
+        2) Navigate to the <strong>anji_2_01/</strong> directory.<br>
+        3) Type &quot;evolve.sh dpbalance.properties&quot; and press <strong>Enter</strong>.</font></p></td>
+  </tr>
+  <tr> 
+    <td> <div align="center"><font size="2" face="Arial, Helvetica, sans-serif"><strong>2</strong></font></div></td>
+    <td><p><font size="2" face="Arial, Helvetica, sans-serif">The format of the 
+        output is determined by the <strong>log4j</strong> configuration in xor.properties.<br>
+        For more information regarding log4j, visit:</font></p>
+      <p><font size="2" face="Arial, Helvetica, sans-serif"><a href="http://logging.apache.org/log4j/docs/manual.html" target="_blank">http://logging.apache.org/log4j/docs/manual.html</a><br>
+        <br>
+        After ANJI displays the properties for the run, you should see several 
+        lines like the following scroll across your screen. </font></p>
+      <table width="100%" border="0" cellpadding="1" bordercolor="#000000" bgcolor="#000000">
+        <tr> 
+          <td bgcolor="#CCCCCC"> <p><font size="2" face="Arial, Helvetica, sans-serif"><font face="Courier New, Courier, mono"><br>
+              INFO Run: start<br>
+              INFO Generation 0: start<br>
+              INFO connection-&gt;neuron id map size == 6<br>
+              INFO neurons-&gt;connection id map size == 75<br>
+              INFO species count: 7<br>
+              INFO # chromosomes with max fitness: 0<br>
+              INFO champ: id=43 score=0.0058 size=15<br>
+              INFO Generation 0: end [10:04:09 - 10:04:11] [1265]</font><font size="1" face="Courier New, Courier, mono"><br>
+              <br>
+              </font></font></p></td>
+        </tr>
+      </table>
+      <p><font size="2" face="Arial, Helvetica, sans-serif"> ANJI will print the 
+        ID mappings for topological features, the species count, the number of 
+        chromosomes that have solved the problem, and information about the fittest 
+        individual for that generation.</font></p></td>
+  </tr>
+  <tr> 
+    <td> <div align="center"><font size="2" face="Arial, Helvetica, sans-serif"><strong>3</strong></font></div></td>
+    <td><p><font size="2" face="Arial, Helvetica, sans-serif">Upon solving the 
+        problem, something like the following should display for that final generation.<br>
+        </font></p>
+      <table width="100%" border="0" cellpadding="1" bordercolor="#000000" bgcolor="#000000">
+        <tr> 
+          <td bgcolor="#CCCCCC"> <p><font size="2" face="Arial, Helvetica, sans-serif"><font size="2" face="Arial, Helvetica, sans-serif"><font face="Courier New, Courier, mono"><br>
+              INFO Generation 24: start<br>
+              INFO connection-&gt;neuron id map size == 86<br>
+              INFO neurons-&gt;connection id map size == 767<br>
+              INFO species count: 57<br>
+              INFO max: id=4740 score=1.0 size=17<br>
+              INFO # chromosomes with max fitness: 1<br>
+              INFO champ: id=4740 score=1.0 size=17<br>
+              INFO Generation 24: end [10:05:06 - 10:05:11] [5297]<br>
+              INFO generation of first solution == 24<br>
+              INFO champ # connections == 8<br>
+              INFO champ # hidden nodes == 1<br>
+              INFO Run: end [10:04:09 - 10:05:12] [62250]</font></font><font size="2" face="Courier New, Courier, mono"><br>
+              </font><font size="1" face="Courier New, Courier, mono"><br>
+              </font></font></p></td>
+        </tr>
+      </table>
+      <p><font size="2" face="Arial, Helvetica, sans-serif"> Chromosome 4740 has 
+        solved the double pole balancing problem. That is, the neural network 
+        controller has learned to keep both poles from falling for the 10,000 
+        time steps of the trial.</font></p></td>
+  </tr>
+  <tr> 
+    <td> <div align="center"><font size="2" face="Arial, Helvetica, sans-serif"><strong>4</strong></font></div></td>
+    <td><font size="2" face="Arial, Helvetica, sans-serif">To view a Java Swing 
+      display of the solution balancing the poles, enter the following:<br>
+      <br>
+      <strong>Windows:</strong> <br>
+      Type &quot;dpbalance_evaluate.bat dpbalance.properties &lt;champ-id&gt;&quot; 
+      and press <strong>Enter</strong>.</font> <p><font size="2" face="Arial, Helvetica, sans-serif"><strong>Unix:</strong> 
+        <br>
+        Type &quot;dpbalance_evaluate.sh dpbalance.properties &lt;champ-id&gt;&quot; 
+        and press <strong>Enter</strong>.</font><font size="2" face="Arial, Helvetica, sans-serif"><br>
+        </font> </p>
+      <p><font size="2" face="Arial, Helvetica, sans-serif"> The following Swing 
+        module will display:</font></p>
+      <p><img src="images/dpmovie.gif" width="607" height="193"></p>
+      <p><font size="2" face="Arial, Helvetica, sans-serif">The lower portion 
+        of the screen shows the track as a black line, the cart as a violet rectangle, 
+        and the poles as dark blue and light blue lines. The shorter pole is somewhat 
+        difficult to see, as they are affixed at the same point. The thick gray 
+        bar in the middle of the screen is a progress bar, showing time elasped 
+        in the trial. And the top bar controls the speed at which the movie plays. 
+        You can click and drag the clasp to the right or left to either speed 
+        up or slow down the speed of the movie.<br>
+        </font></p></td>
+  </tr>
+  <tr> 
+    <td> <div align="center"><font size="2" face="Arial, Helvetica, sans-serif"><strong>5</strong></font></div></td>
+    <td><font size="2" face="Arial, Helvetica, sans-serif">This example demonstrated 
+      a run in the simpler domain of double pole balancing <em>with</em> velocities 
+      input into the network. For the more difficult variations, larger population 
+      sizes (e.g. 1000 or more) and slightly higher mutation rates should be used, 
+      and trials should take much longer to carry out.</font></td>
+  </tr>
+</table>
+<p><font size="2" face="Arial, Helvetica, sans-serif"><br>
+  </font> </p>
+</body>
+</html>

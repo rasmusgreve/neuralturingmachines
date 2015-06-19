@@ -1,0 +1,1357 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>ANJI Parameters</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<script language="JavaScript" type="text/JavaScript">
+<!--
+function MM_reloadPage(init) {  //reloads the window if Nav4 resized
+  if (init==true) with (navigator) {if ((appName=="Netscape")&&(parseInt(appVersion)==4)) {
+    document.MM_pgW=innerWidth; document.MM_pgH=innerHeight; onresize=MM_reloadPage; }}
+  else if (innerWidth!=document.MM_pgW || innerHeight!=document.MM_pgH) location.reload();
+}
+MM_reloadPage(true);
+//-->
+</script>
+</head>
+
+<body>
+<p><img src="../images/banner_orange_small.gif" width="300" height="62"> 
+  <input type="button" value="Print This Page" onClick="window.print()">
+<p><font size="3" face="Arial, Helvetica, sans-serif"><strong>Parameter Details</strong></font></p>
+<p><strong><font size="2" face="Arial, Helvetica, sans-serif">The following table 
+  explains evolutionary parameters available in ANJI, along with recommended settings.<br>
+  This table lists generic parameters used by all domains. Parameters specific 
+  to particular domains are listed in additional tables below.</font></strong></p>
+<table border=1 cellspacing=0 cellpadding=0>
+  <tr valign="middle" style='height:12.75pt'> 
+    <td width=349 height="178" style='width:162.75pt;padding:.75pt .75pt 0in .75pt;
+  height:12.75pt'> <h6 align="center"><strong><span
+  style='font-family:Arial'><font size="3" face="Arial, Helvetica, sans-serif">Parameter</font><font size="3"><o:p></o:p></font><o:p></o:p></span></strong></h6></td>
+    <td width="324" style='width:166.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'> <p class=MsoNormal align=center style='text-align:center'><font size="3" face="Arial, Helvetica, sans-serif"><b><span
+  style='font-family:Arial'>Explanation<o:p></o:p></span></b></font></p></td>
+    <td width="320" style='width:103.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'> <p class=MsoNormal align=center style='text-align:center'><font size="3" face="Arial, Helvetica, sans-serif"><b><span
+  style='font-family:Arial'>Recommended Settings<o:p></o:p></span></b></font></p></td>
+  </tr>
+  <tr style='height:12.75pt'> 
+    <td valign=top style='width:162.75pt;padding:.75pt .75pt 0in .75pt;
+  height:12.75pt'> <p align="center"><strong><span
+  style='font-family:Arial'>random.seed (int)</span></strong></p>
+      <p align="center"><strong><span
+  style='font-family:Arial'><o:p></o:p></span></strong></p></td>
+    <td valign=top style='width:166.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'> <p class=MsoHeader style='tab-stops:.5in'><font size="3" face="Arial, Helvetica, sans-serif"><span style='font-family:Arial'>Starting 
+        point for the creation of random numbers from a random number generator, 
+        allowing the exact replication of runs with random elements.<o:p></o:p></span></font></p></td>
+    <td valign=top style='width:103.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'> <p class=MsoNormal><font size="3" face="Arial, Helvetica, sans-serif"><span style='font-family:Arial'>Any 
+        valid integer within the accepted range.<o:p></o:p><o:p></o:p></span></font></p>
+      <p class=MsoHeader style='tab-stops:.5in'><font size="3" face="Arial, Helvetica, sans-serif"><span style='font-family:Arial'>If 
+        replication of a particular run is not important, omit or comment out 
+        this parameter, and a random seed will be automatically set.<o:p></o:p></span></font></p></td>
+  </tr>
+  <tr style='height:12.75pt'> 
+    <td valign=top style='width:162.75pt;padding:.75pt .75pt 0in .75pt;
+  height:12.75pt'><div align="center"><strong><span
+  style='font-family:Arial'>run.name (string)</span></strong></div></td>
+    <td valign=top style='width:166.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><font size="3" face="Arial, Helvetica, sans-serif">The ID of 
+      the run.</font></td>
+    <td valign=top style='width:103.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><font size="3" face="Arial, Helvetica, sans-serif">If you are 
+      carrying out a large number of runs, you'll probably want to use something 
+      like a domain description and date, e.g. &quot;xor082005&quot;.</font></td>
+  </tr>
+  <tr style='height:12.75pt'> 
+    <td valign=top style='width:162.75pt;padding:.75pt .75pt 0in .75pt;
+  height:12.75pt'><div align="center"><strong><span
+  style='font-family:Arial'>run.reset (boolean)</span></strong></div></td>
+    <td valign=top style='width:166.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><font size="3" face="Arial, Helvetica, sans-serif">Determines 
+      whether or not a run is being continued or whether all persisted data from 
+      the previous run is wiped out and the run is started from scratch.</font></td>
+    <td valign=top style='width:103.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><font size="3" face="Arial, Helvetica, sans-serif">&quot;true&quot; 
+      if you want to restart a run, &quot;false&quot; if not.</font></td>
+  </tr>
+  <tr style='height:12.75pt'> 
+    <td valign=top style='width:162.75pt;padding:.75pt .75pt 0in .75pt;
+  height:12.75pt'> <p align=center class=MsoNormal style='text-align:center'><strong><span
+  style='font-family:Arial'>num.generations<o:p> (int)</o:p></span></strong></p></td>
+    <td valign=top style='width:166.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'> <p class=MsoNormal><font size="3" face="Arial, Helvetica, sans-serif"><span style='font-family:Arial'>The 
+        number of generations to carry out for a run.<o:p></o:p></span></font></p></td>
+    <td valign=top style='width:103.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'> <p class=MsoNormal align=center style='text-align:center'><font size="3" face="Arial, Helvetica, sans-serif"><span
+  style='font-family:Arial'>50 to 500<o:p></o:p></span></font></p></td>
+  </tr>
+  <tr style='height:12.75pt'> 
+    <td valign=top style='width:162.75pt;padding:.75pt .75pt 0in .75pt;
+  height:12.75pt'> <p align=center class=MsoNormal style='text-align:center'><strong><span
+  style='font-family:Arial'>popul.size<o:p> (int)</o:p></span></strong></p></td>
+    <td valign=top style='width:166.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'> <p class=MsoNormal><font size="3" face="Arial, Helvetica, sans-serif"><span style='font-family:Arial'>The 
+        number of individuals in the starting population, and each generation 
+        after reproduction is carried out.<o:p></o:p></span></font></p></td>
+    <td valign=top style='width:103.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'> <p class=MsoNormal align=center style='text-align:center'><font size="3" face="Arial, Helvetica, sans-serif"><span
+  style='font-family:Arial'>50 to 1000<o:p></o:p></span></font></p></td>
+  </tr>
+  <tr style='height:12.75pt'> 
+    <td valign=top style='width:162.75pt;padding:.75pt .75pt 0in .75pt;
+  height:12.75pt'><div align="center"><strong><span
+  style='font-family:Arial'>topology.mutation.classic<br>(boolean)</span></strong></div></td>
+    <td valign=top style='width:166.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><font size="3" face="Arial, Helvetica, sans-serif">ANJI differs 
+      from the author's original implementation of NEAT in how it handles topological 
+      mutations. In short, ANJI's mutation rates are the the rate at which new 
+      topological mutations arise among <em>all possible locations where a legal 
+      mutation could occur</em> (e.g., since add node mutations can only occur 
+      where there are existing connections, if there are 1000 connections in the 
+      population, with an add node mutation rate of 0.01 you'll get approximately 10<br>
+      new node mutations).<br>
+      The original NEAT mutation rate indicates the probability 
+      of <em>a given individual being mutated</em>.  An individual receives, at most, one 
+      topological mutation per generation.</font></td>
+    <td valign=top style='width:103.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><font size="3" face="Arial, Helvetica, sans-serif">The default 
+      setting is &quot;false&quot;, which handles mutations as described. If you 
+      wish to more closely model NEAT's original implementation, set to &quot;true&quot;.</font></td>
+  </tr>
+  <tr style='height:12.75pt'> 
+    <td valign=top style='width:162.75pt;padding:.75pt .75pt 0in .75pt;
+  height:12.75pt'> <p align=center class=MsoNormal style='text-align:center'><strong><span
+  style='font-family:Arial'>add.connection.<o:p></o:p></span></strong><strong><span
+  style='font-family:Arial'>mutation.rate<o:p><br>(double)</o:p></span></strong></p></td>
+    <td valign=top style='width:166.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'> <p class=MsoNormal><font size="3" face="Arial, Helvetica, sans-serif"><span style='font-family:Arial'>The 
+        probability of new connections being added (dependent upon how <strong><span
+  style='font-family:Arial'>topology.mutation.classic</span></strong> is set).<span style="mso-spacerun: yes">  
+        </span>Their initial weights will be a random value from a normal distribution.<o:p></o:p></span></font></p></td>
+    <td valign=top style='width:103.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'> <p class=MsoNormal align=center style='text-align:center'><font size="3" face="Arial, Helvetica, sans-serif"><span
+  style='font-family:Arial'>0.0001 to 0.5<o:p></o:p></span></font></p></td>
+  </tr>
+  <tr style='height:12.75pt'> 
+    <td valign=top style='width:162.75pt;padding:.75pt .75pt 0in .75pt;
+  height:12.75pt'> <p align=center class=MsoNormal style='text-align:center'><strong><span
+  style='font-family:Arial'>remove.connection.<o:p></o:p>mutation.rate<o:p><br>(double)</o:p></span></strong></p></td>
+    <td valign=top style='width:166.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'> <p class=MsoNormal><font size="3" face="Arial, Helvetica, sans-serif"><span style='font-family:Arial'>The 
+        rate at which existing connections within the range of the <strong>remove.connection.max.weight</strong> 
+        parameter are removed.<span style="mso-spacerun: yes">  </span>All weights 
+        falling within that range are sorted in ascending order of weight magnitude. 
+        <o:p> They are then removed probabalistically in proportion to their magnitude, 
+        i.e., weights with a smaller magnititude (e.g. close to zero) will have 
+        a higher chance of being deleted than weights with a larger magnitude.</o:p></span></font></p></td>
+    <td valign=top style='width:103.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'> <p class=MsoNormal align=center style='text-align:center'><font size="3" face="Arial, Helvetica, sans-serif"><span
+  style='font-family:Arial'>0.01 to 0.3<o:p></o:p></span></font></p></td>
+  </tr>
+  <tr style='height:12.75pt'> 
+    <td valign=top style='width:162.75pt;padding:.75pt .75pt 0in .75pt;
+  height:12.75pt'> <p align=center class=MsoNormal style='text-align:center'><strong><span
+  style='font-family:Arial'>remove.connection.<o:p></o:p>max.weight<o:p><br>(int)</o:p></span></strong></p></td>
+    <td valign=top style='width:166.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'> <p class=MsoNormal><font size="3" face="Arial, Helvetica, sans-serif"><span style='font-family:Arial'>The 
+        magnitude of the weights to be removed by the remove connection operator.<span
+  style="mso-spacerun: yes">  </span>If this value is set at 1, only weights between 
+        –1 and 1 will be removed.<span style="mso-spacerun: yes">  </span>Those 
+        weights will be sorted in ascending order by magnitude and deleted according 
+        to the <strong>remove.connection.mutation.rate</strong><o:p>.</o:p></span></font></p></td>
+    <td valign=top style='width:103.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'> <p class=MsoNormal align=center style='text-align:center'><font size="3" face="Arial, Helvetica, sans-serif"><span
+  style='font-family:Arial'>1 to 500<o:p></o:p></span></font></p></td>
+  </tr>
+  <tr style='height:12.75pt'> 
+    <td valign=top style='width:162.75pt;padding:.75pt .75pt 0in .75pt;
+  height:12.75pt'> <p align=center class=MsoNormal style='text-align:center'><strong><span
+  style='font-family:Arial'>remove.connection.strategy<o:p> (int)</o:p></span></strong></p></td>
+    <td valign=top style='width:166.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'> <p class=MsoNormal><font size="3" face="Arial, Helvetica, sans-serif">
+  <span style='font-family:Arial'>
+  Strategy for remove connection mutation.  Possible values:<br><br>
+	<strong>skewed</strong> - Likelihood of a connection being removed is inversely proportional 
+	to the magnitude of the weight.  The chance of a connection with weight zero being removed is 
+	<strong>remove.connection.mutation.rate</strong>.  The chance of a connection with weight >= 
+	<strong>remove.connection.max.weight</strong> being removed is 0.<br><br>
+	<strong>small</strong> - Similar to skewed, except the connections are always removed with
+	prefeence for those with smallest weight magnitude; i.e., it is impossible for a connection to
+	be removed with a weight whose magnitude is larger than another connection that remains.<br><br>
+	<strong>all</strong> - All connections, regardless of weight, have an equal opportunity of 
+	being removed.
+  <o:p></o:p></span></font></p></td>
+    <td valign=top style='width:103.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'> <p class=MsoNormal align=center style='text-align:center'><font size="3" face="Arial, Helvetica, sans-serif"><span
+  style='font-family:Arial'>skewed<o:p></o:p></span></font></p></td>
+  </tr>
+  <tr style='height:12.75pt'> 
+    <td valign=top style='width:162.75pt;padding:.75pt .75pt 0in .75pt;
+  height:12.75pt'> <p align=center class=MsoNormal style='text-align:center'><strong><span
+  style='font-family:Arial'>add.neuron.mutation.rate<o:p><br>(double)</o:p></span></strong></p></td>
+    <td valign=top style='width:166.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'> <p class=MsoNormal><font size="3" face="Arial, Helvetica, sans-serif"><span style='font-family:Arial'>The 
+        probability of new nodes being added.<span style="mso-spacerun: yes">  
+        </span>A node can only mutate at an existing connection.<o:p> </o:p>(This 
+        rate is dependent upon how <strong><span
+  style='font-family:Arial'>topology.mutation.classic</span></strong> is set).</span></font></p></td>
+    <td valign=top style='width:103.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'> <p class=MsoNormal align=center style='text-align:center'><font size="3" face="Arial, Helvetica, sans-serif"><span
+  style='font-family:Arial'>0.0001 to 0.5<o:p></o:p></span></font></p></td>
+  </tr>
+  <tr style='height:12.75pt'> 
+    <td valign=top style='width:162.75pt;padding:.75pt .75pt 0in .75pt;
+  height:12.75pt'> <p align=center class=MsoNormal style='text-align:center'><strong><span
+  style='font-family:Arial'>prune.mutation.rate<o:p><br>(double)</o:p></span></strong></p></td>
+    <td valign=top style='width:166.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'> <p class=MsoNormal><font size="3" face="Arial, Helvetica, sans-serif"><span style='font-family:Arial'>As 
+        connections are removed, some nodes may become stranded (i.e., not connected 
+        to the rest of the network). This parameter determines the rate at which 
+        stranded nodes are removed from the chromosome.<o:p> </o:p>The default 
+        setting is 1.0, which means that all stranded nodes are removed. A rate 
+        of 0.0 would mean that all stranded nodes are available to be reintegrated 
+        into the network via add connection mutations. </span></font></p></td>
+    <td valign=top style='width:103.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'> <p class=MsoNormal align=left style='text-align:left'><font size="3" face="Arial, Helvetica, sans-serif"><span
+  style='font-family:Arial'><o:p>1.0<br>(We have not experimented extensively with this parameter.)</o:p></span></font></p></td>
+  </tr>
+  <tr style='height:12.75pt'> 
+    <td valign=top style='width:162.75pt;padding:.75pt .75pt 0in .75pt;
+  height:12.75pt'> <p align=center class=MsoNormal style='text-align:center'><strong><span
+  style='font-family:Arial'>weight.mutation.rate<o:p><br>(double)</o:p></span></strong></p></td>
+    <td valign=top style='width:166.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'> <p class=MsoNormal><font size="3" face="Arial, Helvetica, sans-serif"><span style='font-family:Arial'>The 
+        probability of existing connection weights being mutated by adding a random 
+        value from the range of the <strong>weight.mutation.std.dev</strong>.<o:p></o:p></span></font></p></td>
+    <td valign=top style='width:103.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'> <p class=MsoNormal align=center style='text-align:center'><font size="3" face="Arial, Helvetica, sans-serif"><span
+  style='font-family:Arial'>0.5 to 0.8<o:p></o:p></span></font></p></td>
+  </tr>
+  <tr style='height:12.75pt'> 
+    <td valign=top style='width:162.75pt;padding:.75pt .75pt 0in .75pt;
+  height:12.75pt'> <p align=center class=MsoNormal style='text-align:center'><strong><span
+  style='font-family:Arial'>weight.mutation.std.dev<o:p><br>(double)</o:p></span></strong></p></td>
+    <td valign=top style='width:166.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'> <p class=MsoNormal><font size="3" face="Arial, Helvetica, sans-serif"><span style='font-family:Arial'>The 
+        standard deviation for weight mutation values.<span style="mso-spacerun: yes">  
+        </span>E.g., if this parameter is set to 2, connection weights will be 
+        mutated by adding a random double generated from a random normal distribution with standard deviation 2.
+        <o:p></o:p></span></font></p></td>
+    <td valign=top style='width:103.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'> <p class=MsoNormal align=center style='text-align:center'><font size="3" face="Arial, Helvetica, sans-serif"><span
+  style='font-family:Arial'>1.0 to 2<o:p>.0</o:p></span></font></p></td>
+  </tr>
+  <tr style='height:12.75pt'> 
+    <td valign=top style='width:162.75pt;padding:.75pt .75pt 0in .75pt;
+  height:12.75pt'> <p align=center class=MsoNormal style='text-align:center'><strong><span
+  style='font-family:Arial'>weight.max<o:p> (double)</o:p></span></strong></p></td>
+    <td valign=top style='width:166.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'> <p class=MsoNormal><font size="3" face="Arial, Helvetica, sans-serif"><span style='font-family:Arial'>The 
+        upper bound for connection weight values<o:p></o:p></span></font></p></td>
+    <td valign=top style='width:103.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'> <p class=MsoNormal align=center style='text-align:center'><font size="3" face="Arial, Helvetica, sans-serif"><span
+  style='font-family:Arial'>1.0 to 500<o:p>.0</o:p></span></font></p></td>
+  </tr>
+  <tr style='height:12.75pt'> 
+    <td valign=top style='width:162.75pt;padding:.75pt .75pt 0in .75pt;
+  height:12.75pt'> <p align=center class=MsoNormal style='text-align:center'><strong><span
+  style='font-family:Arial'>weight.min<o:p> (double)</o:p></span></strong></p></td>
+    <td valign=top style='width:166.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'> <p class=MsoNormal><font size="3" face="Arial, Helvetica, sans-serif"><span style='font-family:Arial'>The 
+        lower bound for connection weight values<o:p></o:p></span></font></p></td>
+    <td valign=top style='width:103.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'> <p class=MsoNormal align=center style='text-align:center'><font size="3" face="Arial, Helvetica, sans-serif"><span
+  style='font-family:Arial'>-1.0 to -500<o:p>.0</o:p></span></font></p></td>
+  </tr>
+  <tr style='height:12.75pt'> 
+    <td valign=top style='width:162.75pt;padding:.75pt .75pt 0in .75pt;
+  height:12.75pt'> <p align=center class=MsoNormal style='text-align:center'><strong><span
+  style='font-family:Arial'>survival.rate<o:p> (double)</o:p></span></strong></p></td>
+    <td valign=top style='width:166.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'> <p class=MsoNormal><font size="3" face="Arial, Helvetica, sans-serif"><span style='font-family:Arial'>The 
+        percentage of the population which survives and reproduces each generation, 
+        determined by fitness values sorted in descending order<o:p></o:p></span></font></p></td>
+    <td valign=top style='width:103.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'> <p class=MsoNormal align=center style='text-align:center'><font size="3" face="Arial, Helvetica, sans-serif"><span
+  style='font-family:Arial'>0.1 to 0.5<o:p></o:p></span></font></p></td>
+  </tr>
+  <tr style='height:12.75pt'> 
+    <td valign=top style='width:162.75pt;padding:.75pt .75pt 0in .75pt;
+  height:12.75pt'> <p align=center class=MsoNormal style='text-align:center'><strong><span
+  style='font-family:Arial'>selector.elitism<o:p> (boolean)</o:p></span></strong></p></td>
+    <td valign=top style='width:166.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'> <p class=MsoNormal><font size="3" face="Arial, Helvetica, sans-serif"><span style='font-family:Arial'>Fittest 
+        individuals from species at least the size defined by the <strong>selector.elitism.min.specie.size</strong> 
+        parameter are copied unchanged into the next generation<o:p></o:p></span></font></p></td>
+    <td valign=top style='width:103.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'> <p class=MsoNormal align=center style='text-align:center'><font size="3" face="Arial, Helvetica, sans-serif"><span
+  style='font-family:Arial'>true<o:p></o:p></span></font></p></td>
+  </tr>
+  <tr style='height:12.75pt'> 
+    <td valign=top style='width:162.75pt;padding:.75pt .75pt 0in .75pt;
+  height:12.75pt'> <p align=center class=MsoNormal style='text-align:center'><strong><span
+  style='font-family:Arial'>selector.roulette<o:p> (boolean)</o:p></span></strong></p></td>
+    <td valign=top style='width:166.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><font size="3" face="Arial, Helvetica, sans-serif">Determines 
+      whether or not roulette selection is used.</font></td>
+    <td valign=top style='width:103.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><div align="center"><font size="3" face="Arial, Helvetica, sans-serif">false</font></div></td>
+  </tr>
+  <tr style='height:12.75pt'> 
+    <td valign=top style='width:162.75pt;padding:.75pt .75pt 0in .75pt;
+  height:12.75pt'> <p align=center class=MsoNormal style='text-align:center'><strong><span
+  style='font-family:Arial'>selector.elitism.<br>min.specie.size<o:p> (int)</o:p></span></strong></p></td>
+    <td valign=top style='width:166.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'> <p class=MsoNormal><font size="3" face="Arial, Helvetica, sans-serif"><span style='font-family:Arial'>Minimum 
+        number of individuals a specie must contain for its fittest member to 
+        be copied unchanged into the next generation<o:p></o:p></span></font></p></td>
+    <td valign=top style='width:103.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'> <p class=MsoNormal align=center style='text-align:center'><font size="3" face="Arial, Helvetica, sans-serif"><span
+  style='font-family:Arial'>1 to 5<o:p></o:p></span></font></p></td>
+  </tr>
+  <tr style='height:12.75pt'> 
+    <td valign=top style='width:162.75pt;padding:.75pt .75pt 0in .75pt;
+  height:12.75pt'> <p align=center class=MsoNormal style='text-align:center'><strong><span
+  style='font-family:Arial'>chrom.compat.excess.coeff<o:p> (double)</o:p></span></strong></p></td>
+    <td valign=top style='width:166.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'> <p class=MsoNormal><font size="3" face="Arial, Helvetica, sans-serif"><span style='font-family:Arial'>Coefficient 
+        used to determine the genetic difference between two chromosomes. This 
+        parameter adjusts the compatibility value based on the number of excess 
+        genes.<o:p></o:p></span></font></p></td>
+    <td valign=top style='width:103.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'> <p class=MsoNormal align=center style='text-align:center'><font size="3" face="Arial, Helvetica, sans-serif"><span
+  style='font-family:Arial'>1.0<o:p></o:p></span></font></p></td>
+  </tr>
+  <tr style='height:12.75pt'> 
+    <td valign=top style='width:162.75pt;padding:.75pt .75pt 0in .75pt;
+  height:12.75pt'> <p align=center class=MsoNormal style='text-align:center'><strong><span
+  style='font-family:Arial'>chrom.compat.disjoint.coeff<o:p> (double)</o:p></span></strong></p></td>
+    <td valign=top style='width:166.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'> <p class=MsoNormal><font size="3" face="Arial, Helvetica, sans-serif"><span style='font-family:Arial'>Coefficient 
+        used to determine the genetic difference between two chromosomes. This 
+        parameter adjusts the compatibility value based on the number of disjoint 
+        genes.<o:p></o:p></span></font></p></td>
+    <td valign=top style='width:103.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'> <p class=MsoNormal align=center style='text-align:center'><font size="3" face="Arial, Helvetica, sans-serif"><span
+  style='font-family:Arial'>1.0<o:p></o:p></span></font></p></td>
+  </tr>
+  <tr style='height:12.75pt'> 
+    <td valign=top style='width:162.75pt;padding:.75pt .75pt 0in .75pt;
+  height:12.75pt'> <p align=center class=MsoNormal style='text-align:center'><strong><span
+  style='font-family:Arial'>chrom.compat.common.coeff<o:p> (double)</o:p></span></strong></p></td>
+    <td valign=top style='width:166.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'> <p class=MsoNormal><font size="3" face="Arial, Helvetica, sans-serif"><span style='font-family:Arial'>Coefficient 
+        used to determine the genetic difference between two chromosomes. This 
+        parameter adjusts the compatibility value based on the differences in 
+        the values of common connection weights.<o:p></o:p></span></font></p></td>
+    <td valign=top style='width:103.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'> <p class=MsoNormal align=center style='text-align:center'><font size="3" face="Arial, Helvetica, sans-serif"><span
+  style='font-family:Arial'>0.4<o:p></o:p></span></font></p></td>
+  </tr>
+  <tr style='height:12.75pt'> 
+    <td valign=top style='width:162.75pt;padding:.75pt .75pt 0in .75pt;
+  height:12.75pt'> <p align=center class=MsoNormal style='text-align:center'><strong><span
+  style='font-family:Arial'>speciation.threshold<o:p> (double)</o:p></span></strong></p></td>
+    <td valign=top style='width:166.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'> <p class=MsoNormal><font size="3" face="Arial, Helvetica, sans-serif"><span style='font-family:Arial'>The 
+        compatibility threshold used to determine whether two individuals belong 
+        to the same species.<o:p></o:p></span></font></p></td>
+    <td valign=top style='width:103.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'> <p class=MsoNormal align=center style='text-align:center'><font size="3" face="Arial, Helvetica, sans-serif"><span
+  style='font-family:Arial'>0.1 to 1.0<o:p></o:p></span></font></p></td>
+  </tr>
+  <tr style='height:12.75pt'> 
+    <td valign=top style='width:162.75pt;padding:.75pt .75pt 0in .75pt;
+  height:12.75pt'> <p align=center class=MsoNormal style='text-align:center'><strong><span
+  style='font-family:Arial'>stimulus.size<o:p> (int)</o:p></span></strong></p></td>
+    <td valign=top style='width:166.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'> <p class=MsoNormal><font size="3" face="Arial, Helvetica, sans-serif"><span style='font-family:Arial'>Number 
+        of input nodes for initial neural network topology<o:p></o:p></span></font></p></td>
+    <td valign=top style='width:103.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'> <p class=MsoNormal align=center style='text-align:center'><font size="3" face="Arial, Helvetica, sans-serif"><span
+  style='font-family:Arial'>Dependent upon domain<o:p></o:p></span></font></p></td>
+  </tr>
+  <tr style='height:12.75pt'> 
+    <td valign=top style='width:162.75pt;padding:.75pt .75pt 0in .75pt;
+  height:12.75pt'> <p align=center class=MsoNormal style='text-align:center'><strong><span
+  style='font-family:Arial'>response.size<o:p> (int)</o:p></span></strong></p></td>
+    <td valign=top style='width:166.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'> <p class=MsoNormal><font size="3" face="Arial, Helvetica, sans-serif"><span style='font-family:Arial'>Number 
+        of output nodes for initial neural network topology.<o:p></o:p></span></font></p></td>
+    <td valign=top style='width:103.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'> <p class=MsoNormal align=center style='text-align:center'><font size="3" face="Arial, Helvetica, sans-serif"><span
+  style='font-family:Arial'>Dependent upon domain<o:p></o:p></span></font></p></td>
+  </tr>
+  <tr style='height:12.75pt'> 
+    <td valign=top style='width:162.75pt;padding:.75pt .75pt 0in .75pt;
+  height:12.75pt'> <p align=center class=MsoNormal style='text-align:center'><strong><span
+  style='font-family:Arial'>fitness_function.class<o:p><br>(Java class)</o:p></span></strong></p></td>
+    <td valign=top style='width:166.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'> <p class=MsoNormal><font size="3" face="Arial, Helvetica, sans-serif"><span style='font-family:Arial'>The 
+        class used to determine the fitness of the evolving population.<o:p></o:p></span></font></p></td>
+    <td valign=top style='width:103.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'> <p class=MsoNormal align=center style='text-align:center'><font size="3" face="Arial, Helvetica, sans-serif"><span
+  style='font-family:Arial'><o:p></o:p>Dependent upon domain<o:p></o:p></span></font></p></td>
+  </tr>
+  <tr style='height:12.75pt'> 
+    <td valign=top style='width:162.75pt;padding:.75pt .75pt 0in .75pt;
+  height:12.75pt'> <p align=center class=MsoNormal style='text-align:center'><strong><span
+  style='font-family:Arial'>fitness.function.adjust.<br>for.<o:p></o:p></span></strong><strong><span
+  style='font-family:Arial'>network.size.factor (double)<o:p></o:p></span></strong></p></td>
+    <td valign=top style='width:166.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'> <p class=MsoNormal><font size="3" face="Arial, Helvetica, sans-serif"><span style='font-family:Arial'>Allows 
+        for an explicit fitness penalty to be applied to a chromosome based on 
+        its size. This value is multiplied by the chromosome size and subtracted 
+        from the fitness value after evaluation by the fitness function.<o:p></o:p></span></font></p></td>
+    <td valign=top style='width:103.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'> <p class=MsoNormal align=center style='text-align:center'><font size="3" face="Arial, Helvetica, sans-serif"><span
+  style='font-family:Arial'><o:p></o:p>1.0<o:p></o:p></span></font></p></td>
+  </tr>
+  <tr style='height:12.75pt'> 
+    <td valign=top style='width:162.75pt;padding:.75pt .75pt 0in .75pt;
+  height:12.75pt'><div align="center"><strong><font face="Arial, Helvetica, sans-serif">fitness.threshold 
+        (double) </font></strong></div></td>
+    <td valign=top style='width:166.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><font size="3" face="Arial, Helvetica, sans-serif">A chromosome 
+      is considered to have &#8220;solved&#8221; the problem presented by the 
+      fitness function if its fitness exceeds this value. The number of chromosomes 
+      satisfying this criteria is logged.<br>
+      </font></td>
+    <td valign=top style='width:103.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><div align="center"><font face="Arial, Helvetica, sans-serif">Dependent 
+        upon domain</font></div></td>
+  </tr>
+  <tr style='height:12.75pt'> 
+    <td valign=top style='width:162.75pt;padding:.75pt .75pt 0in .75pt;
+  height:12.75pt'><div align="center"><strong><font face="Arial, Helvetica, sans-serif">fitness.target 
+        (double) </font></strong></div></td>
+    <td valign=top style='width:166.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><font size="3" face="Arial, Helvetica, sans-serif">As soon as 
+      the fitness of a chromosome exceeds this target, the evolutionary run ends.<br>
+      </font></td>
+    <td valign=top style='width:103.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><div align="center"><font face="Arial, Helvetica, sans-serif">Dependent 
+        upon domain</font></div></td>
+  </tr>
+  <tr style='height:12.75pt'> 
+    <td valign=top style='width:162.75pt;padding:.75pt .75pt 0in .75pt;
+  height:12.75pt'> <p align=center class=MsoNormal style='text-align:center'><strong><span
+  style='font-family:Arial'>initial.topology.activation<o:p><br>(string)</o:p></span></strong></p></td>
+    <td valign=top style='width:166.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><font size="3" face="Arial, Helvetica, sans-serif">Determines 
+      the activation function of <strong>hidden</strong> nodes in the network. 
+      Supported values are: <strong>linear</strong>, <strong>sigmoid</strong>, 
+      <strong>evsail-sigmoid</strong>, <strong>tanh</strong>, <strong>tanh-cubic</strong>, 
+      <strong>step</strong>, and <strong>signed</strong>.</font></td>
+    <td valign=top style='width:103.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><div align="center"><font size="3" face="Arial, Helvetica, sans-serif">sigmoid</font></div></td>
+  </tr>
+  <tr style='height:12.75pt'> 
+    <td valign=top style='width:162.75pt;padding:.75pt .75pt 0in .75pt;
+  height:12.75pt'> <p align=center class=MsoNormal style='text-align:center'><strong><span
+  style='font-family:Arial'>initial.topology.activation.input<o:p> (string)</o:p></span></strong></p></td>
+    <td valign=top style='width:166.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><font size="3" face="Arial, Helvetica, sans-serif">Determines 
+      the activation function of <strong>input</strong> nodes in the network. 
+      Supported values are: <strong>linear</strong>, <strong>sigmoid</strong>, 
+      <strong>evsail-sigmoid</strong>, <strong>tanh</strong>, <strong>tanh-cubic</strong>, 
+      <strong>step</strong>, and <strong>signed</strong>.</font></td>
+    <td valign=top style='width:103.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><div align="center"><font size="3" face="Arial, Helvetica, sans-serif">linear</font></div></td>
+  </tr>
+  <tr style='height:12.75pt'> 
+    <td valign=top style='width:162.75pt;padding:.75pt .75pt 0in .75pt;
+  height:12.75pt'> <p align=center class=MsoNormal style='text-align:center'><strong><span
+  style='font-family:Arial'>initial.topology.activation.output<o:p> (string)</o:p></span></strong></p></td>
+    <td valign=top style='width:166.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><font size="3" face="Arial, Helvetica, sans-serif">Determines 
+      the activation function of <strong>output</strong> nodes in the network. 
+      Supported values are: <strong>linear</strong>, <strong>sigmoid</strong>, 
+      <strong>evsail-sigmoid</strong>, <strong>tanh</strong>, <strong>tanh-cubic</strong>, 
+      <strong>step</strong>, <strong>signed</strong>, <strong>clamped-linear</strong>, 
+      and <strong>signed-clamped-linear</strong>.</font></td>
+    <td valign=top style='width:103.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><div align="center"><font size="3" face="Arial, Helvetica, sans-serif">sigmoid</font></div></td>
+  </tr>
+  <tr style='height:12.75pt'> 
+    <td valign=top style='width:162.75pt;padding:.75pt .75pt 0in .75pt;
+  height:12.75pt'> <p align=center class=MsoNormal style='text-align:center'><strong><span
+  style='font-family:Arial'>initial.topology.<br>fully.connected<o:p> (boolean)</o:p></span></strong></p></td>
+    <td valign=top style='width:166.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><font size="3" face="Arial, Helvetica, sans-serif">Determines 
+      whether or not the initial topologies begin with all input nodes being fully 
+      connected (with feedforward connections only) to all output nodes. If set 
+      to &quot;false&quot; there will be <em>no connections at all</em> in the 
+      intial topology.</font></td>
+    <td valign=top style='width:103.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><div align="center"><font size="3" face="Arial, Helvetica, sans-serif">true</font></div></td>
+  </tr>
+  <tr style='height:12.75pt'> 
+    <td valign=top style='width:162.75pt;padding:.75pt .75pt 0in .75pt;
+  height:12.75pt'> <p align=center class=MsoNormal style='text-align:center'><strong><span
+  style='font-family:Arial'>initial.topology.num.<br>hidden.neurons<o:p> (boolean)</o:p></span></strong></p></td>
+    <td valign=top style='width:166.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><font size="3" face="Arial, Helvetica, sans-serif">Number of 
+      hidden nodes in the starting topologies. If this value is greater than zero, 
+      all input nodes will be fully connected to the number of hidden nodes (with 
+      feedforward connections only). These hidden nodes will then be fully connected 
+      to all output nodes.</font></td>
+    <td valign=top style='width:103.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><div align="center"><font size="3" face="Arial, Helvetica, sans-serif">false</font></div></td>
+  </tr>
+  <tr style='height:12.75pt'> 
+    <td valign=top style='width:162.75pt;padding:.75pt .75pt 0in .75pt;
+  height:12.75pt'> <p align=center class=MsoNormal style='text-align:center'><strong><span
+  style='font-family:Arial'>recurrent<o:p> (string)</o:p></span></strong></p></td>
+    <td valign=top style='width:166.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><font size="3" face="Arial, Helvetica, sans-serif">Policy for 
+      handling recurrent connections. Supported values: </font><font face="Arial, Helvetica, sans-serif"> 
+      <p><font size="3"><strong>disallowed</strong>: mutations that would cause 
+        a loop in the network are not allowed.</font></p>
+      <p><font size="3"><strong>best_guess</strong>: based on a layer-based approximation 
+        of the network topology, connections that potentially could cause recurrent 
+        loops cache values from the previous activation to avoid deadlock.</font></p>
+      </font> <p><font size="3" face="Arial, Helvetica, sans-serif"><strong>lazy</strong>: 
+        all connections cache values from the previous activation.</font><br>
+      </p></td>
+    <td valign=top style='width:103.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><div align="center"><font size="3" face="Arial, Helvetica, sans-serif">Dependent 
+        upon domain</font></div></td>
+  </tr>
+  <tr style='height:12.75pt'> 
+    <td valign=top style='width:162.75pt;padding:.75pt .75pt 0in .75pt;
+  height:12.75pt'> <p align=center class=MsoNormal style='text-align:center'><strong><span
+  style='font-family:Arial'>recurrent.cycles<o:p> (int)</o:p></span></strong></p></td>
+    <td valign=top style='width:166.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><font size="3" face="Arial, Helvetica, sans-serif">Number of 
+      cycles a network with recurrency is activated after receiving input before 
+      the output values are read.</font></td>
+    <td valign=top style='width:103.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><div align="center"><font size="3" face="Arial, Helvetica, sans-serif">1</font></div></td>
+  </tr>
+  <tr style='height:12.75pt'> 
+    <td valign=top style='width:162.75pt;padding:.75pt .75pt 0in .75pt;
+  height:12.75pt'> <p align=center class=MsoNormal style='text-align:center'><strong><span
+  style='font-family:Arial'>ann.type<o:p> (string)</o:p></span></strong></p></td>
+    <td valign=top style='width:166.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><font size="3" face="Arial, Helvetica, sans-serif">Determines 
+      the neural network framework the transcribers use to build networks from 
+      chromosomes. Currently only one framework exists, but plans for other network 
+      implementations will be included in later releases.</font></td>
+    <td valign=top style='width:103.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><div align="center"><font size="3" face="Arial, Helvetica, sans-serif">anji</font></div></td>
+  </tr>
+  <tr style='height:12.75pt'> 
+    <td valign=top style='width:162.75pt;padding:.75pt .75pt 0in .75pt;
+  height:12.75pt'> <p align=center class=MsoNormal style='text-align:center'><strong><span
+  style='font-family:Arial'>persistence.class<o:p><br>(Java class)</o:p></span></strong></p></td>
+    <td valign=top style='width:166.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><font size="3" face="Arial, Helvetica, sans-serif">Java class 
+      used to persist data, including chromosomes and run summary. Implements 
+      <font size="2" face="Courier New, Courier, mono">com.anji.persistence.Persistence</font>.</font></td>
+    <td valign=top style='width:103.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><font size="3" face="Arial, Helvetica, sans-serif"> <font size="2" face="Courier New, Courier, mono">com.anji.persistence.<br>
+      FilePersistence</font></font></td>
+  </tr>
+  <tr style='height:12.75pt'> 
+    <td valign=top style='width:162.75pt;padding:.75pt .75pt 0in .75pt;
+  height:12.75pt'> <p align=center class=MsoNormal style='text-align:center'><strong><span
+  style='font-family:Arial'>persistence.base.dir<o:p> (path)</o:p></span></strong></p></td>
+    <td valign=top style='width:166.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><font size="3" face="Arial, Helvetica, sans-serif">Directory 
+      path to base directory under which all persistence data is stored.</font></td>
+    <td valign=top style='width:103.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><div align="center"><font size="3" face="Arial, Helvetica, sans-serif">./db</font></div></td>
+  </tr>
+  <tr style='height:12.75pt'> 
+    <td valign=top style='width:162.75pt;padding:.75pt .75pt 0in .75pt;
+  height:12.75pt'> <p align=center class=MsoNormal style='text-align:center'><strong><span
+  style='font-family:Arial'>persist.all<o:p> (boolean)</o:p></span></strong></p></td>
+    <td valign=top style='width:166.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><font size="3" face="Arial, Helvetica, sans-serif">If <strong>true</strong>, 
+      stores all chromosomes.</font></td>
+    <td valign=top style='width:103.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><div align="center"><font size="3" face="Arial, Helvetica, sans-serif">false</font></div></td>
+  </tr>
+  <tr style='height:12.75pt'> 
+    <td valign=top style='width:162.75pt;padding:.75pt .75pt 0in .75pt;
+  height:12.75pt'> <p align=center class=MsoNormal style='text-align:center'><strong><span
+  style='font-family:Arial'>persist.champions<o:p> (boolean)</o:p></span></strong></p></td>
+    <td valign=top style='width:166.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><font size="3" face="Arial, Helvetica, sans-serif">If <strong>true</strong>, 
+      stores the fittest individuals from each generation.</font></td>
+    <td valign=top style='width:103.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><div align="center"><font size="3" face="Arial, Helvetica, sans-serif">true</font></div></td>
+  </tr>
+  <tr style='height:12.75pt'> 
+    <td valign=top style='width:162.75pt;padding:.75pt .75pt 0in .75pt;
+  height:12.75pt'> <p align=center class=MsoNormal style='text-align:center'><strong><span
+  style='font-family:Arial'>persist.last<o:p> (boolean)</o:p></span></strong></p></td>
+    <td valign=top style='width:166.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><font size="3" face="Arial, Helvetica, sans-serif">If <strong>true</strong>, 
+      stores all individuals from the final generation.</font></td>
+    <td valign=top style='width:103.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><div align="center"><font size="3" face="Arial, Helvetica, sans-serif">true, 
+        if you wish to continue a run</font></div></td>
+  </tr>
+  <tr style='height:12.75pt'> 
+    <td valign=top style='width:162.75pt;padding:.75pt .75pt 0in .75pt;
+  height:12.75pt'> <p align=center class=MsoNormal style='text-align:center'><strong><span
+  style='font-family:Arial'>id.file</span><span
+  style='font-family:Arial'><o:p> (path)</o:p></span></strong></p></td>
+    <td valign=top style='width:166.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><font size="3" face="Arial, Helvetica, sans-serif">Full path to file which persists chromosome ids for a given run.</font></td>
+    <td valign=top style='width:103.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><div align="center"><font size="3" face="Arial, Helvetica, sans-serif">./db/id.xml</font></div></td>
+  </tr>
+  <tr style='height:12.75pt'> 
+    <td valign=top style='width:162.75pt;padding:.75pt .75pt 0in .75pt;
+  height:12.75pt'> <p align=center class=MsoNormal style='text-align:center'><strong><span
+  style='font-family:Arial'>neat.id.file</span><span
+  style='font-family:Arial'><o:p> (path)</o:p></span></strong></p></td>
+    <td valign=top style='width:166.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><font size="3" face="Arial, Helvetica, sans-serif">Full path to file which persists innovation ids for topological features for 
+      a given run.</font></td>
+    <td valign=top style='width:103.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><div align="center"><font size="3" face="Arial, Helvetica, sans-serif">./db/neatid.xml</font></div></td>
+  </tr>
+  <tr style='height:12.75pt'> 
+    <td valign=top style='width:162.75pt;padding:.75pt .75pt 0in .75pt;
+  height:12.75pt'> <p align=center class=MsoNormal style='text-align:center'><strong><span
+  style='font-family:Arial'>presentation.dir</span><span
+  style='font-family:Arial'><o:p> (string)</o:p></span></strong></p></td>
+    <td valign=top style='width:166.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><font size="3" face="Arial, Helvetica, sans-serif">Directory 
+      where xml related to visual presentation (e.g., complexity, fitness, and 
+      speciation) is stored.</font></td>
+    <td valign=top style='width:103.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><div align="center"><font size="3" face="Arial, Helvetica, sans-serif">./nevt</font></div></td>
+  </tr>
+  <tr style='height:12.75pt'> 
+    <td valign=top style='width:162.75pt;padding:.75pt .75pt 0in .75pt;
+  height:12.75pt'> <p align=center class=MsoNormal style='text-align:center'><strong><span
+  style='font-family:Arial'>log4j.*<o:p></o:p></span></strong></p></td>
+    <td valign=top style='width:166.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><font size="3" face="Arial, Helvetica, sans-serif">Logging parameters. 
+      See <a href="http://logging.apache.org/log4j/docs/manual.html">log4j</a> 
+      for details.</font></td>
+    <td valign=top style='width:103.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><font size="3" face="Arial, Helvetica, sans-serif">Suggested 
+      defaults in <strong>xor.properties</strong></font></td>
+  </tr>
+</table>
+<p><br>
+  <font size="3" face="Arial, Helvetica, sans-serif"><strong>XOR and other fitness 
+  functions with target output values</strong></font></p>
+<p><strong><font size="2" face="Arial, Helvetica, sans-serif">The following are 
+  parameters specific to XOR or any fitness function in which there are target 
+  values for specific inputs.</font></strong></p>
+<table border=1 cellpadding=0 cellspacing=0>
+  <tr valign="middle" style='height:12.75pt'> 
+    <td width=219 height="178" style='width:162.75pt;padding:.75pt .75pt 0in .75pt;
+  height:12.75pt'> <h6 align="center"><strong><font face="Arial, Helvetica, sans-serif"><span
+  style='font-family:Arial'><font size="3">Parameter<o:p></o:p></font><o:p></o:p></span></font></strong></h6></td>
+    <td width="224" style='width:166.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'> <p class=MsoNormal align=center style='text-align:center'><font size="3" face="Arial, Helvetica, sans-serif"><b><span
+  style='font-family:Arial'>Explanation<o:p></o:p></span></b></font></p></td>
+    <td width="136" style='width:103.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'> <p class=MsoNormal align=center style='text-align:center'><font size="3" face="Arial, Helvetica, sans-serif"><b><span
+  style='font-family:Arial'>Recommended Settings<o:p></o:p></span></b></font></p></td>
+  </tr>
+  <tr style='height:12.75pt'> 
+    <td valign=top style='width:162.75pt;padding:.75pt .75pt 0in .75pt;
+  height:12.75pt'> <p align="center"><strong><font face="Arial, Helvetica, sans-serif"><span
+  style='font-family:Arial'>targets.range (double)</span></font></strong></p>
+      <p align="center"><strong><font face="Arial, Helvetica, sans-serif"><span
+  style='font-family:Arial'><o:p></o:p></span></font></strong></p></td>
+    <td valign=top style='width:166.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'> <p class=MsoHeader style='tab-stops:.5in'><font size="3" face="Arial, Helvetica, sans-serif"><span style='font-family:Arial'>For 
+        fitness functions based on comparing the neural net output to target values, 
+        any value whose distance to its target is less than targets.range is considered 
+        to have an error of 0.<br>
+        <o:p></o:p></span></font></p></td>
+    <td valign=top style='width:103.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'> <p align="center" class=MsoNormal><font size="3" face="Arial, Helvetica, sans-serif"><span style='font-family:Arial'>0.0 
+        to 0.5<o:p></o:p></span></font></p></td>
+  </tr>
+  <tr style='height:12.75pt'> 
+    <td valign=top style='width:162.75pt;padding:.75pt .75pt 0in .75pt;
+  height:12.75pt'><div align="center"><strong><font face="Arial, Helvetica, sans-serif">stimuli.file 
+        (path) </font></strong></div></td>
+    <td valign=top style='width:166.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><font size="3" face="Arial, Helvetica, sans-serif">Path to a 
+      file (relative to CLASSPATH) containing the stimuli used in the fitness 
+      function (not required for all fitness functions). A row contains a single 
+      activation, and the file contains a sequence of activations. Rows separated 
+      by semi-colons and columns separated by new line characters.<br>
+      </font></td>
+    <td valign=top style='width:103.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><div align="center"><font face="Arial, Helvetica, sans-serif">Dependent 
+        upon domain</font></div></td>
+  </tr>
+  <tr style='height:12.75pt'> 
+    <td valign=top style='width:162.75pt;padding:.75pt .75pt 0in .75pt;
+  height:12.75pt'><div align="center"><strong><font face="Arial, Helvetica, sans-serif">targets.file 
+        (path) </font></strong></div></td>
+    <td valign=top style='width:166.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><font size="3" face="Arial, Helvetica, sans-serif">Path to a 
+      file (relative to CLASSPATH) containing the targets used in the fitness 
+      function (not required for all fitness functions). A row contains a single 
+      target output, and the file contains a sequence of activations. Rows separated 
+      by semi-colons and columns separated by new line characters.<br>
+      </font></td>
+    <td valign=top style='width:103.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><div align="center"><font face="Arial, Helvetica, sans-serif">Dependent 
+        upon domain</font></div></td>
+  </tr>
+</table>
+<p><br>
+  <font size="3" face="Arial, Helvetica, sans-serif"><strong>Game Domains</strong></font></p>
+<p><strong><font size="2" face="Arial, Helvetica, sans-serif">The following are 
+  parameters specific to fitness functions based on tournament and game play. 
+  </font></strong></p>
+<table border=1 cellpadding=0 cellspacing=0>
+  <tr valign="middle" style='height:12.75pt'> 
+    <td width=224 height="178" style='width:162.75pt;padding:.75pt .75pt 0in .75pt;
+  height:12.75pt'> <h6 align="center"><strong><font face="Arial, Helvetica, sans-serif"><span
+  style='font-family:Arial'><font size="3">Parameter<o:p></o:p></font><o:p></o:p></span></font></strong></h6></td>
+    <td width="245" style='width:166.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'> <p class=MsoNormal align=center style='text-align:center'><font size="3" face="Arial, Helvetica, sans-serif"><b><span
+  style='font-family:Arial'>Explanation<o:p></o:p></span></b></font></p></td>
+    <td width="136" style='width:103.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'> <p class=MsoNormal align=center style='text-align:center'><font size="3" face="Arial, Helvetica, sans-serif"><b><span
+  style='font-family:Arial'>Recommended Settings<o:p></o:p></span></b></font></p></td>
+  </tr>
+  <tr style='height:12.75pt'> 
+    <td valign=top style='width:162.75pt;padding:.75pt .75pt 0in .75pt;
+  height:12.75pt'> <p align="center"><strong><font face="Arial, Helvetica, sans-serif"><span
+  style='font-family:Arial'>tournament.class</span></font></strong></p>
+      <p align="center"><strong><font face="Arial, Helvetica, sans-serif"><span
+  style='font-family:Arial'><o:p></o:p></span></font></strong></p></td>
+    <td valign=top style='width:166.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'> <p class=MsoHeader style='tab-stops:.5in'><font size="3" face="Arial, Helvetica, sans-serif"><span style='font-family:Arial'>The 
+        class used to determine the tournament structure. ANJI currently supports:</span></font></p>
+      <p class=MsoHeader style='tab-stops:.5in'><font size="3" face="Arial, Helvetica, sans-serif"><span style='font-family:Arial'>
+      	<strong>com.anji.tournament.DirectTournament</strong><br>Each 
+        member of the population plays against hand-coded opponents, which are 
+        defined in the properties file by <strong>tournament.[opponent name].class</strong><br>
+        <br>
+        <strong>com.anji.tournament.SingleEliminationTournament</strong><br>A single-elimination tournament 
+        composed of members of the population<br>
+        <strong><br>
+        com.anji.tournament.DoubleEliminationTournament</strong><br>A double-elimination tournament 
+        composed of members of the population<br>
+        <strong><br>
+        com.anji.tournament.KRandomOppsTournament</strong><br>Members of the population play against 
+        a set number of random opponents. The number of opponents is defined by 
+        the parameter <strong>num.random.opps</strong><br>
+        <strong><br>
+        com.anji.tournament.CompositeTournament</strong><br>Allows for any combination of the above 
+        tournaments. <br>
+        <br>
+        <o:p></o:p></span></font></p></td>
+    <td valign=top style='width:103.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'> <p align="center" class=MsoNormal><font size="3" face="Arial, Helvetica, sans-serif"><span style='font-family:Arial'>Dependent 
+        upon domain<o:p></o:p></span></font></p></td>
+  </tr>
+  <tr style='height:12.75pt'> 
+    <td valign=top style='width:162.75pt;padding:.75pt .75pt 0in .75pt;
+  height:12.75pt'><div align="center"><strong><font face="Arial, Helvetica, sans-serif"><span
+  style='font-family:Arial'>tournament.direct.opponents<br>(string)</span></font></strong></div></td>
+    <td valign=top style='width:166.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><font size="3" face="Arial, Helvetica, sans-serif">Defines hand-coded 
+      external players (see ttt.properties for examples) </font></td>
+    <td valign=top style='width:103.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><div align="center"><font size="3" face="Arial, Helvetica, sans-serif"><span style='font-family:Arial'>Dependent 
+        upon domain<o:p></o:p></span></font></div></td>
+  </tr>
+  <tr style='height:12.75pt'> 
+    <td valign=top style='width:162.75pt;padding:.75pt .75pt 0in .75pt;
+  height:12.75pt'><div align="center"><strong><font face="Arial, Helvetica, sans-serif"><span
+  style='font-family:Arial'>tournament.fitness.max (int)</span></font></strong></div></td>
+    <td valign=top style='width:166.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><font size="3" face="Arial, Helvetica, sans-serif">For visualization 
+      only, this value scales fitness values between 0 and this value for display 
+      purposes. </font></td>
+    <td valign=top style='width:103.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><div align="center"><font size="3" face="Arial, Helvetica, sans-serif">100000</font></div></td>
+  </tr>
+  <tr style='height:12.75pt'> 
+    <td valign=top style='width:162.75pt;padding:.75pt .75pt 0in .75pt;
+  height:12.75pt'><div align="center"><strong><font face="Arial, Helvetica, sans-serif"><span
+  style='font-family:Arial'>tournament.win.value (int)</span></font></strong></div></td>
+    <td valign=top style='width:166.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><font size="3" face="Arial, Helvetica, sans-serif">Value of 
+      each win.</font></td>
+    <td valign=top style='width:103.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><div align="center"><font size="3" face="Arial, Helvetica, sans-serif">1</font></div></td>
+  </tr>
+  <tr style='height:12.75pt'> 
+    <td valign=top style='width:162.75pt;padding:.75pt .75pt 0in .75pt;
+  height:12.75pt'><div align="center"><strong><font face="Arial, Helvetica, sans-serif"><span
+  style='font-family:Arial'>tournament.loss.value (int)</span></font></strong></div></td>
+    <td valign=top style='width:166.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><font size="3" face="Arial, Helvetica, sans-serif">Value of 
+      each loss.</font></td>
+    <td valign=top style='width:103.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><div align="center"><font size="3" face="Arial, Helvetica, sans-serif">-1</font></div></td>
+  </tr>
+  <tr style='height:12.75pt'> 
+    <td valign=top style='width:162.75pt;padding:.75pt .75pt 0in .75pt;
+  height:12.75pt'><div align="center"><strong><font face="Arial, Helvetica, sans-serif"><span
+  style='font-family:Arial'>tournament.tie.value (int)</span></font></strong></div></td>
+    <td valign=top style='width:166.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><font size="3" face="Arial, Helvetica, sans-serif">Value of 
+      each tie.</font></td>
+    <td valign=top style='width:103.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><div align="center"><font size="3" face="Arial, Helvetica, sans-serif">0</font></div></td>
+  </tr>
+  <tr style='height:12.75pt'> 
+    <td valign=top style='width:162.75pt;padding:.75pt .75pt 0in .75pt;
+  height:12.75pt'><div align="center"><strong><font face="Arial, Helvetica, sans-serif"><span
+  style='font-family:Arial'>tournament.transcriber.<br>class (string)</span></font></strong></div></td>
+    <td valign=top style='width:166.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><font size="3" face="Arial, Helvetica, sans-serif">Transcribes 
+      the chromosome into a neural network, which is then wrapped by a player 
+      object (e.g. <strong>TTTPlayerTranscriber</strong>). </font></td>
+    <td valign=top style='width:103.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><div align="center"><font size="3" face="Arial, Helvetica, sans-serif">Dependent 
+        upon domain</font></div></td>
+  </tr>
+  <tr style='height:12.75pt'> 
+    <td valign=top style='width:162.75pt;padding:.75pt .75pt 0in .75pt;
+  height:12.75pt'><div align="center"><strong><font face="Arial, Helvetica, sans-serif"><span
+  style='font-family:Arial'>tournament.transcriber.<br>ttt.player.type (string)</span></font></strong></div></td>
+    <td valign=top style='width:166.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><font size="3" face="Arial, Helvetica, sans-serif">&nbsp;Type 
+      of Tic-Tac-Toe player. Valid values are: <br>
+      <strong>default</strong> - Player has 9 inputs (plus bias makes 10) and 
+      9 outputs, one for each board position. The maximum of these outputs determines 
+      the next move.<br>
+      <strong>9x1</strong> - Player has 9 inputs (plus bias makes 10) and 1 output. 
+      This player treats the network as a board state evaluator, passing every 
+      possible next board state to the net and taking the one with the highest 
+      affinity output.<br>
+      <strong>rotating</strong> - Same as default, except the neural network is 
+      shown the same board 4 times, with the board rotated 0, 90, 180, and 270 
+      degrees.</font></td>
+    <td valign=top style='width:103.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><div align="center"><font size="3" face="Arial, Helvetica, sans-serif">default</font></div></td>
+  </tr>
+  <tr style='height:12.75pt'> 
+    <td valign=top style='width:162.75pt;padding:.75pt .75pt 0in .75pt;
+  height:12.75pt'><div align="center"><strong><font face="Arial, Helvetica, sans-serif"><span
+  style='font-family:Arial'>tournament.component<br>(string)</span></font></strong></div></td>
+    <td valign=top style='width:166.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><font size="3" face="Arial, Helvetica, sans-serif">Component 
+      game (where a game might be a single game, a set of games, a match, etc..) 
+      of the tournament. The value of this property is a prefix for all the properties 
+      of the component game, including its class. For example, if tournament.component=match, 
+      then there should be a property match.class whose value is a subclass of 
+      com.anji.tournament.Game. See sample properties files, such as ttt.properties 
+      and gomoku.properties, for details.</font></td>
+    <td valign=top style='width:103.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><div align="center"><font size="3" face="Arial, Helvetica, sans-serif">match</font></div></td>
+  </tr>
+  <tr style='height:12.75pt'> 
+    <td valign=top style='width:162.75pt;padding:.75pt .75pt 0in .75pt;
+  height:12.75pt'><div align="center"><strong><font face="Arial, Helvetica, sans-serif"><span
+  style='font-family:Arial'>&lt;component&gt;.<br>class (string)</span></font></strong></div></td>
+    <td valign=top style='width:166.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><font size="3" face="Arial, Helvetica, sans-serif">Value is 
+      a Java class, a subclass of com.anji.tournament.Game. If this component 
+      in turn has subcomponent games, its value should be com.anji.tournament.IteratedGame. 
+      Otherwise it should be an atomic game, such as com.anji.gomoku.GomokuGame.</font></td>
+    <td valign=top style='width:103.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><div align="center"><font size="3" face="Arial, Helvetica, sans-serif">Dependent 
+        upon domain</font></div></td>
+  </tr>
+  <tr style='height:12.75pt'> 
+    <td valign=top style='width:162.75pt;padding:.75pt .75pt 0in .75pt;
+  height:12.75pt'><div align="center"><strong><font face="Arial, Helvetica, sans-serif"><span
+  style='font-family:Arial'>&lt;component&gt;.<br>players.reset (boolean)</span></font></strong></div></td>
+    <td valign=top style='width:166.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><font size="3" face="Arial, Helvetica, sans-serif">Set to true 
+      if the players should be reset (i.e., their memories erased) before each 
+      iteration of this game component.</font></td>
+    <td valign=top style='width:103.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><div align="center"><font size="3" face="Arial, Helvetica, sans-serif">Dependent 
+        upon domain</font></div></td>
+  </tr>
+  <tr style='height:12.75pt'> 
+    <td valign=top style='width:162.75pt;padding:.75pt .75pt 0in .75pt;
+  height:12.75pt'><div align="center"><strong><font face="Arial, Helvetica, sans-serif"><span
+  style='font-family:Arial'>&lt;component&gt;.<br>log (boolean)</span></font></strong></div></td>
+    <td valign=top style='width:166.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><font size="3" face="Arial, Helvetica, sans-serif">Set to true 
+      if results of this game component should be written to the log. </font></td>
+    <td valign=top style='width:103.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><div align="center"><font size="3" face="Arial, Helvetica, sans-serif">Dependent 
+        upon domain</font></div></td>
+  </tr>
+  <tr style='height:12.75pt'> 
+    <td valign=top style='width:162.75pt;padding:.75pt .75pt 0in .75pt;
+  height:12.75pt'><div align="center"><strong><font face="Arial, Helvetica, sans-serif"><span
+  style='font-family:Arial'>&lt;component&gt;.<br>component.count (int)</span></font></strong></div></td>
+    <td valign=top style='width:166.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><font size="3" face="Arial, Helvetica, sans-serif">Number of 
+      iterations of the component game to play. </font></td>
+    <td valign=top style='width:103.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><div align="center"><font size="3" face="Arial, Helvetica, sans-serif">Dependent 
+        upon domain</font></div></td>
+  </tr>
+  <tr style='height:12.75pt'> 
+    <td valign=top style='width:162.75pt;padding:.75pt .75pt 0in .75pt;
+  height:12.75pt'><div align="center"><strong><font face="Arial, Helvetica, sans-serif"><span
+  style='font-family:Arial'>&lt;component&gt;.<br>component (string)</span></font></strong></div></td>
+    <td valign=top style='width:166.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><font size="3" face="Arial, Helvetica, sans-serif">This is only 
+      valid if &lt;component&gt;.class=com.anji.tournament.IteratedGame. It specifies 
+      the component game of this iterated game (which might itself be another 
+      iterated game). In this way the component game hierarchy is recursive.</font></td>
+    <td valign=top style='width:103.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><div align="center"><font size="3" face="Arial, Helvetica, sans-serif">Dependent 
+        upon domain</font></div></td>
+  </tr>
+</table>
+<p>&nbsp;</p>
+<p><font size="3" face="Arial, Helvetica, sans-serif"><strong>Pole Balancing</strong></font></p>
+<p><strong><font size="2" face="Arial, Helvetica, sans-serif">The following are 
+  parameters specific to fitness functions dealing with pole balancing. </font></strong></p>
+<table border=1 cellpadding=0 cellspacing=0>
+  <tr valign="middle" style='height:12.75pt'> 
+    <td width=224 height="178" style='width:162.75pt;padding:.75pt .75pt 0in .75pt;
+  height:12.75pt'> <h6 align="center"><strong><font face="Arial, Helvetica, sans-serif"><span
+  style='font-family:Arial'><font size="3">Parameter<o:p></o:p></font><o:p></o:p></span></font></strong></h6></td>
+    <td width="245" style='width:166.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'> <p class=MsoNormal align=center style='text-align:center'><font size="3" face="Arial, Helvetica, sans-serif"><b><span
+  style='font-family:Arial'>Explanation<o:p></o:p></span></b></font></p></td>
+    <td width="136" style='width:103.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'> <p class=MsoNormal align=center style='text-align:center'><font size="3" face="Arial, Helvetica, sans-serif"><b><span
+  style='font-family:Arial'>Recommended Settings<o:p></o:p></span></b></font></p></td>
+  </tr>
+  <tr style='height:12.75pt'> 
+    <td valign=top style='width:162.75pt;padding:.75pt .75pt 0in .75pt;
+  height:12.75pt'> <p align="center"><strong><font face="Arial, Helvetica, sans-serif"><span
+  style='font-family:Arial'>polebalance.input.velocities (boolean)</span></font></strong></p>
+      <p align="center"><strong><font face="Arial, Helvetica, sans-serif"><span
+  style='font-family:Arial'><o:p></o:p></span></font></strong></p></td>
+    <td valign=top style='width:166.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'> <p class=MsoHeader style='tab-stops:.5in'><font size="3" face="Arial, Helvetica, sans-serif"><span style='font-family:Arial'>If 
+        set to <strong>true</strong>, inputs velocity values into neural network. 
+        In this case, <strong>stimulus.size</strong> must be set to 7. If set 
+        to false, does not input velocities. In this case, <strong>stimulus.size</strong> 
+        must be set to 4. <o:p></o:p></span></font></p></td>
+    <td valign=top style='width:103.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'> <p align="center" class=MsoNormal><font size="3" face="Arial, Helvetica, sans-serif"><span style='font-family:Arial'>Dependent 
+        upon domain<o:p></o:p></span></font></p></td>
+  </tr>
+  <tr style='height:12.75pt'> 
+    <td valign=top style='width:162.75pt;padding:.75pt .75pt 0in .75pt;
+  height:12.75pt'><div align="center"><strong><font face="Arial, Helvetica, sans-serif">penalize.for.energy.use<span style="font-family: Arial"> 
+        (boolean) </span></font></strong></div></td>
+    <td valign=top style='width:166.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><font size="3" face="Arial, Helvetica, sans-serif">If set to 
+      <strong>true</strong> penalizes fitness proportionate to the amount of movement 
+      of the cart. Meant to penalize solutions that would be untenable in a real-world 
+      situation.</font></td>
+    <td valign=top style='width:103.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><div align="center"><font size="3" face="Arial, Helvetica, sans-serif"><span style='font-family:Arial'>Dependent 
+        upon domain<o:p></o:p></span></font></div></td>
+  </tr>
+  <tr style='height:12.75pt'> 
+    <td valign=top style='width:162.75pt;padding:.75pt .75pt 0in .75pt;
+  height:12.75pt'><div align="center"><strong><font face="Arial, Helvetica, sans-serif"><span
+  style='font-family:Arial'>penalize.oscillations (boolean)</span></font></strong></div></td>
+    <td valign=top style='width:166.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><font size="3" face="Arial, Helvetica, sans-serif">Penalizes 
+      oscillating movement to discourage simple oscillating solutions. </font></td>
+    <td valign=top style='width:103.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><div align="center"><font size="3" face="Arial, Helvetica, sans-serif"><span style='font-family:Arial'>Dependent 
+        upon domain</span></font></div></td>
+  </tr>
+  <tr style='height:12.75pt'> 
+    <td valign=top style='width:162.75pt;padding:.75pt .75pt 0in .75pt;
+  height:12.75pt'><div align="center"><strong><font face="Arial, Helvetica, sans-serif"><span
+  style='font-family:Arial'>polebalance.track.length (double)</span></font></strong></div></td>
+    <td valign=top style='width:166.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><font size="3" face="Arial, Helvetica, sans-serif">Length of 
+      track. </font></td>
+    <td valign=top style='width:103.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><div align="center"><font size="3" face="Arial, Helvetica, sans-serif">4.8</font></div></td>
+  </tr>
+  <tr style='height:12.75pt'> 
+    <td valign=top style='width:162.75pt;padding:.75pt .75pt 0in .75pt;
+  height:12.75pt'><div align="center"><strong><font face="Arial, Helvetica, sans-serif"><span
+  style='font-family:Arial'>polebalance.timesteps (int)</span></font></strong></div></td>
+    <td valign=top style='width:166.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><font size="3" face="Arial, Helvetica, sans-serif">Number of 
+      time steps for trial.</font></td>
+    <td valign=top style='width:103.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><div align="center"><font size="3" face="Arial, Helvetica, sans-serif">10000</font></div></td>
+  </tr>
+  <tr style='height:12.75pt'> 
+    <td valign=top style='width:162.75pt;padding:.75pt .75pt 0in .75pt;
+  height:12.75pt'><div align="center"><strong><font face="Arial, Helvetica, sans-serif"><span
+  style='font-family:Arial'>polebalance.trials (int)</span></font></strong></div></td>
+    <td valign=top style='width:166.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><font size="3" face="Arial, Helvetica, sans-serif">Number of 
+      trials .</font></td>
+    <td valign=top style='width:103.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><div align="center"><font size="3" face="Arial, Helvetica, sans-serif">1</font></div></td>
+  </tr>
+  <tr style='height:12.75pt'> 
+    <td valign=top style='width:162.75pt;padding:.75pt .75pt 0in .75pt;
+  height:12.75pt'><div align="center"><strong><font face="Arial, Helvetica, sans-serif">polebalance.angle.threshold<span style="font-family: Arial"> 
+        (double) </span></font></strong></div></td>
+    <td valign=top style='width:166.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><font size="3" face="Arial, Helvetica, sans-serif">The maximum magnitude 
+      for the angle of either pole. If either pole reaches an angle greater than 
+      this threshold, the trial ends in failure. The neural net inputs representing 
+      pole angles (in radians) are divided by this value, yielding a scaled input 
+      ranging from -1 to 1.</font></td>
+    <td valign=top style='width:103.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><div align="center"><font size="3" face="Arial, Helvetica, sans-serif">0.628329</font></div></td>
+  </tr>
+  <tr style='height:12.75pt'> 
+    <td valign=top style='width:162.75pt;padding:.75pt .75pt 0in .75pt;
+  height:12.75pt'><div align="center"><strong><font face="Arial, Helvetica, sans-serif"><span
+  style='font-family:Arial'>polebalance.pole.angle.start.random (boolean)</span></font></strong></div></td>
+    <td valign=top style='width:166.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><font size="3" face="Arial, Helvetica, sans-serif">If true, 
+      poles begin each trial in a random position, which is determined by the 
+      polebalance.pole.angle.start.* parameters.</font></td>
+    <td valign=top style='width:103.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><div align="center"><font size="3" face="Arial, Helvetica, sans-serif">false</font></div></td>
+  </tr>
+  <tr style='height:12.75pt'> 
+    <td valign=top style='width:162.75pt;padding:.75pt .75pt 0in .75pt;
+  height:12.75pt'><div align="center"><strong><font face="Arial, Helvetica, sans-serif"><span
+  style='font-family:Arial'>polebalance.pole.angle.start.*<br>
+        (double)</span></font></strong></div></td>
+    <td valign=top style='width:166.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><font size="3" face="Arial, Helvetica, sans-serif">Defines the 
+      standard deviation of a normal distribution for the random starting position 
+      of each pole.</font></td>
+    <td valign=top style='width:103.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><div align="center"><font size="3" face="Arial, Helvetica, sans-serif">0.07</font></div></td>
+  </tr>
+  <tr style='height:12.75pt'> 
+    <td valign=top style='width:162.75pt;padding:.75pt .75pt 0in .75pt;
+  height:12.75pt'><div align="center"><strong><font face="Arial, Helvetica, sans-serif"><span
+  style='font-family:Arial'>pole.*.length (double)</span></font></strong></div></td>
+    <td valign=top style='width:166.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><font size="3" face="Arial, Helvetica, sans-serif">Determines 
+      the length of each pole.</font></td>
+    <td valign=top style='width:103.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><div align="center"><font size="3" face="Arial, Helvetica, sans-serif">1 
+        and 0.1 respectively. The closer the values are, the more difficult the 
+        problem is to solve.</font></div></td>
+  </tr>
+</table>
+<p><font size="3" face="Arial, Helvetica, sans-serif"><strong><br>
+  Active Vision System Properties</strong></font></p>
+<p><strong><font size="2" face="Arial, Helvetica, sans-serif">The following are 
+  parameters specific to fitness functions using the active vision system (or 
+  &quot;roving eye&quot;) in ANJI. For now, the only experiments carried out with 
+  this system involved evolving networks that distinguished between two sets of 
+  images, e.g., circles and squares.</font></strong></p>
+<table border=1 cellpadding=0 cellspacing=0>
+  <tr valign="middle" style='height:12.75pt'> 
+    <td width=224 height="178" style='width:162.75pt;padding:.75pt .75pt 0in .75pt;
+  height:12.75pt'> <h6 align="center"><strong><font face="Arial, Helvetica, sans-serif"><span
+  style='font-family:Arial'><font size="3">Parameter<o:p></o:p></font><o:p></o:p></span></font></strong></h6></td>
+    <td width="245" style='width:166.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'> <p class=MsoNormal align=center style='text-align:center'><font size="3" face="Arial, Helvetica, sans-serif"><b><span
+  style='font-family:Arial'>Explanation<o:p></o:p></span></b></font></p></td>
+    <td width="136" style='width:103.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'> <p class=MsoNormal align=center style='text-align:center'><font size="3" face="Arial, Helvetica, sans-serif"><b><span
+  style='font-family:Arial'>Recommended Settings<o:p></o:p></span></b></font></p></td>
+  </tr>
+  <tr style='height:12.75pt'> 
+    <td valign=top style='width:162.75pt;padding:.75pt .75pt 0in .75pt;
+  height:12.75pt'> <p align="center"><strong><font face="Arial, Helvetica, sans-serif"><span
+  style='font-family:Arial'>image.matches (path)</span></font></strong></p>
+      <p align="center"><strong><font face="Arial, Helvetica, sans-serif"><span
+  style='font-family:Arial'><o:p></o:p></span></font></strong></p></td>
+    <td valign=top style='width:166.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'> <p class=MsoHeader style='tab-stops:.5in'><font size="3" face="Arial, Helvetica, sans-serif"><span style='font-family:Arial'>The 
+        path to the directory containing images which should evoke a positive 
+        output when viewed.<br>
+        <br>
+        <o:p></o:p></span></font></p></td>
+    <td valign=top style='width:103.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'> <p align="center" class=MsoNormal><font size="3" face="Arial, Helvetica, sans-serif"><span style='font-family:Arial'>./images/matches<o:p></o:p></span></font></p></td>
+  </tr>
+  <tr style='height:12.75pt'> 
+    <td valign=top style='width:162.75pt;padding:.75pt .75pt 0in .75pt;
+  height:12.75pt'><div align="center"><strong><font face="Arial, Helvetica, sans-serif"><span
+  style='font-family:Arial'>image.mismatches (path)</span></font></strong></div></td>
+    <td valign=top style='width:166.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><font size="3" face="Arial, Helvetica, sans-serif"><span style='font-family:Arial'>The 
+      path to the directory containing images which should evoke a negative output 
+      when viewed.</span></font></td>
+    <td valign=top style='width:103.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><div align="center"><font size="3" face="Arial, Helvetica, sans-serif">./images/mismatches</font></div></td>
+  </tr>
+  <tr style='height:12.75pt'> 
+    <td valign=top style='width:162.75pt;padding:.75pt .75pt 0in .75pt;
+  height:12.75pt'><div align="center"><strong><font face="Arial, Helvetica, sans-serif"><span
+  style='font-family:Arial'>image.randomize<br>(boolean)</span></font></strong></div></td>
+    <td valign=top style='width:166.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><font size="3" face="Arial, Helvetica, sans-serif">Determines 
+      whether or not the images in the matches and mismatches directories are 
+      transformed randomly before being viewed by the active vision system.</font></td>
+    <td valign=top style='width:103.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><div align="center"><font size="3" face="Arial, Helvetica, sans-serif">true</font></div></td>
+  </tr>
+  <tr style='height:12.75pt'> 
+    <td valign=top style='width:162.75pt;padding:.75pt .75pt 0in .75pt;
+  height:12.75pt'><div align="center"><strong><font face="Arial, Helvetica, sans-serif"><span
+  style='font-family:Arial'>image.randomize.<br>matches.count (int)</span></font></strong></div></td>
+    <td valign=top style='width:166.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><font size="3" face="Arial, Helvetica, sans-serif">Number of 
+      random transforms of the images in the matches directory.</font></td>
+    <td valign=top style='width:103.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><div align="center"><font size="3" face="Arial, Helvetica, sans-serif">Dependent 
+        upon domain</font></div></td>
+  </tr>
+  <tr style='height:12.75pt'> 
+    <td valign=top style='width:162.75pt;padding:.75pt .75pt 0in .75pt;
+  height:12.75pt'><div align="center"><strong><font face="Arial, Helvetica, sans-serif"><span
+  style='font-family:Arial'>image.randomize.<br>mismatches.count (int)</span></font></strong></div></td>
+    <td valign=top style='width:166.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><font size="3" face="Arial, Helvetica, sans-serif">Number of 
+      random transforms of the images in the mismatches directory.</font></td>
+    <td valign=top style='width:103.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><div align="center"><font size="3" face="Arial, Helvetica, sans-serif">Dependent 
+        upon domain</font></div></td>
+  </tr>
+  <tr style='height:12.75pt'> 
+    <td valign=top style='width:162.75pt;padding:.75pt .75pt 0in .75pt;
+  height:12.75pt'><div align="center"><strong><font face="Arial, Helvetica, sans-serif"><span
+  style='font-family:Arial'>image.randomize.<br>matches.originals (path)</span></font></strong></div></td>
+    <td valign=top style='width:166.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><font size="3" face="Arial, Helvetica, sans-serif">Path where 
+      the original match images reside. If images are randomized, they will be 
+      placed in the<strong> image.matches</strong> directory.</font></td>
+    <td valign=top style='width:103.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><div align="center"><font size="3" face="Arial, Helvetica, sans-serif">./images/original_matches</font></div></td>
+  </tr>
+  <tr style='height:12.75pt'> 
+    <td valign=top style='width:162.75pt;padding:.75pt .75pt 0in .75pt;
+  height:12.75pt'><div align="center"><strong><font face="Arial, Helvetica, sans-serif"><span
+  style='font-family:Arial'>image.randomize.<br>mismatches.originals (path)</span></font></strong></div></td>
+    <td valign=top style='width:166.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><font size="3" face="Arial, Helvetica, sans-serif">Path where 
+      the original mismatch images reside. If images are randomized, they will 
+      be placed in the<strong> image.mismatches</strong> directory.</font></td>
+    <td valign=top style='width:103.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><div align="center"><font size="3" face="Arial, Helvetica, sans-serif">./images/original_matches</font></div></td>
+  </tr>
+  <tr style='height:12.75pt'> 
+    <td valign=top style='width:162.75pt;padding:.75pt .75pt 0in .75pt;
+  height:12.75pt'><div align="center"><strong><font face="Arial, Helvetica, sans-serif"><span
+  style='font-family:Arial'>image.randomize.x (int)</span></font></strong></div></td>
+    <td valign=top style='width:166.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><font size="3" face="Arial, Helvetica, sans-serif">Number of 
+      pixels randomized images can be transformed horizontally (e.g., if this 
+      value is 20, randomized images will be moved up to 20 pixels either left 
+      or right).</font></td>
+    <td valign=top style='width:103.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><div align="center"><font size="3" face="Arial, Helvetica, sans-serif">10-50</font></div></td>
+  </tr>
+  <tr style='height:12.75pt'> 
+    <td valign=top style='width:162.75pt;padding:.75pt .75pt 0in .75pt;
+  height:12.75pt'><div align="center"><strong><font face="Arial, Helvetica, sans-serif"><span
+  style='font-family:Arial'>image.randomize.y (int)</span></font></strong></div></td>
+    <td valign=top style='width:166.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><font size="3" face="Arial, Helvetica, sans-serif">Number of 
+      pixels randomized images can be transformed vertically.</font></td>
+    <td valign=top style='width:103.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><div align="center"><font size="3" face="Arial, Helvetica, sans-serif">10-50</font></div></td>
+  </tr>
+  <tr style='height:12.75pt'> 
+    <td valign=top style='width:162.75pt;padding:.75pt .75pt 0in .75pt;
+  height:12.75pt'><div align="center"><strong><font face="Arial, Helvetica, sans-serif"><span
+  style='font-family:Arial'>image.randomize.<br>scale (double)</span></font></strong></div></td>
+    <td valign=top style='width:166.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><font size="3" face="Arial, Helvetica, sans-serif">Percentage 
+      of scale change in randomized images (e.g. if this value is 0.2, randomized 
+      images will be up to 20% smaller or larger).</font></td>
+    <td valign=top style='width:103.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><div align="center"><font size="3" face="Arial, Helvetica, sans-serif">0.1 
+        - 0.5</font></div></td>
+  </tr>
+  <tr style='height:12.75pt'> 
+    <td valign=top style='width:162.75pt;padding:.75pt .75pt 0in .75pt;
+  height:12.75pt'><div align="center"><strong><font face="Arial, Helvetica, sans-serif"><span
+  style='font-family:Arial'>image.randomize.<br>rotate (int)</span></font></strong></div></td>
+    <td valign=top style='width:166.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><font size="3" face="Arial, Helvetica, sans-serif">Number of 
+      degrees that a randomized image can be rotated either clockwise or counterclockwise.</font></td>
+    <td valign=top style='width:103.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><div align="center"><font size="3" face="Arial, Helvetica, sans-serif">10 
+        - 180</font></div></td>
+  </tr>
+  <tr style='height:12.75pt'> 
+    <td valign=top style='width:162.75pt;padding:.75pt .75pt 0in .75pt;
+  height:12.75pt'><div align="center"><strong><font face="Arial, Helvetica, sans-serif"><span
+  style='font-family:Arial'>image.randomize.<br>crop.size (int)</span></font></strong></div></td>
+    <td valign=top style='width:166.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><font size="3" face="Arial, Helvetica, sans-serif">The height 
+      and width of the resulting randomized image.</font></td>
+    <td valign=top style='width:103.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><div align="center"><font size="3" face="Arial, Helvetica, sans-serif">Dependent 
+        upon original image sizes</font></div></td>
+  </tr>
+  <tr style='height:12.75pt'> 
+    <td valign=top style='width:162.75pt;padding:.75pt .75pt 0in .75pt;
+  height:12.75pt'><div align="center"><strong><font face="Arial, Helvetica, sans-serif"><span
+  style='font-family:Arial'>eye.eval.frinks (int)</span></font></strong></div></td>
+    <td valign=top style='width:166.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><font size="3" face="Arial, Helvetica, sans-serif">The amount 
+      of processing given to the active vision system to evaluate a single image. 
+      Smaller networks are given more time, and larger ones less time, in order 
+      to reward more efficient topologies.</font></td>
+    <td valign=top style='width:103.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><div align="center"><font size="3" face="Arial, Helvetica, sans-serif">5 
+        - 20</font></div></td>
+  </tr>
+  <tr style='height:12.75pt'> 
+    <td valign=top style='width:162.75pt;padding:.75pt .75pt 0in .75pt;
+  height:12.75pt'><div align="center"><strong><font face="Arial, Helvetica, sans-serif"><span
+  style='font-family:Arial'>eye.flip.enabled (boolean)</span></font></strong></div></td>
+    <td valign=top style='width:166.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><font size="3" face="Arial, Helvetica, sans-serif">If <strong>true</strong>, 
+      allows the active vision system to toggle to a mirror view and back of the 
+      image it is viewing.</font></td>
+    <td valign=top style='width:103.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><div align="center"><font size="3" face="Arial, Helvetica, sans-serif">Dependent 
+        upon domain</font></div></td>
+  </tr>
+  <tr style='height:12.75pt'> 
+    <td valign=top style='width:162.75pt;padding:.75pt .75pt 0in .75pt;
+  height:12.75pt'><div align="center"><strong><font face="Arial, Helvetica, sans-serif"><span
+  style='font-family:Arial'>eye.max-per-step.x<br>(double)</span></font></strong></div></td>
+    <td valign=top style='width:166.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><font size="3" face="Arial, Helvetica, sans-serif">The furthest 
+      distance the active vision system can move horizontally during a single 
+      time step. This value is a percentage of the canvas width (e.g., with a 
+      canvas 100 pixels wide, with this parameter set to 0.2, the active vision 
+      system can move a maximum of 20 pixels per time step).</font></td>
+    <td valign=top style='width:103.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><div align="center"><font size="3" face="Arial, Helvetica, sans-serif">0.01 
+        - 1</font></div></td>
+  </tr>
+  <tr style='height:12.75pt'> 
+    <td valign=top style='width:162.75pt;padding:.75pt .75pt 0in .75pt;
+  height:12.75pt'><div align="center"><strong><font face="Arial, Helvetica, sans-serif"><span
+  style='font-family:Arial'>eye.max-per-step.y<br>(double)</span></font></strong></div></td>
+    <td valign=top style='width:166.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><font size="3" face="Arial, Helvetica, sans-serif">The furthest 
+      distance the active vision system can move vertically during a single time 
+      step. This value is a percentage of the canvas height.</font></td>
+    <td valign=top style='width:103.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><div align="center"><font size="3" face="Arial, Helvetica, sans-serif">0.01 
+        - 1</font></div></td>
+  </tr>
+  <tr style='height:12.75pt'> 
+    <td valign=top style='width:162.75pt;padding:.75pt .75pt 0in .75pt;
+  height:12.75pt'><div align="center"><strong><font face="Arial, Helvetica, sans-serif"><span
+  style='font-family:Arial'>eye.max-per-step.z<br>(double)</span></font></strong></div></td>
+    <td valign=top style='width:166.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><font size="3" face="Arial, Helvetica, sans-serif">The most 
+      the active vision system can zoom in or out on a given time step. This value 
+      is a percentage of the canvas size.</font></td>
+    <td valign=top style='width:103.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><div align="center"><font size="3" face="Arial, Helvetica, sans-serif">0.01 
+        - 1</font></div></td>
+  </tr>
+  <tr style='height:12.75pt'> 
+    <td valign=top style='width:162.75pt;padding:.75pt .75pt 0in .75pt;
+  height:12.75pt'><div align="center"><strong><font face="Arial, Helvetica, sans-serif"><span
+  style='font-family:Arial'>eye.max-per-step.theta<br>(double)</span></font></strong></div></td>
+    <td valign=top style='width:166.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><font size="3" face="Arial, Helvetica, sans-serif">The most 
+      degrees the active vision system can rotate either clockwise or counterclockwise 
+      during a given time step. This value is a percentage of 360 degrees (e.g., 
+      with a value of 0.1, the eye can rotate up to 36 degrees either way on a 
+      given time step).</font></td>
+    <td valign=top style='width:103.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><div align="center"><font size="3" face="Arial, Helvetica, sans-serif">0.01 
+        - 1</font></div></td>
+  </tr>
+  <tr style='height:12.75pt'> 
+    <td valign=top style='width:162.75pt;padding:.75pt .75pt 0in .75pt;
+  height:12.75pt'><div align="center"><strong><font face="Arial, Helvetica, sans-serif"><span
+  style='font-family:Arial'>eye.zoom.start (double)</span></font></strong></div></td>
+    <td valign=top style='width:166.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><font size="3" face="Arial, Helvetica, sans-serif">The zoom 
+      factor at which the active vision system begins viewing the image.</font></td>
+    <td valign=top style='width:103.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><div align="center"><font size="3" face="Arial, Helvetica, sans-serif">0.5</font></div></td>
+  </tr>
+  <tr style='height:12.75pt'> 
+    <td valign=top style='width:162.75pt;padding:.75pt .75pt 0in .75pt;
+  height:12.75pt'><div align="center"><strong><font face="Arial, Helvetica, sans-serif"><span
+  style='font-family:Arial'>eye.display (boolean)</span></font></strong></div></td>
+    <td valign=top style='width:166.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><font size="3" face="Arial, Helvetica, sans-serif">If set to 
+      <strong>true</strong>, will display the movement of the eye as it scans 
+      images.</font></td>
+    <td valign=top style='width:103.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><div align="center"><font size="3" face="Arial, Helvetica, sans-serif">For 
+        evolution <strong>false</strong>; for analysis of eye's behavior <strong>true</strong>.</font></div></td>
+  </tr>
+  <tr style='height:12.75pt'> 
+    <td valign=top style='width:162.75pt;padding:.75pt .75pt 0in .75pt;
+  height:12.75pt'><div align="center"><strong><font face="Arial, Helvetica, sans-serif"><span
+  style='font-family:Arial'>eye.step.sleep.millis (int)</span></font></strong></div></td>
+    <td valign=top style='width:166.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><font size="3" face="Arial, Helvetica, sans-serif">For visualization 
+      purposes only, this parameter sets the amount of time elapsed between each 
+      step that the eye takes.</font></td>
+    <td valign=top style='width:103.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><div align="center"><font size="3" face="Arial, Helvetica, sans-serif">0 
+        for evolution; 100 - 1000 for visualization</font></div></td>
+  </tr>
+  <tr style='height:12.75pt'> 
+    <td valign=top style='width:162.75pt;padding:.75pt .75pt 0in .75pt;
+  height:12.75pt'><div align="center"><strong><font face="Arial, Helvetica, sans-serif"><span
+  style='font-family:Arial'>eye.surface.class<br>(Java class)</span></font></strong></div></td>
+    <td valign=top style='width:166.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><font size="3" face="Arial, Helvetica, sans-serif">The class 
+      for the type of surface to be viewed.</font></td>
+    <td valign=top style='width:103.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><div align="center"><font size="3" face="Arial, Helvetica, sans-serif">com.anji.imaging.Java2DSurface</font></div></td>
+  </tr>
+  <tr style='height:12.75pt'> 
+    <td valign=top style='width:162.75pt;padding:.75pt .75pt 0in .75pt;
+  height:12.75pt'><div align="center"><strong><font face="Arial, Helvetica, sans-serif"><span
+  style='font-family:Arial'>surface.transformer.class<br>(Java class)</span></font></strong></div></td>
+    <td valign=top style='width:166.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><font size="3" face="Arial, Helvetica, sans-serif">Determines 
+      how images are translated into values for input into the neural network.</font></td>
+    <td valign=top style='width:103.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><div align="center"><font size="3" face="Arial, Helvetica, sans-serif">com.anji.imaging.<br>
+        DefaultBufferedImageTransformer</font></div></td>
+  </tr>
+  <tr style='height:12.75pt'> 
+    <td valign=top style='width:162.75pt;padding:.75pt .75pt 0in .75pt;
+  height:12.75pt'><div align="center"><strong><font face="Arial, Helvetica, sans-serif"><span
+  style='font-family:Arial'>image.transform.<br>interpolation.type (int)</span></font></strong></div></td>
+    <td valign=top style='width:166.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><font size="3" face="Arial, Helvetica, sans-serif">Determines 
+      the interpolation type for the image transformer. 1 = Nearest Neighbor<br>
+      2 = Bilinear<br>
+      3 = Bicubic</font></td>
+    <td valign=top style='width:103.5pt;padding:0in 0in 0in 0in;
+  height:12.75pt'><div align="center"><font size="3" face="Arial, Helvetica, sans-serif">1</font></div></td>
+  </tr>
+</table>
+<p>&nbsp;</p>
+</body>
+</html>

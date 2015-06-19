@@ -1,0 +1,13 @@
+<chromosome id="6142" primary-parent-id="3241"><neuron id="0" type="in" activation="linear"/>
+<neuron id="1" type="in" activation="linear"/>
+<neuron id="2" type="in" activation="linear"/>
+<neuron id="3" type="out" activation="sigmoid"/>
+<connection id="4" src-id="0" dest-id="3" weight="-0.4905038774231987"/>
+<connection id="6" src-id="2" dest-id="3" weight="1.2601011683156293"/>
+<neuron id="301" type="hid" activation="sigmoid"/>
+<connection id="302" src-id="1" dest-id="301" weight="1.2511839883660847"/>
+<connection id="303" src-id="301" dest-id="3" weight="-0.18875043982568274"/>
+<neuron id="677" type="hid" activation="sigmoid"/>
+<connection id="678" src-id="2" dest-id="677" weight="3.1918470756106405"/>
+<connection id="679" src-id="677" dest-id="301" weight="-3.7189225487585493"/>
+</chromosome>

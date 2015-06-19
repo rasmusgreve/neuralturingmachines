@@ -1,0 +1,12 @@
+<chromosome id="6104" primary-parent-id="5491"><neuron id="0" type="in" activation="linear"/>
+<neuron id="1" type="in" activation="linear"/>
+<neuron id="2" type="in" activation="linear"/>
+<neuron id="3" type="out" activation="sigmoid"/>
+<connection id="5" src-id="1" dest-id="3" weight="-2.219870185771712"/>
+<connection id="6" src-id="2" dest-id="3" weight="0.3350951788586105"/>
+<neuron id="170" type="hid" activation="sigmoid"/>
+<connection id="171" src-id="0" dest-id="170" weight="0.4924181691585586"/>
+<neuron id="932" type="hid" activation="sigmoid"/>
+<connection id="933" src-id="170" dest-id="932" weight="2.682830736996222"/>
+<connection id="934" src-id="932" dest-id="3" weight="-4.368546458522903"/>
+</chromosome>

@@ -1,0 +1,19 @@
+<chromosome id="6069" primary-parent-id="5218"><neuron id="0" type="in" activation="linear"/>
+<neuron id="1" type="in" activation="linear"/>
+<neuron id="2" type="in" activation="linear"/>
+<neuron id="3" type="out" activation="sigmoid"/>
+<connection id="5" src-id="1" dest-id="3" weight="-4.16915770756804"/>
+<neuron id="167" type="hid" activation="sigmoid"/>
+<connection id="169" src-id="167" dest-id="3" weight="7.6539946624981585"/>
+<neuron id="170" type="hid" activation="sigmoid"/>
+<connection id="172" src-id="170" dest-id="3" weight="-10.058243311702824"/>
+<neuron id="805" type="hid" activation="sigmoid"/>
+<connection id="806" src-id="0" dest-id="805" weight="-3.3237000773019627"/>
+<connection id="807" src-id="805" dest-id="170" weight="2.5331948594528946"/>
+<neuron id="1716" type="hid" activation="sigmoid"/>
+<connection id="1718" src-id="1716" dest-id="167" weight="5.182312814292319"/>
+<connection id="2104" src-id="1" dest-id="805" weight="-4.174666422218771"/>
+<neuron id="4266" type="hid" activation="sigmoid"/>
+<connection id="4267" src-id="2" dest-id="4266" weight="1.5065220437108067"/>
+<connection id="4268" src-id="4266" dest-id="1716" weight="2.9746247469777503"/>
+</chromosome>

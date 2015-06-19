@@ -1,0 +1,26 @@
+<html>
+<head><title>ANJI and JGAP</title></head>
+<body>
+<p>
+<code>com.anji</code> classes implement a neuroevolution framework based on <a href="http://www.cs.utexas.edu/users/kstanley/neat.html">NEAT</a> and built upon a modified version of the open source project <a href="http://jgap.sourceforge.net/">JGAP</a>.  Modification to NEAT was made as outlined in James and Tucker's "A Comparative Analysis of Simplification and Complexification in the Evolution of Neural Network Topologies" paper for <a href="http://gal4.ge.uiuc.edu:8080/GECCO-2004/">GECCO 2004</a>.  Persistence and presentation data are stored in XML.  Run and network data models are consistent with <a href="http://nevt.sourceforge.net/">NEVT</a> XML data model.
+</p>
+<p>
+<code>org.jgap</code> classes were modified by Tucker and James to support ANJI.  <code>examples</code> classes contain JGAP examples unrelated to ANJI.
+A summary of changes:
+<ul>
+  <li>Added <code>init(java.util.Properties)</code> methods to a few classes to enable them easily to be configured from a single source.</li>
+  <li>Split <code>Chromosome</code> into <code>Chromosome</code> and <code>ChromosomeMaterial</code>, where <code>Chromosome</code> remains immutable but <code>ChromosomeMaterial</code> can be changed.  This allows a chromosome to be unchanged for most of its life cycle, but during mutation and crossover time its genes can be changed, added, and removed without having to create a new chromosome every time</li>
+  <li>Aded <code>toXml()</code> methods to a few classes instead of using <code>org.jgap.xml.*</code> classes.</li>
+  <li>Added speciation and gene innovation IDs according to <a href="http://nn.cs.utexas.edu/downloads/papers/stanley.ec02.pdf">NEAT</a> paradigm.  Innovation ID winds up being used in place of locus for determining where 2 different chromosome have the same gene.</li>
+  <li>Associated with speciation, chromosomes now have 2 fitnes  values, the original one, and another adjusted for species fitness sharing.</li>
+  <li>Split genetic operators into explicit mutation operators and reproduction operators.</li>
+  <li>Added 2 parent IDs to chromosome for ancestry tracking.  For chromosomes created via cloning, second parent ID is null.</li>
+  <li>Added <code>IdFactory</code> to be able to maintain uniqueness of innovation IDs and chromosome IDs across multiple runs.</li>
+  <li>Added new genetic event <code>GeneticEvent.GENOTYPE_EVALUATED_EVENT</code>.</li>
+</ul>
+</p>
+<p>
+A good starting point for navigating this code is the <code>com.anji.neat.Evolver</code> class.  Its <code>main(String[])</code> method is the starting point for performing evolutionary runs.  Configuration parameters are loaded into a <code>com.anji.util.Properties</code> object and passed to various components of the system via <code>init(Properties)</code> methods.  The <code>org.jgap.Genotype.evolve()</code> method is also a pivotal point in the system, as this contains the logic for processing a generation.
+</p>
+</body>
+</html>

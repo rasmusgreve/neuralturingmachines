@@ -1,0 +1,42 @@
+
+                                 A   N   J   I
+ 
+
+  What is it? 
+  -----------
+  
+  ANJI (Another NEAT Java Implementation) 
+  Built on top of existing OpenSource projects, ANJI is an implementation of NEAT 
+  (Neuro-Evolution of Augmenting Topologies), an algorithm for evolving artificial 
+  neural networks developed by Kenneth Stanley, working in the Neural Networks 
+  Research Group at the University of Texas at Austin.
+  
+  NEAT evolves both the connection weights and architecture of neural networks by 
+  starting with minimal topologies and adding innovations each generation through 
+  crossover and three types of mutations (changing the weight of an existing 
+  connection, adding a new connection, and adding a new neuron). For more 
+  information about NEAT, please click on the NEAT logo above to visit the NEAT 
+  Users Page. 
+
+  Much of the evolutionary computing aspects are implemented using JGAP (Java 
+  Genetic Algorithms Package).
+
+
+  Where do I start? 
+  -----------
+  docs/qstart.htm for a quick start guide.
+  docs/index.html for an overview of the project.
+
+  
+  Licensing
+  ---------
+
+  This software is licensed under the terms you may find in the file 
+  src/LICENSE.txt.
+  
+
+  Thanks for using ANJI.
+
+                                      ANJI
+                         <http://anji.sourceforge.net/>
+

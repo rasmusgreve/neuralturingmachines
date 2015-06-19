@@ -1,0 +1,21 @@
+<html>
+<head><title>com.anji.floatingeye</title></head>
+<body>
+<code>com.anji.floatingeye</code> contains classes to build and operate a 
+"floating eye" which is an agent that can move up and down, left and right, and zoom 
+in and out relative to an image, or "surface".  The artificial retina is a 2x2 array 
+of pixels that is updated based on the state of the surface and the position of the 
+retina.<br/>
+The central class of this package is <code>coma.anji.FloatingEye</code>.  It is meant 
+to identify an image as containing some target feature (e.g., its purpose might be to 
+identify a square when presented with several different shapes).  It outputs an
+affinity, a <code>double</code>code> between 0 and 1 identifying level of confidence
+that the image contains the target feature.<br/>
+A floating eye's input values are stored in <code>com.anji.nn.Neuron</code> objects.
+A floating eye does not necessarily need to be controlled via an artificial neural
+network (see <code>com.anji.floatingeye.test.FloatingEyeTestDriver</code> for a 
+non-ANN example), but it was built primarily to be integrated with a 
+<code>com.anji.nn.AnjiNet</code> object via 
+<code>com.anji.floatingeye.AnjiNetFloatingEye</code>.<br/>
+</body>
+</html>

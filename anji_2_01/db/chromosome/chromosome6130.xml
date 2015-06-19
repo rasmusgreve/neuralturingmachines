@@ -1,0 +1,12 @@
+<chromosome id="6130" primary-parent-id="5059"><neuron id="0" type="in" activation="linear"/>
+<neuron id="1" type="in" activation="linear"/>
+<neuron id="2" type="in" activation="linear"/>
+<neuron id="3" type="out" activation="sigmoid"/>
+<connection id="6" src-id="2" dest-id="3" weight="5.863657535326427"/>
+<neuron id="170" type="hid" activation="sigmoid"/>
+<connection id="171" src-id="0" dest-id="170" weight="3.295863002318637"/>
+<connection id="172" src-id="170" dest-id="3" weight="-3.815684435330269"/>
+<neuron id="301" type="hid" activation="sigmoid"/>
+<connection id="302" src-id="1" dest-id="301" weight="7.018171487105932"/>
+<connection id="303" src-id="301" dest-id="3" weight="-4.087024032734412"/>
+</chromosome>

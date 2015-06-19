@@ -1,0 +1,17 @@
+<chromosome id="6096" primary-parent-id="3816"><neuron id="0" type="in" activation="linear"/>
+<neuron id="1" type="in" activation="linear"/>
+<neuron id="2" type="in" activation="linear"/>
+<neuron id="3" type="out" activation="sigmoid"/>
+<connection id="4" src-id="0" dest-id="3" weight="0.3488032387838427"/>
+<neuron id="167" type="hid" activation="sigmoid"/>
+<connection id="168" src-id="2" dest-id="167" weight="1.0971535185155092"/>
+<neuron id="301" type="hid" activation="sigmoid"/>
+<connection id="303" src-id="301" dest-id="3" weight="-2.338364924561115"/>
+<neuron id="549" type="hid" activation="sigmoid"/>
+<connection id="550" src-id="167" dest-id="549" weight="6.038056177383217"/>
+<connection id="551" src-id="549" dest-id="3" weight="-0.20353529409591609"/>
+<connection id="1183" src-id="301" dest-id="549" weight="6.937824906093948"/>
+<neuron id="1187" type="hid" activation="sigmoid"/>
+<connection id="1188" src-id="1" dest-id="1187" weight="-2.775325416729647"/>
+<connection id="1189" src-id="1187" dest-id="301" weight="2.2356487997130925"/>
+</chromosome>
