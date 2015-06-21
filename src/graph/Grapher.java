@@ -34,8 +34,6 @@ public class Grapher {
 	}
 	
 	private static void processFamilyByStdIn() throws Exception{
-		//Ensure output folder is ready
-		
 		File folder = new File("./"+outputFolder+"/");
 		folder.mkdirs();
 		File[] files = folder.listFiles();
@@ -60,7 +58,7 @@ public class Grapher {
 	 */
 	private static String processSingleChromosome(String id) throws Exception{
 		try {
-			System.out.println("Processing chromosome " + id);
+			System.out.print("Processing " + id + "... ");
 			XMLReader reader = XMLReaderFactory.createXMLReader();
 			ChromosomeHandler handler = new ChromosomeHandler();
 			reader.setContentHandler(handler);
@@ -72,14 +70,17 @@ public class Grapher {
 			fw.flush();
 			fw.close();
 			
-			System.out.println("Wrote " + gvDot.length() + " chars of gv dot");
-			System.out.println("Running gv to \"Graph" + id + ".png\"");
+			System.out.print("GV -> "+outputFolder+"/Graph" + id + ".png...");
 			
 			new File("./"+outputFolder+"/").mkdirs();
 			ProcessBuilder pb = new ProcessBuilder(dotExeLocation,  "-Tpng", "tmp.gv");
 			pb.redirectOutput(Redirect.to(new File(outputFolder+"/Graph"+id+".png")));
 			pb.redirectError(Redirect.INHERIT);
-			System.out.println("gv exited with code: " + pb.start().waitFor());
+			int exitCode = pb.start().waitFor();
+			if (exitCode == 0)
+				System.out.println("OK!");
+			else
+				System.out.println("Failed: " + exitCode);
 			
 			return handler.getParentId();
 		} catch (SAXException | IOException e) {
