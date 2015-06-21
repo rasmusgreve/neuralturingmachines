@@ -60,3 +60,8 @@ hs_err_pid*
 
 anji_2_01/db/*
 anji_2_01/nevt/*
+
+#Graphing
+tmp.gv
+graphs/
+
