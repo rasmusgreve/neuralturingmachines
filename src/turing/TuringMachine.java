@@ -25,7 +25,11 @@ public class TuringMachine {
 		
 		// save weightings for future iterations
 		readWeightings = new double[readHeads][];
-		writeWeightings = new double[readHeads][];
+		for (int i = 0; i < readHeads; i++)
+			readWeightings[i] = new double[n];
+		writeWeightings = new double[writeHeads][];
+		for (int i = 0; i < writeHeads; i++)
+			writeWeightings[i] = new double[n];
 	}
 
 	public double[][] processInput(HeadVariables vars){
@@ -129,7 +133,7 @@ public class TuringMachine {
 		return vecA.dotProduct(vecB) / vecA.getNorm() * vecB.getNorm();
 	}
 
-	public class HeadVariables {
+	public static class HeadVariables {
 		
 		private ArrayList<Head> read;
 		private ArrayList<Head> write;
@@ -157,7 +161,7 @@ public class TuringMachine {
 
 
 
-		public class Head {
+		public static class Head {
 			
 			private double[] erase;
 			private double[] add;
