@@ -30,7 +30,7 @@ public class FitnessEvaluator implements BulkFitnessFunction, Configurable {
 		for (Chromosome chromosome : list){
 			int i = 0;
 			simulator.reset();
-			double[] obs = simulator.initialObservation();
+			double[] obs = simulator.getInitialObservation();
 			Activator activator;
 			try {
 				activator = activatorFactory.newActivator(chromosome);

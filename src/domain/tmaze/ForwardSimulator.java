@@ -22,7 +22,7 @@ public class ForwardSimulator implements Simulator {
 	}
 
 	@Override
-	public double[] initialObservation() {
+	public double[] getInitialObservation() {
 		//return new double[]{1d};
 		return position;
 	}

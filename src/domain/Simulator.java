@@ -5,7 +5,7 @@ public interface Simulator {
 	int getOutputCount();
 	
 	void reset();
-	double[] initialObservation();
+	double[] getInitialObservation();
 	
 	/**
 	 * @param action
