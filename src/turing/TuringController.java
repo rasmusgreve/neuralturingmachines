@@ -7,12 +7,12 @@ import fitness.Controller;
 
 public class TuringController implements Controller {
 
-	public TuringController() {
+	public TuringController(Simulator sim) {
 		// Initialize everything
 	}
 
 	@Override
-	public int evaluate(Activator nn, Simulator sim) {
+	public int evaluate(Activator nn) {
 		// For each iteration
 		// 1: Take input from Turing and Sim
 		// 2: Activate

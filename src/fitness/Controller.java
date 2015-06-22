@@ -20,5 +20,5 @@ public interface Controller {
 	 * @param sim
 	 * @return
 	 */
-	int evaluate(Activator nn, Simulator sim);
+	int evaluate(Activator nn);
 }
