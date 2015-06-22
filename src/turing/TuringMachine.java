@@ -1,7 +1,7 @@
 package turing;
 
 import java.util.ArrayList;
-
+import org.apache.commons.math3.linear.*;
 import turing.TuringMachine.HeadVariables.Head;
 
 public class TuringMachine {
@@ -122,9 +122,11 @@ public class TuringMachine {
 		return result;
 	}
 
-	private double cosineSim(double[] key, double[] ds) {
-		// TODO Auto-generated method stub
-		return 0;
+	private double cosineSim(double[] key, double[] inMemory) {
+		ArrayRealVector vecA = new ArrayRealVector(key);
+		ArrayRealVector vecB = new ArrayRealVector(inMemory);
+		
+		return vecA.dotProduct(vecB) / vecA.getNorm() * vecB.getNorm();
 	}
 
 	public class HeadVariables {

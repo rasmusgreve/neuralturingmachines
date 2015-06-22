@@ -23,15 +23,15 @@ public class ForwardSimulator implements Simulator {
 
 	@Override
 	public double[] initialObservation() {
-		return new double[]{1d};
-		//return position;
+		//return new double[]{1d};
+		return position;
 	}
 
 	@Override
 	public double[] performAction(double[] action) {
 		position[0] += action[0] - action[1];
-		return new double[]{1d};
-		//return position;
+		//return new double[]{1d};
+		return position;
 	}
 
 	@Override
