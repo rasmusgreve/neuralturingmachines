@@ -5,6 +5,8 @@ import java.util.List;
 import org.jgap.BulkFitnessFunction;
 import org.jgap.Chromosome;
 
+import turing.TuringController;
+
 import com.anji.integration.Activator;
 import com.anji.integration.ActivatorTranscriber;
 import com.anji.integration.TranscriberException;
@@ -16,8 +18,10 @@ import domain.tmaze.ForwardSimulator;
 
 public class FitnessEvaluator implements BulkFitnessFunction, Configurable {
 	private static final long serialVersionUID = 1L;
+	
 	ActivatorTranscriber activatorFactory;
 	Simulator simulator;
+	private TuringController controller;
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
@@ -52,5 +56,6 @@ public class FitnessEvaluator implements BulkFitnessFunction, Configurable {
 		
 		//Initialize
 		simulator = new ForwardSimulator(); //; //TODO: Initialize using reflection wooo
+		controller = new TuringController(properties, simulator);
 	}
 }

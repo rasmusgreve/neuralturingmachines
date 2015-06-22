@@ -11,12 +11,10 @@ public class TuringMachine {
 	private int n;
 	private double[][] readWeightings;
 	private double[][] writeWeightings;
-	private int[] allowedShifts;
 
-	public TuringMachine(int n, int m, int readHeads, int writeHeads, int[] allowedShifts){
+	public TuringMachine(int n, int m, int readHeads, int writeHeads){
 		this.n = n;
 		this.m = m;
-		this.allowedShifts = allowedShifts;
 		
 		// Initialize memory tape
 		tape = new ArrayList<double[]>(n);
@@ -32,6 +30,14 @@ public class TuringMachine {
 			writeWeightings[i] = new double[n];
 	}
 
+	public double[][] getDefaultRead() {
+		double[][] result = new double[readWeightings.length][];
+		for(int i = 0; i < readWeightings.length; i++) {
+			result[i] = new double[m];
+		}
+		return result;
+	}
+	
 	public double[][] processInput(HeadVariables vars){
 		if(vars.getRead().size() != readWeightings.length 
 				&& vars.getWrite().size() != writeWeightings.length)
