@@ -1,7 +1,10 @@
 package turing;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+
 import org.apache.commons.math3.linear.*;
+
 import turing.TuringMachine.HeadVariables.Head;
 
 public class TuringMachine {
@@ -11,11 +14,21 @@ public class TuringMachine {
 	private int n;
 	private double[][] readWeightings;
 	private double[][] writeWeightings;
+	private int shiftLength;
+	private int readHeads;
+	private int writeHeads;
 
-	public TuringMachine(int n, int m, int readHeads, int writeHeads){
+	public TuringMachine(int n, int m, int readHeads, int writeHeads, int shiftLength){
 		this.n = n;
 		this.m = m;
+		this.readHeads = readHeads;
+		this.writeHeads = writeHeads;
+		this.shiftLength = shiftLength;
 		
+		this.reset();
+	}
+	
+	public void reset() {
 		// Initialize memory tape
 		tape = new ArrayList<double[]>(n);
 		for(int i = 0; i < n; i++)
@@ -29,6 +42,14 @@ public class TuringMachine {
 		for (int i = 0; i < writeHeads; i++)
 			writeWeightings[i] = new double[n];
 	}
+	
+	public int getReadHeadCount() {
+		return readHeads;
+	}
+	
+	public int getWriteHeadCount() {
+		return writeHeads;
+	}
 
 	public double[][] getDefaultRead() {
 		double[][] result = new double[readWeightings.length][];
@@ -38,9 +59,38 @@ public class TuringMachine {
 		return result;
 	}
 	
+	public double[][] processInput(double[] flatVars) {
+		HeadVariables vars = new HeadVariables();
+		int offset = 0;
+		
+		// Package for TM
+		for(int i = 0; i < getReadHeadCount(); i++) {
+			vars.addRead(Arrays.copyOfRange(flatVars,offset,offset+m), 
+					flatVars[offset+m], 
+					flatVars[offset+m+1], 
+					Arrays.copyOfRange(flatVars,offset+m+2,offset+m+2+shiftLength), 
+					flatVars[offset+m+2+shiftLength]);
+			offset += m+3+shiftLength;
+		}
+		
+		for(int i = 0; i < getWriteHeadCount(); i++) {
+			vars.addWrite(Arrays.copyOfRange(flatVars, offset, offset+m), 
+					Arrays.copyOfRange(flatVars, offset+m, offset+2*m), 
+					Arrays.copyOfRange(flatVars, offset+2*m, offset+3*m),  
+					flatVars[offset+3*m], 
+					flatVars[offset+3*m+1], 
+					Arrays.copyOfRange(flatVars,offset+3*m+2,offset+3*m+2+shiftLength), 
+					flatVars[offset+3*m+2+shiftLength]);
+			offset += 3*m+3+shiftLength;
+		}
+		
+		// Actually handle it
+		return processInput(vars);
+	}
+	
 	public double[][] processInput(HeadVariables vars){
-		if(vars.getRead().size() != readWeightings.length 
-				&& vars.getWrite().size() != writeWeightings.length)
+		if(vars.getRead().size() != getReadHeadCount() 
+				&& vars.getWrite().size() != getWriteHeadCount())
 			throw new IllegalArgumentException("You must define as many read and write heads as when the TM was created.");
 
 		// First all WRITES

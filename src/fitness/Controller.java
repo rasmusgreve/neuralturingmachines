@@ -21,4 +21,8 @@ public interface Controller {
 	 * @return
 	 */
 	int evaluate(Activator nn);
+	
+	void reset();
+
+	Simulator getSimulator();
 }

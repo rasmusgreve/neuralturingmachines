@@ -4,6 +4,7 @@ import com.anji.util.Properties;
 
 import domain.Simulator;
 import fitness.BaseController;
+import fitness.Utilities;
 
 public class TuringController extends BaseController {
 
@@ -14,24 +15,24 @@ public class TuringController extends BaseController {
 		// Initialize everything (using properties)
 		int n = props.getIntProperty("tm.n");
 		int m = props.getIntProperty("tm.m");
+		int shiftLength = props.getIntProperty("tm.shift.length");
 		int readHeads = props.getIntProperty("tm.heads.read");
 		int writeHeads = props.getIntProperty("tm.heads.write");
-		this.tm = new TuringMachine(n,m,readHeads,writeHeads);
+		this.tm = new TuringMachine(n,m,readHeads,writeHeads,shiftLength);
 	}
 
 	@Override
 	public double[] processOutputs(double[] fromNN) {
-		//TODO: Not implemented
-		return null;
+		return Utilities.flatten(tm.processInput(fromNN));
 	}
 
 	@Override
 	public double[] getInitialInput() {
-		return flatten(tm.getDefaultRead());
+		return Utilities.flatten(tm.getDefaultRead());
 	}
 
-	private double[] flatten(double[][] arrays){
-		//TODO: Implement
-		return null;
+	@Override
+	public void reset() {
+		this.tm.reset();
 	}
 }
