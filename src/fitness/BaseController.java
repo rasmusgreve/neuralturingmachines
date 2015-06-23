@@ -59,7 +59,7 @@ public abstract class BaseController implements Controller {
 			iteration++;
 		}
 
-		return sim.getCurrentScore();
+		return Math.max(0, sim.getCurrentScore());
 	}
 	
 	public abstract double[] processOutputs(double[] fromNN);

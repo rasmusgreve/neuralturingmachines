@@ -99,7 +99,7 @@ public class TuringMachine {
 			throw new IllegalArgumentException("You must define as many read and write heads as when the TM was created.");
 
 		// First all WRITES
-		System.out.println("Erasing");
+		//System.out.println("Erasing");
 		// Erase
 		for(int i = 0; i < vars.getWrite().size(); i++){
 			Head current = vars.getWrite().get(i);
@@ -111,7 +111,7 @@ public class TuringMachine {
 				}
 			}
 		}
-		System.out.println("Adding");
+		//System.out.println("Adding");
 		// Add
 		for(int i = 0; i < vars.getWrite().size(); i++){
 			Head current = vars.getWrite().get(i);
@@ -123,7 +123,7 @@ public class TuringMachine {
 			}
 		}
 		
-		System.out.println("Reading");
+		//System.out.println("Reading");
 		// prepare result
 		double[][] result = new double[vars.getRead().size()][];
 		
@@ -176,7 +176,7 @@ public class TuringMachine {
 			// Simpler convolution so elements don't appear multiple times
 			for(int j = 0; j < shift.length; j++) {
 				int k = (i - shift.length/2 + j +n) % n;
-				tempWeight[i] = result[k] * shift[j];
+				tempWeight[i] += result[k] * shift[j];
 			}
 		}
 		result = tempWeight;
