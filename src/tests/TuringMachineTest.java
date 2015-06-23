@@ -9,7 +9,7 @@ public class TuringMachineTest {
 
 	@Test
 	public void simpleTest(){
-		TuringMachine machine = new TuringMachine(100, 1, 1, 1, null);
+		TuringMachine machine = new TuringMachine(100, 1, 1, 1, 3);
 		
 		HeadVariables hv = new HeadVariables();
 		
