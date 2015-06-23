@@ -184,6 +184,12 @@ public class TuringMachine {
 	}
 
 	private double cosineSim(double[] key, double[] inMemory) {
+		//0 test
+		boolean allZeros = true;
+		for (double d : key) if (d != 0) allZeros = false;
+		for (double d : inMemory) if (d != 0) allZeros = false;
+		if (allZeros) return 1;
+		
 		ArrayRealVector vecA = new ArrayRealVector(key);
 		ArrayRealVector vecB = new ArrayRealVector(inMemory);
 		
