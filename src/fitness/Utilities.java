@@ -80,7 +80,7 @@ public class Utilities {
 		for(int i = 0; i < v1.length; i++)
 			numerator += Math.abs(v1[i] - v2[i]);
 		
-		return 1.0 - (numerator / 5);
+		return 1.0 - (numerator / v1.length);
 	}
 	
 	/**
