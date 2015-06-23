@@ -43,6 +43,7 @@ public class FitnessEvaluator implements BulkFitnessFunction, Configurable {
 		return controller.getSimulator().getMaxScore();
 	}
 
+	@Override
 	public void init(Properties properties){
 		//Load properties
 		activatorFactory = (ActivatorTranscriber)properties.singletonObjectProperty(ActivatorTranscriber.class);

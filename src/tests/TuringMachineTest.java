@@ -7,7 +7,7 @@ import turing.TuringMachine.HeadVariables;
 
 public class TuringMachineTest {
 
-	@Test
+	/*@Test
 	public void simpleTest(){
 		TuringMachine machine = new TuringMachine(100, 1, 1, 1, 3);
 		
@@ -22,6 +22,6 @@ public class TuringMachineTest {
 			System.out.println(i + " -> " + result[i][0]);
 		
 		Assert.assertTrue("Test", true);
-	}
+	}*/
 	
 }
