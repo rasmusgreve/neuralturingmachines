@@ -37,11 +37,15 @@ public class TuringMachine {
 		
 		// save weightings for future iterations
 		readWeightings = new double[readHeads][];
-		for (int i = 0; i < readHeads; i++)
+		for (int i = 0; i < readHeads; i++){
 			readWeightings[i] = new double[n];
+			readWeightings[i][0] = 1.0; // ASSUMING THAT HEAD IS AT FIRST ELEMENT AT BEGINNING
+		}
 		writeWeightings = new double[writeHeads][];
-		for (int i = 0; i < writeHeads; i++)
+		for (int i = 0; i < writeHeads; i++) {
 			writeWeightings[i] = new double[n];
+			writeWeightings[i][0] = 1.0; // ASSUMING THAT HEAD IS AT FIRST ELEMENT AT BEGINNING
+		}
 	}
 	
 	public int getReadHeadCount() {
@@ -164,10 +168,15 @@ public class TuringMachine {
 		double[] shift = current.getShift();
 		double[] tempWeight = new double[n];
 		for(int i = 0; i < n; i++) {
-			for(int j = 0; j < n; j++){
+			/*for(int j = 0; j < n; j++){
 				int idx = (shift.length*n + i - j) % shift.length;
 				tempWeight[i] += result[j] * shift[idx]; 
 				//TODO Check if this is right
+			}*/
+			// Simpler convolution so elements don't appear multiple times
+			for(int j = 0; j < shift.length; j++) {
+				int k = (i - shift.length/2 + j +n) % n;
+				tempWeight[i] = result[k] * shift[j];
 			}
 		}
 		result = tempWeight;

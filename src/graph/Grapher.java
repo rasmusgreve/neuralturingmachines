@@ -22,8 +22,8 @@ public class Grapher {
 	private final static String dotExeLocation = "./graphviz2.38/bin/dot.exe";
 	
 	public static void main(String[] args) throws Exception {
-		//processSingleByStdIn();
-		processFamilyByStdIn();
+		processSingleByStdIn();
+//		processFamilyByStdIn();
 	}
 	
 	
