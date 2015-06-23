@@ -161,8 +161,10 @@ public class TuringMachine {
 		double[] shift = current.getShift();
 		double[] tempWeight = new double[n];
 		for(int i = 0; i < n; i++) {
-			for(int j = 0; j < n; i++){
-				tempWeight[i] += result[j] * shift[(shift.length*n + i - j) % shift.length]; 
+			for(int j = 0; j < n; j++){
+				int idx = (shift.length*n + i - j) % shift.length;
+				System.out.println("Idx: " + idx);
+				tempWeight[i] += result[j] * shift[idx]; 
 				//TODO Check if this is right
 			}
 		}
