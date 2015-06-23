@@ -5,6 +5,7 @@ import java.util.Arrays;
 
 import org.apache.commons.math3.linear.*;
 
+import fitness.Utilities;
 import turing.TuringMachine.HeadVariables.Head;
 
 public class TuringMachine {
@@ -68,7 +69,7 @@ public class TuringMachine {
 			vars.addRead(Arrays.copyOfRange(flatVars,offset,offset+m), 
 					flatVars[offset+m], 
 					flatVars[offset+m+1], 
-					Arrays.copyOfRange(flatVars,offset+m+2,offset+m+2+shiftLength), 
+					Utilities.normalize(Arrays.copyOfRange(flatVars,offset+m+2,offset+m+2+shiftLength)), 
 					flatVars[offset+m+2+shiftLength]);
 			offset += m+3+shiftLength;
 		}
@@ -79,7 +80,7 @@ public class TuringMachine {
 					Arrays.copyOfRange(flatVars, offset+2*m, offset+3*m),  
 					flatVars[offset+3*m], 
 					flatVars[offset+3*m+1], 
-					Arrays.copyOfRange(flatVars,offset+3*m+2,offset+3*m+2+shiftLength), 
+					Utilities.normalize(Arrays.copyOfRange(flatVars,offset+3*m+2,offset+3*m+2+shiftLength)), 
 					flatVars[offset+3*m+2+shiftLength]);
 			offset += 3*m+3+shiftLength;
 		}

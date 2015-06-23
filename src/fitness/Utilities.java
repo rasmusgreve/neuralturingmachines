@@ -44,4 +44,21 @@ public class Utilities {
 			count += arrays[i].length;
 		return count;
 	}
+
+	/**
+	 * Return a new array of the same length where all
+	 * elements sum to 1.0 and the relation between the
+	 * original elements are preserved.
+	 * @param array
+	 * @return
+	 */
+	public static double[] normalize(double[] array) {
+		double[] result = new double[array.length];
+		double sum = 0.0;
+		for(int i = 0; i < array.length; i++)
+			sum += array[i];
+		for(int i = 0; i < array.length; i++)
+			result[i] = array[i] / sum;
+		return result;
+	}
 }
