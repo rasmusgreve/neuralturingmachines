@@ -90,7 +90,7 @@ public class TuringMachine {
 	
 	public double[][] processInput(HeadVariables vars){
 		if(vars.getRead().size() != getReadHeadCount() 
-				&& vars.getWrite().size() != getWriteHeadCount())
+				|| vars.getWrite().size() != getWriteHeadCount())
 			throw new IllegalArgumentException("You must define as many read and write heads as when the TM was created.");
 
 		// First all WRITES
@@ -163,7 +163,6 @@ public class TuringMachine {
 		for(int i = 0; i < n; i++) {
 			for(int j = 0; j < n; j++){
 				int idx = (shift.length*n + i - j) % shift.length;
-				//System.out.println("Idx: " + idx);
 				tempWeight[i] += result[j] * shift[idx]; 
 				//TODO Check if this is right
 			}
