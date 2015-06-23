@@ -1,5 +1,7 @@
 package turing;
 
+import java.util.Arrays;
+
 import com.anji.util.Properties;
 
 import domain.Simulator;
@@ -23,7 +25,12 @@ public class TuringController extends BaseController {
 
 	@Override
 	public double[] processOutputs(double[] fromNN) {
-		return Utilities.flatten(tm.processInput(fromNN));
+		double[] result = Utilities.flatten(tm.processInput(fromNN));
+		
+		//System.out.println("fromNN: "+Arrays.toString(fromNN));
+		//System.out.println("toNN: "+Arrays.toString(result));
+		
+		return result;
 	}
 
 	@Override
@@ -33,6 +40,7 @@ public class TuringController extends BaseController {
 
 	@Override
 	public void reset() {
+		System.out.println("---------- RESET ----------");
 		this.tm.reset();
 	}
 }
