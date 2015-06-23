@@ -36,7 +36,7 @@ public class TuringMachineTest {
 	
 	@Test
 	public void testWriteRead(){
-		TuringMachine machine = new TuringMachine(4, 1, 1, 1, 3);
+		TuringMachine machine = new TuringMachine(5, 1, 1, 1, 3);
 		
 		HeadVariables hv = new HeadVariables();
 		
