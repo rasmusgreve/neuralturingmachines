@@ -1,5 +1,7 @@
 package fitness;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 import org.jgap.BulkFitnessFunction;
@@ -12,8 +14,8 @@ import com.anji.integration.TranscriberException;
 import com.anji.util.Configurable;
 import com.anji.util.Properties;
 
+import domain.RPSSimulator;
 import domain.Simulator;
-import domain.tmaze.RPSSimulator;
 
 public class FitnessEvaluator implements BulkFitnessFunction, Configurable {
 	private static final long serialVersionUID = 1L;
@@ -49,7 +51,32 @@ public class FitnessEvaluator implements BulkFitnessFunction, Configurable {
 		activatorFactory = (ActivatorTranscriber)properties.singletonObjectProperty(ActivatorTranscriber.class);
 		
 		//Initialize
-		Simulator simulator = new RPSSimulator(); //; //TODO: Initialize using reflection wooo
-		controller = new TuringController(properties, simulator);
+		Simulator simulator = (Simulator) instantiateObject(properties.getProperty("simulator.class"),null,null);
+		controller = (Controller) instantiateObject(properties.getProperty("controller.class"),new Object[]{properties,simulator}, new Class<?>[]{Properties.class,Simulator.class});
+	}
+	
+	private static Object instantiateObject(String className, Object[] params, Class<?>[] constructor) {
+		Object result = null;
+		try {
+			if(params == null || params.length == 0) {
+				result = Class.forName(className).newInstance();
+			} else {
+				Constructor<?> con = Class.forName(className).getDeclaredConstructor(constructor == null ? getClasses(params) : constructor);
+				result = con.newInstance(params);
+			}
+		} catch (NoSuchMethodException | SecurityException
+				| ClassNotFoundException | InstantiationException 
+				| IllegalAccessException | IllegalArgumentException 
+				| InvocationTargetException e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
+	private static Class<?>[] getClasses(Object[] objects) {
+		Class<?>[] result = new Class[objects.length];
+		for(int i = 0; i < objects.length; i++)
+			result[i] = objects[i].getClass();
+		return result;
 	}
 }
