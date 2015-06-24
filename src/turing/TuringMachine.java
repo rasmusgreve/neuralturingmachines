@@ -151,7 +151,8 @@ public class TuringMachine {
 		// Focusing by Content
 		double sum = 0.0;
 		for(int i = 0; i < n; i++){
-			result[i] = Math.exp(current.getKeyStrength() * cosineSim(current.getKey(),tape.get(i)));
+			double similarity =  Utilities.simpleSimilarity(current.getKey(),tape.get(i)); //cosineSim(
+			result[i] = Math.exp(current.getKeyStrength() * similarity);
 			sum += result[i];
 		}
 		for(int i = 0; i < n; i++){

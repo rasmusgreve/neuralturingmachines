@@ -1,5 +1,11 @@
 package domain;
 
+/**
+ * A Simulator should have a constructor taking a single Properties object.
+ * This way it can be used by simply referencing it in the properties file.
+ * @author Emil
+ *
+ */
 public interface Simulator {
 	int getInputCount();
 	int getOutputCount();

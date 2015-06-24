@@ -2,6 +2,8 @@ package domain;
 
 import java.util.Random;
 
+import com.anji.util.Properties;
+
 import fitness.Utilities;
 
 /**
@@ -14,15 +16,16 @@ import fitness.Utilities;
  */
 public class RPSSimulator implements Simulator {
 
-	static final int MAXSCORE = 10;
 	static final int[][] WINNER = new int[][] { {0,-1,1},
 												{1,0,-1},
 												{-1,1,0}
 											  };
-	int chosenAction; // chosen at the beginning
-	int score;
+	private int chosenAction; // chosen at the beginning
+	private int score;
+	private int steps;
 	
-	public RPSSimulator(){
+	public RPSSimulator(Properties props){
+		steps = props.getIntProperty("controller.steps.max");
 		reset();
 	}
 	
@@ -44,6 +47,7 @@ public class RPSSimulator implements Simulator {
 	@Override
 	public double[] performAction(double[] action) {
 		int curScore = WINNER[Utilities.maxPos(action)][chosenAction];
+
 		score += curScore;
 		return new double[]{(curScore + 1) / 2.0}; // 0 is losing, ½ is tie, 1 is winning.
 	}
@@ -55,12 +59,12 @@ public class RPSSimulator implements Simulator {
 
 	@Override
 	public boolean isTerminated() {
-		return score >= MAXSCORE;
+		return score >= steps;
 	}
 
 	@Override
 	public int getMaxScore() {
-		return MAXSCORE;
+		return steps; // if you win all
 	}
 
 	@Override

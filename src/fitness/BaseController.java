@@ -66,6 +66,8 @@ public abstract class BaseController implements Controller {
 
 			totalScore += sim.getCurrentScore();
 		}
+		
+		//System.out.println("Score: "+totalScore);
 		return Math.max(0, totalScore / iterations);
 	}
 	
