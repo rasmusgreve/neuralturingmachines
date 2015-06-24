@@ -16,35 +16,27 @@ public class Utilities {
 	}
 	
 	public static void copy(double[] fromArray, double[] toArray, int offset) {
+//		System.out.println(Arrays.toString(fromArray)+", "+Arrays.toString(toArray)+" offset="+offset);
 		System.arraycopy(fromArray,0,toArray,offset,fromArray.length);
 	}
-	
-	/*public static void copy(double[] fromArray, double[] toArray, int offset) {
-		if(toArray.length < fromArray.length + offset)
-			throw new IndexOutOfBoundsException("Too much content in fromArray for the toArray and offset");
-		
-		for(int i = 0; i < fromArray.length; i++){
-			toArray[offset + i] = fromArray[i];
-		}
-	}
-	
-	public static void copy(double[][] fromArrays, double[] toArray, int offset) {
-		if(toArray.length < totalLength(fromArrays) + offset)
-			throw new IndexOutOfBoundsException("Too much content in fromArrays for the toArray and offset");
-		
-		int index = offset;
-		for(int i = 0; i < fromArrays.length; i++){
-			for(int j = 0; i < fromArrays[i].length; j++){
-				toArray[index++] = fromArrays[i][j];
-			}
-		}
-	}*/
 
 	public static int totalLength(double[][] arrays) {
 		int count = 0;
 		for(int i = 0; i < arrays.length; i++)
 			count += arrays[i].length;
 		return count;
+	}
+	
+	public static int maxPos(double[] array) {
+		int maxpos = 0;
+		double value = Double.MIN_VALUE;
+		for(int i = 0; i < array.length; i++) {
+			if(array[i] > value) {
+				maxpos = i;
+				value = array[i];
+			}
+		}
+		return maxpos;
 	}
 
 	/**

@@ -13,13 +13,13 @@ import com.anji.util.Configurable;
 import com.anji.util.Properties;
 
 import domain.Simulator;
-import domain.tmaze.ForwardSimulator;
+import domain.tmaze.RPSSimulator;
 
 public class FitnessEvaluator implements BulkFitnessFunction, Configurable {
 	private static final long serialVersionUID = 1L;
 	
 	ActivatorTranscriber activatorFactory;
-	private TuringController controller;
+	private Controller controller;
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
@@ -49,7 +49,7 @@ public class FitnessEvaluator implements BulkFitnessFunction, Configurable {
 		activatorFactory = (ActivatorTranscriber)properties.singletonObjectProperty(ActivatorTranscriber.class);
 		
 		//Initialize
-		Simulator simulator = new ForwardSimulator(); //; //TODO: Initialize using reflection wooo
-		controller = new TuringController(properties, simulator);
+		Simulator simulator = new RPSSimulator(); //; //TODO: Initialize using reflection wooo
+		controller = new SimController(properties, simulator);
 	}
 }
