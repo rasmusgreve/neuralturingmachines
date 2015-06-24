@@ -40,7 +40,6 @@ public class TuringController extends BaseController {
 
 	@Override
 	public void reset() {
-		//System.out.println("---------- RESET ----------");
 		this.tm.reset();
 	}
 }

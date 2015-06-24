@@ -50,6 +50,6 @@ public class FitnessEvaluator implements BulkFitnessFunction, Configurable {
 		
 		//Initialize
 		Simulator simulator = new RPSSimulator(); //; //TODO: Initialize using reflection wooo
-		controller = new SimController(properties, simulator);
+		controller = new TuringController(properties, simulator);
 	}
 }
