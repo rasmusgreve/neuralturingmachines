@@ -1,7 +1,5 @@
 package turing;
 
-import java.util.Arrays;
-
 import com.anji.util.Properties;
 
 import domain.Simulator;

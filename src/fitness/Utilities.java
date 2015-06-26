@@ -20,6 +20,11 @@ public class Utilities {
 		System.arraycopy(fromArray,0,toArray,offset,fromArray.length);
 	}
 
+	/**
+	 * Count the total number of elements in a 2 dimensional matrix
+	 * @param arrays The 2d matrix to count
+	 * @return The total number of elements in the 2d matrix
+	 */
 	public static int totalLength(double[][] arrays) {
 		int count = 0;
 		for(int i = 0; i < arrays.length; i++)
@@ -27,6 +32,11 @@ public class Utilities {
 		return count;
 	}
 	
+	/**
+	 * Find the index of the element with the highest value
+	 * @param array The array to search through
+	 * @return The index of the element with the highest value
+	 */
 	public static int maxPos(double[] array) {
 		int maxpos = 0;
 		double value = Double.MIN_VALUE;
