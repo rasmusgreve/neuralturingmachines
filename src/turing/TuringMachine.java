@@ -64,7 +64,7 @@ public class TuringMachine {
 		return result;
 	}
 	
-	public double[][] processInput(double[] flatVars) {
+	public HeadVariables translateToHeadVars(double[] flatVars){
 		HeadVariables vars = new HeadVariables();
 		int offset = 0;
 		
@@ -88,9 +88,11 @@ public class TuringMachine {
 					flatVars[offset+3*m+2+shiftLength]);
 			offset += 3*m+3+shiftLength;
 		}
-		
-		// Actually handle it
-		return processInput(vars);
+		return vars;
+	}
+	
+	public double[][] processInput(double[] flatVars) {
+		return processInput(translateToHeadVars(flatVars));
 	}
 	
 	public double[][] processInput(HeadVariables vars){

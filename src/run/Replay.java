@@ -3,6 +3,7 @@ package run;
 import org.jgap.Chromosome;
 
 import turing.TuringController;
+import turing.TuringMachine.HeadVariables;
 
 import com.anji.integration.Activator;
 import com.anji.integration.ActivatorTranscriber;
@@ -48,6 +49,14 @@ public class Replay {
 			iterations = 1;
 		}
 		
+		
+		@Override
+		public int evaluate(Activator nn) {
+			int result = super.evaluate(nn);
+			
+			return result;
+		};
+		
 		@Override
 		public double[] processOutputs(double[] fromNN) {
 			double[] result = super.processOutputs(fromNN);
@@ -62,14 +71,22 @@ public class Replay {
 
 			double[][] readWeightings = tm.getReadWeightings();
 			double[][] writeWeightings = tm.getWriteWeightings();
+			
+			HeadVariables vars = tm.translateToHeadVars(fromNN);
 
 			System.out.println("-------- Activation ----------");
 			
 			for (int i = 0; i < writeWeightings.length; i++){
 				System.out.printf("Write head #%d focus: ", i);
-				for (int j = 0; j < readWeightings[i].length;j++){
-					System.out.printf("%.2f ", readWeightings[i][j]);
+				for (int j = 0; j < writeWeightings[i].length;j++){
+					System.out.printf("%.2f ", writeWeightings[i][j]);
 				}
+				System.out.print(" | Value: [");
+				double[] add = vars.getWrite().get(i).getAdd();
+				for (int j = 0; j < add.length; j++)
+					System.out.printf("%.4f, ", add[j]);
+				System.out.print("] ");
+				System.out.println("Interp: " + vars.getWrite().get(i).getInterpolation());
 			}
 			
 			for (int i = 0; i < readWeightings.length; i++){
@@ -77,14 +94,13 @@ public class Replay {
 				for (int j = 0; j < readWeightings[i].length;j++){
 					System.out.printf("%.2f ", readWeightings[i][j]);
 				}
-				System.out.println();
+				System.out.print(" | Value: [");
+				for (int j = 0; j < tm.getM(); j++){
+					System.out.printf("%.4f, ",result[j + i * tm.getM()]);
+				}
+				System.out.println("]");
 			}
 			
-			System.out.println("Result:");
-			for (int i = 0; i < result.length; i++){
-				System.out.print(result[i] + " ");
-			}
-			System.out.println();
 			
 		}
 	}
