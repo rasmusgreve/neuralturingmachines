@@ -196,7 +196,7 @@ public class TuringMachine {
 		return result;
 	}
 
-	private double cosineSim(double[] key, double[] inMemory) {
+	public static double cosineSim(double[] key, double[] inMemory) {
 		//0 test
 		boolean allZeros = true;
 		for (double d : key) if (d != 0) allZeros = false;
@@ -206,7 +206,9 @@ public class TuringMachine {
 		ArrayRealVector vecA = new ArrayRealVector(key);
 		ArrayRealVector vecB = new ArrayRealVector(inMemory);
 		
-		return vecA.dotProduct(vecB) / vecA.getNorm() * vecB.getNorm();
+		double similarity = vecA.dotProduct(vecB) / (vecA.getNorm() * vecB.getNorm());
+		
+		return similarity;
 	}
 
 	public static class HeadVariables {
