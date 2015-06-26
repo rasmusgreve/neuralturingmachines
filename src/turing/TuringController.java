@@ -8,7 +8,7 @@ import fitness.Utilities;
 
 public class TuringController extends BaseController {
 
-	private TuringMachine tm;
+	protected TuringMachine tm;
 
 	public TuringController(Properties props, Simulator sim) {
 		super(props,sim);

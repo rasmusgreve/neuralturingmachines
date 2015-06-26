@@ -143,6 +143,27 @@ public class TuringMachine {
 		return result;
 	}
 	
+	public double[][] getReadWeightings() {
+		return readWeightings;
+	}
+
+	public double[][] getWriteWeightings() {
+		return writeWeightings;
+	}
+	
+	public ArrayList<double[]> getTape(){
+		return tape;
+	}
+	
+	public int getM(){
+		return m;
+	}
+	
+	public int getN(){
+		return n;
+	}
+	
+	
 	// Wrapper of variables for heads.
 	
 	private double[] weighting(Head current, double[] oldWeight) {

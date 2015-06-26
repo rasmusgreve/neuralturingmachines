@@ -16,10 +16,10 @@ import domain.Simulator;
  */
 public abstract class BaseController implements Controller {
 	
-	private Simulator sim;
-	private int inputTotal;
-	private int maxSteps;
-	private int iterations;
+	protected Simulator sim;
+	protected int inputTotal;
+	protected int maxSteps;
+	protected int iterations;
 
 	public BaseController(Properties props, Simulator sim){
 		this.sim = sim;
@@ -53,7 +53,6 @@ public abstract class BaseController implements Controller {
 				double[] input = new double[inputTotal];
 				Utilities.copy(simOutput,input,0);
 				Utilities.copy(controllerOutput,input,simOutput.length);
-				
 				// 2: Activate
 				double[] nnOutput = nn.next(input);
 				
