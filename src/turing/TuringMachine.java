@@ -8,6 +8,12 @@ import org.apache.commons.math3.linear.*;
 import fitness.Utilities;
 import turing.TuringMachine.HeadVariables.Head;
 
+/**
+ * The Turing Machine for integration with ANNs as described
+ * by Graves et.al.
+ * @author Emil
+ *
+ */
 public class TuringMachine {
 	
 	private ArrayList<double[]> tape;
@@ -19,6 +25,14 @@ public class TuringMachine {
 	private int readHeads;
 	private int writeHeads;
 
+	/**
+	 * Instantiating the TM with the necessary parameters.
+	 * @param n The number of memory locations in the FINITE tape.
+	 * @param m The length of the memory at each location.
+	 * @param readHeads The number of read heads in the TM.
+	 * @param writeHeads The number of write heads in the TM.
+	 * @param shiftLength The maximum distance you can jump with shifting.
+	 */
 	public TuringMachine(int n, int m, int readHeads, int writeHeads, int shiftLength){
 		this.n = n;
 		this.m = m;
@@ -29,6 +43,9 @@ public class TuringMachine {
 		this.reset();
 	}
 	
+	/**
+	 * Reset the TM to its default state.
+	 */
 	public void reset() {
 		// Initialize memory tape
 		tape = new ArrayList<double[]>(n);
@@ -48,14 +65,27 @@ public class TuringMachine {
 		}
 	}
 	
+	/**
+	 * Gets the number of read heads specified in initialization.
+	 * @return
+	 */
 	public int getReadHeadCount() {
 		return readHeads;
 	}
 	
+	/**
+	 * Gets the number of write heads specified in initialization.
+	 * @return
+	 */
 	public int getWriteHeadCount() {
 		return writeHeads;
 	}
 
+	/**
+	 * Gets the read of the default state.
+	 * @return An array for each read head
+	 * with an array of the memory location size (M).
+	 */
 	public double[][] getDefaultRead() {
 		double[][] result = new double[readWeightings.length][];
 		for(int i = 0; i < readWeightings.length; i++) {
@@ -64,6 +94,15 @@ public class TuringMachine {
 		return result;
 	}
 	
+	/**
+	 * Translates a flat array of values to the default
+	 * positions in the HeadVariables object matching the
+	 * number of read and write heads.
+	 * @param flatVars The 1d array of variables. First all
+	 * the read heads and then all the write heads in order.
+	 * @return A HeadVariables object with all the values properly
+	 * packed.
+	 */
 	public HeadVariables translateToHeadVars(double[] flatVars){
 		HeadVariables vars = new HeadVariables();
 		int offset = 0;
@@ -91,10 +130,26 @@ public class TuringMachine {
 		return vars;
 	}
 	
+	/**
+	 * Processes the input for the TM and gets all the
+	 * reads out.
+	 * @param flatVars The flat 1d array version of the
+	 * inputs for the TM (i.e. directly from a NN)
+	 * @return An array for each read head with the m
+	 * elements read from the TM.
+	 */
 	public double[][] processInput(double[] flatVars) {
 		return processInput(translateToHeadVars(flatVars));
 	}
 	
+	/**
+	 * Processes the input for the TM and gets all the
+	 * reads out.
+	 * @param vars The input for the different heads in
+	 * the TM.
+	 * @return An array for each read head with the m
+	 * elements read from the TM.
+	 */
 	public double[][] processInput(HeadVariables vars){
 		if(vars.getRead().size() != getReadHeadCount() 
 				|| vars.getWrite().size() != getWriteHeadCount())
@@ -145,6 +200,8 @@ public class TuringMachine {
 		return result;
 	}
 	
+	// Maybe not necessary
+	
 	public double[][] getReadWeightings() {
 		return readWeightings;
 	}
@@ -165,7 +222,6 @@ public class TuringMachine {
 		return n;
 	}
 	
-	
 	// Wrapper of variables for heads.
 	
 	private double[] weighting(Head current, double[] oldWeight) {
@@ -174,7 +230,7 @@ public class TuringMachine {
 		// Focusing by Content
 		double sum = 0.0;
 		for(int i = 0; i < n; i++){
-			double similarity =  Utilities.simpleSimilarity(current.getKey(),tape.get(i)); //cosineSim(
+			double similarity =  Utilities.emilarity(current.getKey(),tape.get(i)); //cosineSim(	 // Utilities.euclideanDistance(
 			result[i] = Math.exp(current.getKeyStrength() * similarity);
 			sum += result[i];
 		}
