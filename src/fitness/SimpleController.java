@@ -12,9 +12,9 @@ import domain.Simulator;
  * @author Emil
  *
  */
-public class SimController extends BaseController {
+public class SimpleController extends BaseController {
 
-	public SimController(Properties props, Simulator sim) {
+	public SimpleController(Properties props, Simulator sim) {
 		super(props, sim);
 	}
 

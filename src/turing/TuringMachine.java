@@ -2,11 +2,12 @@ package turing;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
-import org.apache.commons.math3.linear.*;
+import org.apache.commons.math3.linear.ArrayRealVector;
 
-import fitness.Utilities;
 import turing.TuringMachine.HeadVariables.Head;
+import fitness.Utilities;
 
 /**
  * The Turing Machine for integration with ANNs as described
@@ -24,6 +25,9 @@ public class TuringMachine {
 	private int shiftLength;
 	private int readHeads;
 	private int writeHeads;
+	
+	private boolean recordTimeSteps = false;
+	private TuringTimeStep currentStep;
 
 	/**
 	 * Instantiating the TM with the necessary parameters.
@@ -41,6 +45,10 @@ public class TuringMachine {
 		this.shiftLength = shiftLength;
 		
 		this.reset();
+	}
+	
+	public void setRecordTimeSteps(boolean recordTimeSteps){
+		this.recordTimeSteps = true;
 	}
 	
 	/**
@@ -197,11 +205,21 @@ public class TuringMachine {
 			result[i] = readM;
 		}
 		
+		if (recordTimeSteps){
+			currentStep = new TuringTimeStep();
+			for (int i = 0; i < getWriteHeadCount(); i++){
+				currentStep.getWriteHeads().add(new HeadTimeStep(writeWeightings[i], vars.getWrite().get(i).getAdd()));
+			}
+			
+			for (int i = 0; i < getReadHeadCount(); i++){
+				currentStep.getReadHeads().add(new HeadTimeStep(readWeightings[i], result[i]));
+			}
+		}
+		
 		return result;
 	}
-	
-	// Maybe not necessary
-	
+
+	/*
 	public double[][] getReadWeightings() {
 		return readWeightings;
 	}
@@ -221,7 +239,42 @@ public class TuringMachine {
 	public int getN(){
 		return n;
 	}
+	*/
+	public static class TuringTimeStep{
+		
+		List<HeadTimeStep> writeHeads = new ArrayList<HeadTimeStep>();
+		List<HeadTimeStep> readHeads = new ArrayList<HeadTimeStep>();
+		//TODO: Possible store a snapshot of the tape
+		
+		private TuringTimeStep(){}
+
+		public List<HeadTimeStep> getWriteHeads() {
+			return writeHeads;
+		}
+
+		public List<HeadTimeStep> getReadHeads() {
+			return readHeads;
+		}
+		
+		
+	}
 	
+	public static class HeadTimeStep{
+		public final double[] weights;
+		public final double[] value;
+		
+		public HeadTimeStep(double[] weights, double[] value){
+			this.weights = new double[weights.length];
+			System.arraycopy(weights, 0, this.weights, 0, weights.length);
+			this.value = new double[value.length];
+			System.arraycopy(value, 0, this.value, 0, value.length);
+		}
+	}
+	
+	public TuringTimeStep getLastTimeStep(){
+		return currentStep;
+	}
+
 	// Wrapper of variables for heads.
 	
 	private double[] weighting(Head current, double[] oldWeight) {

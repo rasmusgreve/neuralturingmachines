@@ -49,6 +49,12 @@ public abstract class BaseController implements Controller {
 			
 			int step = 0;
 			while(!sim.isTerminated() && step < maxSteps){
+				double[] nnOutput = activateNeuralNetwork(nn, simOutput, controllerOutput);
+				
+				simOutput = getSimulationResponse(Arrays.copyOfRange(nnOutput, 0, sim.getInputCount()));
+				controllerOutput = getControllerResponse(Arrays.copyOfRange(nnOutput, sim.getInputCount(), nnOutput.length));
+				
+				/*
 				// 1: Take input from sim and controller
 				double[] input = new double[inputTotal];
 				Utilities.copy(simOutput,input,0);
@@ -59,7 +65,7 @@ public abstract class BaseController implements Controller {
 				// 3: Take output of nn to sim and controller respectively
 				simOutput = sim.performAction(Arrays.copyOfRange(nnOutput, 0, sim.getInputCount()));
 				controllerOutput = this.processOutputs(Arrays.copyOfRange(nnOutput, sim.getInputCount(), nnOutput.length));
-				
+				*/
 				step++;
 			}
 
@@ -68,6 +74,22 @@ public abstract class BaseController implements Controller {
 		
 		//System.out.println("Score: "+totalScore);
 		return Math.max(0, totalScore / iterations);
+	}
+	
+	protected double[] activateNeuralNetwork(Activator nn, double[] domainInput, double[] controllerInput){
+		double[] input = new double[inputTotal];
+		Utilities.copy(domainInput,input,0);
+		Utilities.copy(controllerInput,input,domainInput.length);
+		
+		return nn.next(input);
+	}
+	
+	protected double[] getSimulationResponse(double[] neuralNetworkDomainOutput){
+		return sim.performAction(neuralNetworkDomainOutput);
+	}
+	
+	protected double[] getControllerResponse(double[] neuralNetworkControllerOutput){
+		return processOutputs(neuralNetworkControllerOutput);
 	}
 	
 	public abstract double[] processOutputs(double[] fromNN);

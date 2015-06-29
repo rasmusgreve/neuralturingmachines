@@ -20,7 +20,7 @@ import org.xml.sax.helpers.XMLReaderFactory;
  * @author Rasmus
  *
  */
-public class Grapher {
+public class ChromosomeGrapher {
 
 	private final static String outputFolder = "graphs";
 	private final static String chromosomeFolder = "anji_2_01/db/chromosome";
