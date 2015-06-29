@@ -1,9 +1,14 @@
 package run;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.jgap.Chromosome;
 
 import turing.TuringController;
-import turing.TuringMachine.HeadVariables;
+import turing.TuringMachine.TuringTimeStep;
 
 import com.anji.integration.Activator;
 import com.anji.integration.ActivatorTranscriber;
@@ -14,14 +19,27 @@ import com.anji.util.Properties;
 import domain.RPSSimulator;
 import domain.Simulator;
 import fitness.Controller;
+import graph.ReplayVisualizer;
 
 public class Replay {
 
 	public static void main(String[] args) throws Exception {
-		String chromosomeId = "11253";
+		String chromosomeId, propertiesFile;
+		if (args.length == 0){
+			BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+			System.out.println("Properties filename: ");
+			propertiesFile = br.readLine();
+			System.out.println("Chromosome ID: ");
+			chromosomeId = br.readLine();
+		}
+		else
+		{
+			propertiesFile = args[0];
+			chromosomeId = args[1];
+		}
 		
 		//Setup
-		Properties props = new Properties("turingmachine.properties");
+		Properties props = new Properties(propertiesFile); // "turingmachine.properties"
 		props.setProperty("base.dir", "./anji_2_01/db");
 		
 		//Loading chromosome
@@ -32,31 +50,106 @@ public class Replay {
 		//Setup activator
 		ActivatorTranscriber activatorFactory = (ActivatorTranscriber) props.singletonObjectProperty(ActivatorTranscriber.class);
 		Activator activator = activatorFactory.newActivator(chrom);
-
+	
+		
 		//Simulator and controller
 		Simulator sim = new RPSSimulator(props);
-		Controller con = new TuringControllerProxy(props, sim);
+		TuringControllerProxy con = new TuringControllerProxy(props, sim);
 
 		int fitness = con.evaluate(activator);
+		new ReplayVisualizer().show(con.getSteps());
 		System.out.println("Fitness: " + fitness);
-
+	}
+	
+	private static void printActivation(Activator activator, double[] activation){
+		System.out.println("Activating with " + arrayString(activation));
+		System.out.println("Result: " + arrayString(activator.next(activation)));
+	}
+	
+	private static String arrayString(double[] arr){
+		StringBuilder sb = new StringBuilder("[");
+		for (double d : arr)
+			sb.append(d).append(" ,");
+		return sb.substring(0, sb.length()-2) + "]";
+	}
+	
+	public static class TimeStep{
+		TuringTimeStep turingStep;
+		double[] domainInput;
+		//double[] domainOuput; //TODO: Might be interesting at some point
+		public TuringTimeStep getTuringStep() {
+			return turingStep;
+		}
+		public void setTuringStep(TuringTimeStep turingStep) {
+			this.turingStep = turingStep;
+		}
+		public double[] getDomainInput() {
+			return domainInput;
+		}
+		public void setDomainInput(double[] domainInput) {
+			this.domainInput = domainInput;
+		}
+		
 	}
 	
 	private static class TuringControllerProxy extends TuringController{
 
+		List<TimeStep> timeSteps = new ArrayList<TimeStep>();
+		
+		TimeStep currentTimeStep = new TimeStep();
+		
 		public TuringControllerProxy(Properties props, Simulator sim) {
 			super(props, sim);
-			iterations = 1;
+			iterations = 1; //Overwrite iteration count when replaying, since we don't care about properties
+			tm.setRecordTimeSteps(true);
+		}
+		
+		public List<TimeStep> getSteps(){
+			return timeSteps;
 		}
 		
 		
 		@Override
-		public int evaluate(Activator nn) {
-			int result = super.evaluate(nn);
+		public double[] processOutputs(double[] fromNN) {
+			double[] result = super.processOutputs(fromNN);
+			
+			//Catch tm step
+			currentTimeStep.setTuringStep(tm.getLastTimeStep());
+			
+			//Store and get ready for next step
+			timeSteps.add(currentTimeStep);
+			currentTimeStep = new TimeStep();
 			
 			return result;
+		}
+		
+		@Override
+		protected double[] activateNeuralNetwork(Activator nn, double[] domainInput, double[] controllerInput) {
+			double[] neuralNetworkOutput = super.activateNeuralNetwork(nn, domainInput, controllerInput);
+			
+			currentTimeStep.setDomainInput(domainInput); //Catch domain input
+			
+			return neuralNetworkOutput;
 		};
 		
+		/*
+		@Override
+		protected double[] getSimulationResponse(double[] neuralNetworkDomainOutput) {
+			double[] simulationResponse = super.getSimulationResponse(neuralNetworkDomainOutput);
+			
+			
+			return simulationResponse;
+		};
+		
+		@Override
+		protected double[] getControllerResponse(double[] neuralNetworkControllerOutput) {
+			double[] controllerResponse = getControllerResponse(neuralNetworkControllerOutput);
+			
+			return controllerResponse;
+		};
+		*/
+		
+		/*
 		@Override
 		public double[] processOutputs(double[] fromNN) {
 			double[] result = super.processOutputs(fromNN);
@@ -77,9 +170,16 @@ public class Replay {
 			System.out.println("-------- Activation ----------");
 			
 			for (int i = 0; i < writeWeightings.length; i++){
-				System.out.printf("Write head #%d focus: ", i);
+				System.out.printf("Write head #%d focus: \n", i);
 				for (int j = 0; j < writeWeightings[i].length;j++){
 					System.out.printf("%.2f ", writeWeightings[i][j]);
+				}
+				System.out.println();
+				for (int mi = 0; mi < tm.getM(); mi++){
+					for (int j = 0; j < tm.getTape().size();j++){
+						System.out.printf("%.2f ", tm.getTape().get(j)[mi]);
+					}
+					System.out.println();
 				}
 				System.out.print(" | Value: [");
 				double[] add = vars.getWrite().get(i).getAdd();
@@ -103,6 +203,7 @@ public class Replay {
 			
 			
 		}
+		*/
 	}
 	
 }
