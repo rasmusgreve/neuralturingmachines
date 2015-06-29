@@ -23,6 +23,7 @@ public class RPSSimulator implements Simulator {
 	private int chosenAction; // chosen at the beginning
 	private int score;
 	private int steps;
+	private Random random = new Random();
 	
 	public RPSSimulator(Properties props){
 		steps = props.getIntProperty("controller.steps.max");
@@ -49,7 +50,7 @@ public class RPSSimulator implements Simulator {
 		int curScore = WINNER[Utilities.maxPos(action)][chosenAction];
 
 		score += curScore;
-		return new double[]{(curScore + 1) / 2.0}; // 0 is losing, ½ is tie, 1 is winning.
+		return new double[]{(curScore + 1) / 2.0}; // 0 is losing, ï¿½ is tie, 1 is winning.
 	}
 
 	@Override
@@ -70,6 +71,6 @@ public class RPSSimulator implements Simulator {
 	@Override
 	public void reset() {
 		score = 0;
-		chosenAction = new Random().nextInt(3);
+		chosenAction = random.nextInt(3);
 	}
 }
