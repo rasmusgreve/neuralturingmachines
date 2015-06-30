@@ -25,7 +25,7 @@ public class RPSSimulator implements Simulator {
 
 	private int score;
 	private int stepsTotal;
-	private Random rand = new Random();
+	private Random rand;
 	private String mode;
 	
 	private int[] sequence;
@@ -37,6 +37,7 @@ public class RPSSimulator implements Simulator {
 		stepsTotal = props.getIntProperty("controller.steps.max");
 		sequenceLength = props.getIntProperty("simulator.rps.sequence.length");
 		mode = props.getProperty("simulator.rps.mode");
+		rand = new Random(props.getIntProperty("random.seed"));
 		reset();
 	}
 	

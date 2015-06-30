@@ -1,6 +1,7 @@
 package domain;
 
 import java.awt.Color;
+import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -9,14 +10,18 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-import javax.imageio.ImageIO;
+import static domain.TMaze.MAP_TYPE.*;
 
-import org.apache.commons.math3.util.Pair;
+import javax.imageio.ImageIO;
 
 import com.anji.util.Properties;
 
 public class TMaze implements Simulator {
 	
+	private static final double SPEED = 0.1; // How many tiles you can move in one step
+	private static final int SENSOR_CUTOFF = 3; // The maximum distance of the sensors (wherefrom it will have a value of 1.0)
+	private static final double[] SENSOR_ANGLES = new double[]{-Math.PI / 4.0, 0, Math.PI / 4.0};
+ 
 	// Random things
 	private Random rand;
 	
@@ -25,10 +30,16 @@ public class TMaze implements Simulator {
 	private int[] startPos;
 	private int highReward, lowReward;
 	
+	// Distance helpers
+	private List<double[]> walls; // int[x1,y1,x2,y2]
+	
 	// Live fields
 	private double[] location;
 	private double angle;
 	private int[] goal;
+	
+	private int stepCounter;
+	private int finished = -1;
 	
 	public TMaze(Properties props) {
 		rand = new Random(props.getIntProperty("random.seed"));
@@ -37,28 +48,26 @@ public class TMaze implements Simulator {
 		
 		String mapFile = props.getProperty("simulator.tmaze.map");
 		loadMap(mapFile);
+		loadWalls();
 	}
 
-	private void loadMap(String mapFile) {
-		try {
-			BufferedImage b = ImageIO.read(new File(mapFile));
-			map = new MazeMap(b.getWidth(),b.getHeight());
-			
-			// load map
-			for(int x = 0; x < b.getWidth(); x++) {
-				for(int y = 0; y < b.getHeight(); y++) {
-					MAP_TYPE type = MAP_TYPE.valueOf(b.getRGB(x, y));
-					map.setType(x, y, type);
-					
-					if(type == MAP_TYPE.start)
-						this.startPos = new int[]{x,y};
+	private void loadWalls() {
+		walls = new ArrayList<double[]>();
+		
+		for(int x = -1; x < map.getWidth(); x++) {
+			for(int y = -1; y < map.getHeight(); y++) {
+				// Check upper and right side
+				MAP_TYPE cur = map.getType(x, y);
+				if(cur == wall) { // Only Check walls
+					MAP_TYPE upper = map.getType(x,y+1);
+					MAP_TYPE right = map.getType(x+1,y);
+					if(upper != wall) walls.add(new double[]{x,y+1,x+1,y+1});
+					if(right != wall) walls.add(new double[]{x+1,y,x+1,y+1});
 				}
 			}
-			
-		} catch (IOException e) {
-			throw new RuntimeException(e); // There is no recovery from this
 		}
 	}
+	
 
 	@Override
 	public int getInputCount() {
@@ -75,6 +84,8 @@ public class TMaze implements Simulator {
 		location = new double[]{startPos[0] + 0.5, startPos[1] + 0.5};
 		angle = Math.PI / 2.0;
 		this.goal = null;
+		stepCounter = 0;
+		finished = -1;
 		moveGoal();
 	}
 
@@ -87,8 +98,13 @@ public class TMaze implements Simulator {
 	public double[] performAction(double[] action) {
 		moveAgent();
 		
+		if(isWithinGoal())
+			finished = stepCounter;
+		stepCounter++; // next round
+		
 		return getObservation();
 	}
+
 
 	@Override
 	public int getCurrentScore() {
@@ -108,12 +124,108 @@ public class TMaze implements Simulator {
 	// HELPER METHODS
 	
 	private void moveAgent() {
-		// TODO Auto-generated method stub
+		double dx = Math.cos(angle) * SPEED;
+		double dy = Math.sin(angle) * SPEED;
+		location[0] += dx;
+		location[1] += dy;
+	}
+	
+	private double[] getObservation() {
+		double[] result = new double[SENSOR_ANGLES.length];
+		
+		for(int i = 0; i < result.length; i++) {
+			double sensorAngle = angle + SENSOR_ANGLES[i];
+			
+			// calculate intersection to each 
+			List<double[]> wallIntersects = intersections(new double[]{location[0] ,location[1]
+							,location[0] + Math.cos(sensorAngle) ,location[1] + Math.sin(sensorAngle)}
+					,walls);
+			double closest = lowestDistance(location,wallIntersects);
+			
+			result[i] = Math.min(SENSOR_CUTOFF, closest) / SENSOR_CUTOFF;
+		}
+		
+		return result;
+	}
+	
+	private double lowestDistance(double[] point,
+			List<double[]> points) {
+		double lowest = Double.MAX_VALUE;
+		for(double[] otherPoint : points) {
+			double dist = Math.pow(point[0] - otherPoint[0],2) + Math.pow(point[1] - otherPoint[1],2);
+			if(dist < lowest)
+				lowest = dist;
+		}
+		return Math.sqrt(lowest);
+	}
+
+	private List<double[]> intersections(double[] fromLine, List<double[]> toSegments) {
+		List<double[]> result = new ArrayList<>();
+		for(double[] seg : toSegments) {
+			double[] intersect = lineIntersect(fromLine,seg);
+			if(intersect != null && isBetween(intersect,seg))
+				result.add(intersect);
+		}
+		return result;
+	}
+
+	private double[] lineIntersect(double[] first, double[] second) {
+		double x1 = first[0];
+		double y1 = first[1];
+		double x2 = first[2];
+		double y2 = first[3];
+		double x3 = second[0];
+		double y3 = second[1];
+		double x4 = second[2];
+		double y4 = second[3];
+		double denom = (y4 - y3) * (x2 - x1) - (x4 - x3) * (y2 - y1);
+		if (denom == 0.0) { // Lines are parallel.
+			return null;
+		}
+		double ua = ((x4 - x3) * (y1 - y3) - (y4 - y3) * (x1 - x3)) / denom;
+		double ub = ((x2 - x1) * (y1 - y3) - (y2 - y1) * (x1 - x3)) / denom;
+		if (ua >= 0.0f && ua <= 1.0f && ub >= 0.0f && ub <= 1.0f) {
+			// Get the intersection point.
+			return new double[]{x1 + ua * (x2 - x1), y1 + ua * (y2 - y1)};
+		}
+
+		return null;
+	}
+	
+	private boolean isBetween(double[] point, double[] segment) {
+		return point[0] >= Math.min(segment[0],segment[2])
+				&& point[0] <= Math.max(segment[0], segment[2])
+				&& point[1] >= Math.min(segment[1],segment[3])
+				&& point[1] <= Math.max(segment[1], segment[3]);
+	}
+
+	private void loadMap(String mapFile) {
+		try {
+			BufferedImage b = ImageIO.read(new File(mapFile));
+			map = new MazeMap(b.getWidth(),b.getHeight());
+			
+			// load map
+			for(int x = 0; x < b.getWidth(); x++) {
+				for(int y = 0; y < b.getHeight(); y++) {
+					MAP_TYPE type = MAP_TYPE.valueOf(b.getRGB(x, y));
+					map.setType(x, b.getHeight()-1-y, type);
+					
+					if(type == MAP_TYPE.start)
+						this.startPos = new int[]{x,y};
+				}
+			}
+			
+		} catch (IOException e) {
+			throw new RuntimeException(e); // There is no recovery from this
+		}
+	}
+	
+	private boolean isWithinGoal() {
+		return map.getType(location[0], location[1]) == MAP_TYPE.goal; // should maybe be stricter
 	}
 	
 	private boolean finishedLastStep() {
-		// TODO Auto-generated method stub
-		return false;
+		return stepCounter == finished + 1;
 	}
 
 	private boolean isInWall() {
@@ -121,13 +233,10 @@ public class TMaze implements Simulator {
 	}
 	
 	private int getReward() {
-		// TODO AT CURRENT LOCATION
+		if(map.getType(location[0], location[1]) == MAP_TYPE.goal) {
+			return Arrays.equals(getTile(location), goal) ? highReward : lowReward;
+		}
 		return 0;
-	}
-	
-	private double[] getObservation() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 	
 	private void moveGoal() {
@@ -137,9 +246,13 @@ public class TMaze implements Simulator {
 		goal = Arrays.equals(goals.get(roll), goal) ? goals.get(goals.size()-1) : goals.get(roll);
 	}
 	
+	private int[] getTile(double[] location) {
+		return new int[]{(int)location[0],(int)location[1]};
+	}
+	
 	// HELPER CLASSES & ENUMS
 	
-	private enum MAP_TYPE { 
+	enum MAP_TYPE { 
 		empty(new Color(255,255,255).getRGB()), 
 		wall(new Color(0,0,0).getRGB()), 
 		start(new Color(0,0,255).getRGB()), 
@@ -171,12 +284,23 @@ public class TMaze implements Simulator {
 			}
 		}
 		
+		public int getHeight() {
+			return map[0].length;
+		}
+
+		public int getWidth() {
+			return map.length;
+		}
+
 		public void setType(int x, int y, MAP_TYPE type) {
 			map[x][y] = type;
 		}
 		
 		public MAP_TYPE getType(int x, int y) {
-			return map[x][y];
+			if(x <= getWidth() && y <= getHeight() && x > -1 && y > -1)
+				return map[x][y];
+			
+			return MAP_TYPE.wall; // everything outside is wall
 		}
 		
 		public MAP_TYPE getType(double x, double y) {
