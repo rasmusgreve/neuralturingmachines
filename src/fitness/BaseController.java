@@ -54,18 +54,6 @@ public abstract class BaseController implements Controller {
 				simOutput = getSimulationResponse(Arrays.copyOfRange(nnOutput, 0, sim.getInputCount()));
 				controllerOutput = getControllerResponse(Arrays.copyOfRange(nnOutput, sim.getInputCount(), nnOutput.length));
 				
-				/*
-				// 1: Take input from sim and controller
-				double[] input = new double[inputTotal];
-				Utilities.copy(simOutput,input,0);
-				Utilities.copy(controllerOutput,input,simOutput.length);
-				// 2: Activate
-				double[] nnOutput = nn.next(input);
-				
-				// 3: Take output of nn to sim and controller respectively
-				simOutput = sim.performAction(Arrays.copyOfRange(nnOutput, 0, sim.getInputCount()));
-				controllerOutput = this.processOutputs(Arrays.copyOfRange(nnOutput, sim.getInputCount(), nnOutput.length));
-				*/
 				step++;
 			}
 
