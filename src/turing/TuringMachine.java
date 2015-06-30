@@ -246,7 +246,7 @@ public class TuringMachine {
 		List<HeadTimeStep> readHeads = new ArrayList<HeadTimeStep>();
 		//TODO: Possible store a snapshot of the tape
 		
-		private TuringTimeStep(){}
+		public TuringTimeStep(){}
 
 		public List<HeadTimeStep> getWriteHeads() {
 			return writeHeads;
