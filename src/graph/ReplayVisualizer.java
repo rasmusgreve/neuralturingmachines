@@ -13,16 +13,17 @@ import turing.TuringMachine.HeadTimeStep;
 
 public class ReplayVisualizer {
 
-	public final static int pixelSize = 10;
+	public final static int pixelSize = 20;
 	
 	public void show(List<TimeStep> steps){
 		JFrame frame = new JFrame();
-		frame.setSize(pixelSize*steps.size(), 500);
+		frame.setSize(pixelSize*(steps.size()+1), 500);
 		frame.setVisible(true);
 		
 		MyComponent comp = new MyComponent();
 		comp.setSteps(steps);
 		frame.add(comp);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 	}
 	
@@ -39,15 +40,23 @@ public class ReplayVisualizer {
 		@Override
 		public void paint(Graphics arg0) {
 			Graphics2D g = (Graphics2D) arg0;
+			
+			//Clear
 			g.setColor(Color.white);
-			g.fillRect(0,0, 500, 500);
+			g.fillRect(0, 0, 500, 500);
+			
 			for (int timeStep = 0; timeStep < steps.size(); timeStep++){
 				TimeStep step = steps.get(timeStep);
 				
 				HeadTimeStep hst = step.getTuringStep().getWriteHeads().get(0);
 				for (int memoryLocation = 0; memoryLocation < hst.weights.length; memoryLocation++){
 					double weight = hst.weights[memoryLocation];
-					int gsv = (int)(weight*255);
+					
+					//Apply gamma correction to improve readability
+					double gamma = .43;
+					double corrected = Math.pow(weight, gamma);
+					
+					int gsv = (int)(corrected*255);
 					g.setColor(new Color(gsv, gsv, gsv));
 					g.fillRect(timeStep*pixelSize, memoryLocation*pixelSize, pixelSize, pixelSize);
 				}

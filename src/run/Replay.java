@@ -58,7 +58,6 @@ public class Replay {
 
 		int fitness = con.evaluate(activator);
 		new ReplayVisualizer().show(con.getSteps());
-		System.out.println("Fitness: " + fitness);
 	}
 	
 	private static void printActivation(Activator activator, double[] activation){
