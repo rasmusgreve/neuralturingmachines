@@ -1,8 +1,8 @@
-package fitness;
+package dk.itu.ejuuragr.fitness;
 
 import com.anji.integration.Activator;
 
-import domain.Simulator;
+import dk.itu.ejuuragr.domain.Simulator;
 
 /**
  * Is responsible for progressing the neural network

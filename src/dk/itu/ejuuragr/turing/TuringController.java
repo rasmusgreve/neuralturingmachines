@@ -1,10 +1,10 @@
-package turing;
+package dk.itu.ejuuragr.turing;
 
 import com.anji.util.Properties;
 
-import domain.Simulator;
-import fitness.BaseController;
-import fitness.Utilities;
+import dk.itu.ejuuragr.domain.Simulator;
+import dk.itu.ejuuragr.fitness.BaseController;
+import dk.itu.ejuuragr.fitness.Utilities;
 
 /**
  * A Controller which adds a Turing Machine to the 

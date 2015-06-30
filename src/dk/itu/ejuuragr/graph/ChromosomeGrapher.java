@@ -1,4 +1,4 @@
-package graph;
+package dk.itu.ejuuragr.graph;
 
 import java.io.BufferedReader;
 import java.io.File;

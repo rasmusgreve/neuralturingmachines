@@ -1,4 +1,4 @@
-package graph;
+package dk.itu.ejuuragr.graph;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -8,8 +8,8 @@ import java.util.List;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 
-import run.Replay.TimeStep;
-import turing.TuringMachine.HeadTimeStep;
+import dk.itu.ejuuragr.run.Replay.TimeStep;
+import dk.itu.ejuuragr.turing.TuringMachine.HeadTimeStep;
 
 public class ReplayVisualizer {
 

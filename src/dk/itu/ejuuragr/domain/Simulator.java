@@ -1,4 +1,4 @@
-package domain;
+package dk.itu.ejuuragr.domain;
 
 /**
  * A Simulator should have a constructor taking a single Properties object.

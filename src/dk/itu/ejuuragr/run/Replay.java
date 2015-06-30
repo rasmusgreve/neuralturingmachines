@@ -1,4 +1,4 @@
-package run;
+package dk.itu.ejuuragr.run;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -7,19 +7,18 @@ import java.util.List;
 
 import org.jgap.Chromosome;
 
-import turing.TuringController;
-import turing.TuringMachine.TuringTimeStep;
-
 import com.anji.integration.Activator;
 import com.anji.integration.ActivatorTranscriber;
 import com.anji.persistence.FilePersistence;
 import com.anji.util.DummyConfiguration;
 import com.anji.util.Properties;
 
-import domain.RPSSimulator;
-import domain.Simulator;
-import fitness.Controller;
-import graph.ReplayVisualizer;
+import dk.itu.ejuuragr.domain.RPSSimulator;
+import dk.itu.ejuuragr.domain.Simulator;
+import dk.itu.ejuuragr.fitness.Controller;
+import dk.itu.ejuuragr.graph.ReplayVisualizer;
+import dk.itu.ejuuragr.turing.TuringController;
+import dk.itu.ejuuragr.turing.TuringMachine.TuringTimeStep;
 
 public class Replay {
 

@@ -1,4 +1,4 @@
-package turing;
+package dk.itu.ejuuragr.turing;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -6,8 +6,8 @@ import java.util.List;
 
 import org.apache.commons.math3.linear.ArrayRealVector;
 
-import turing.TuringMachine.HeadVariables.Head;
-import fitness.Utilities;
+import dk.itu.ejuuragr.fitness.Utilities;
+import dk.itu.ejuuragr.turing.TuringMachine.HeadVariables.Head;
 
 /**
  * The Turing Machine for integration with ANNs as described

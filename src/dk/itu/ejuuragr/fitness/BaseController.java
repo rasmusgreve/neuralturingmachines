@@ -1,12 +1,12 @@
-package fitness;
+package dk.itu.ejuuragr.fitness;
 
 import java.util.Arrays;
 
 import com.anji.integration.Activator;
 import com.anji.util.Properties;
 
-import fitness.Utilities;
-import domain.Simulator;
+import dk.itu.ejuuragr.domain.Simulator;
+import dk.itu.ejuuragr.fitness.Utilities;
 
 /**
  * Abstracts the flow of evaluating away from subclasses

@@ -1,9 +1,9 @@
-package tests;
+package dk.itu.ejuuragr.tests;
 
 import org.junit.*;
 
-import turing.TuringMachine;
-import turing.TuringMachine.HeadVariables;
+import dk.itu.ejuuragr.turing.TuringMachine;
+import dk.itu.ejuuragr.turing.TuringMachine.HeadVariables;
 
 public class TuringMachineTest {
 

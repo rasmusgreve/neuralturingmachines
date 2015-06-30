@@ -1,4 +1,4 @@
-package domain;
+package dk.itu.ejuuragr.domain;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
@@ -9,7 +9,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-import static domain.TMaze.MAP_TYPE.*;
+import static dk.itu.ejuuragr.domain.TMaze.MAP_TYPE.*;
 
 import javax.imageio.ImageIO;
 

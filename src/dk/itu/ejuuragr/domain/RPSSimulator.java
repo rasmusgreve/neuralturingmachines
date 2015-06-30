@@ -1,11 +1,11 @@
-package domain;
+package dk.itu.ejuuragr.domain;
 
 import java.util.Arrays;
 import java.util.Random;
 
 import com.anji.util.Properties;
 
-import fitness.Utilities;
+import dk.itu.ejuuragr.fitness.Utilities;
 
 /**
  * A simpe sample simulator which plays Rock, Paper,

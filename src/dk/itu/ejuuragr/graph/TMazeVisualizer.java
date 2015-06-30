@@ -1,10 +1,9 @@
-package graph;
-
-import graph.ReplayVisualizer.MyComponent;
+package dk.itu.ejuuragr.graph;
 
 import javax.swing.JFrame;
 
-import domain.TMaze;
+import dk.itu.ejuuragr.domain.TMaze;
+import dk.itu.ejuuragr.graph.ReplayVisualizer.MyComponent;
 
 public class TMazeVisualizer {
 /*

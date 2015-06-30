@@ -1,8 +1,8 @@
-package fitness;
+package dk.itu.ejuuragr.fitness;
 
 import com.anji.util.Properties;
 
-import domain.Simulator;
+import dk.itu.ejuuragr.domain.Simulator;
 
 /**
  * A simple controller which just activates the simulator

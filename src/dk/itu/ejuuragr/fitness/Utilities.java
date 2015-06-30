@@ -1,4 +1,4 @@
-package fitness;
+package dk.itu.ejuuragr.fitness;
 
 import java.util.Arrays;
 
