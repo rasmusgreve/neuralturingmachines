@@ -5,6 +5,12 @@ import java.util.Arrays;
 
 public class Utilities {
 
+	/**
+	 * Takes a 2D array and returns the same elements
+	 * in a 1D array structure.
+	 * @param arrays The 2D array to flatten.
+	 * @return A 1D array of those arrays appended.
+	 */
 	public static double[] flatten(double[][] arrays){
 		int offset = 0;
 		double[] result = new double[totalLength(arrays)];
@@ -15,6 +21,12 @@ public class Utilities {
 		return result;
 	}
 	
+	/**
+	 * Copies everything from fromArray to toArray starting.
+	 * @param fromArray The array to copy every element from.
+	 * @param toArray The array to insert the elements into.
+	 * @param offset The index to start at in the toArray.
+	 */
 	public static void copy(double[] fromArray, double[] toArray, int offset) {
 //		System.out.println(Arrays.toString(fromArray)+", "+Arrays.toString(toArray)+" offset="+offset);
 		System.arraycopy(fromArray,0,toArray,offset,fromArray.length);
@@ -67,6 +79,7 @@ public class Utilities {
 	}
 	
 	/**
+	 * Normalized manhattan distance:
 	 * Compares two vectors and calculates a similarity between them.
 	 * Only works for strictly positive numbers each between 0.0 and 1.0.
 	 * @param v1 the first vector
@@ -74,7 +87,7 @@ public class Utilities {
 	 * @return A number between 0.0 and 1.0 of how similar the two vectors
 	 * are (in the space of each variable being between 0.0 and 1.0).
 	 */
-	public static double simpleSimilarity(double[] v1, double[] v2){
+	public static double emilarity(double[] v1, double[] v2){
 		if(v1.length != v2.length)
 			throw new IllegalArgumentException("The arrays must be of the same length");
 		
@@ -83,6 +96,14 @@ public class Utilities {
 			numerator += Math.abs(v1[i] - v2[i]);
 		
 		return 1.0 - (numerator / v1.length);
+	}
+	
+	public static double euclideanDistance(double[] v1, double[] v2) {
+		double sqSum = 0;
+		for(int i = 0; i < v1.length; i++) {
+			sqSum += Math.pow(v1[i] - v2[i], 2);
+		}
+		return Math.sqrt(sqSum);
 	}
 	
 	/**
@@ -96,14 +117,14 @@ public class Utilities {
 		double[] v4 = new double[]{0,0.25,0.5,0.75,1};
 		double[] v5 = new double[]{1,0.75,0.5,0.25,0};
 		
-		System.out.println(Arrays.toString(v1)+" VS "+Arrays.toString(v2)+": "+simpleSimilarity(v1,v2));
-		System.out.println(Arrays.toString(v1)+" VS "+Arrays.toString(v3)+": "+simpleSimilarity(v1,v3));
-		System.out.println(Arrays.toString(v2)+" VS "+Arrays.toString(v3)+": "+simpleSimilarity(v2,v3));
-		System.out.println(Arrays.toString(v1)+" VS "+Arrays.toString(v1)+": "+simpleSimilarity(v1,v1));
-		System.out.println(Arrays.toString(v3)+" VS "+Arrays.toString(v3)+": "+simpleSimilarity(v3,v3));
-		System.out.println(Arrays.toString(v1)+" VS "+Arrays.toString(v4)+": "+simpleSimilarity(v1,v4));
-		System.out.println(Arrays.toString(v3)+" VS "+Arrays.toString(v4)+": "+simpleSimilarity(v1,v4));
-		System.out.println(Arrays.toString(v4)+" VS "+Arrays.toString(v5)+": "+simpleSimilarity(v4,v5));
-		System.out.println(Arrays.toString(v5)+" VS "+Arrays.toString(v4)+": "+simpleSimilarity(v5,v4));
+		System.out.println(Arrays.toString(v1)+" VS "+Arrays.toString(v2)+": "+emilarity(v1,v2));
+		System.out.println(Arrays.toString(v1)+" VS "+Arrays.toString(v3)+": "+emilarity(v1,v3));
+		System.out.println(Arrays.toString(v2)+" VS "+Arrays.toString(v3)+": "+emilarity(v2,v3));
+		System.out.println(Arrays.toString(v1)+" VS "+Arrays.toString(v1)+": "+emilarity(v1,v1));
+		System.out.println(Arrays.toString(v3)+" VS "+Arrays.toString(v3)+": "+emilarity(v3,v3));
+		System.out.println(Arrays.toString(v1)+" VS "+Arrays.toString(v4)+": "+emilarity(v1,v4));
+		System.out.println(Arrays.toString(v3)+" VS "+Arrays.toString(v4)+": "+emilarity(v1,v4));
+		System.out.println(Arrays.toString(v4)+" VS "+Arrays.toString(v5)+": "+emilarity(v4,v5));
+		System.out.println(Arrays.toString(v5)+" VS "+Arrays.toString(v4)+": "+emilarity(v5,v4));
 	}
 }

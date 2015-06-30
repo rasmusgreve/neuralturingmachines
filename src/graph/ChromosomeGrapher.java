@@ -15,12 +15,23 @@ import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
 import org.xml.sax.helpers.XMLReaderFactory;
 
+/**
+ * A helper class for creating an image from an ANN structure.
+ * @author Rasmus
+ *
+ */
 public class ChromosomeGrapher {
 
 	private final static String outputFolder = "graphs";
 	private final static String chromosomeFolder = "anji_2_01/db/chromosome";
 	private final static String dotExeLocation = "./graphviz2.38/bin/dot.exe";
 	
+	/**
+	 * Run this with the first argument being an integer with the
+	 * ID of the NN chromosome to visualize.
+	 * @param args
+	 * @throws Exception
+	 */
 	public static void main(String[] args) throws Exception {
 		processSingleByStdIn();
 //		processFamilyByStdIn();
