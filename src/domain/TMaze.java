@@ -1,7 +1,6 @@
 package domain;
 
 import java.awt.Color;
-import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -21,6 +20,7 @@ public class TMaze implements Simulator {
 	private static final double SPEED = 0.1; // How many tiles you can move in one step
 	private static final int SENSOR_CUTOFF = 3; // The maximum distance of the sensors (wherefrom it will have a value of 1.0)
 	private static final double[] SENSOR_ANGLES = new double[]{-Math.PI / 4.0, 0, Math.PI / 4.0};
+	private static final double STEER_AMOUNT = Math.PI / 8; // Max 45 degrees to either side
  
 	// Random things
 	private Random rand;
@@ -96,6 +96,7 @@ public class TMaze implements Simulator {
 
 	@Override
 	public double[] performAction(double[] action) {
+		steer(action[0]);
 		moveAgent();
 		
 		if(isWithinGoal())
@@ -104,7 +105,6 @@ public class TMaze implements Simulator {
 		
 		return getObservation();
 	}
-
 
 	@Override
 	public int getCurrentScore() {
@@ -122,6 +122,11 @@ public class TMaze implements Simulator {
 	}
 
 	// HELPER METHODS
+	
+	private void steer(double dir) {
+		dir = dir * 2 - 1;
+		angle += dir * STEER_AMOUNT;
+	}
 	
 	private void moveAgent() {
 		double dx = Math.cos(angle) * SPEED;
@@ -201,7 +206,7 @@ public class TMaze implements Simulator {
 
 	private void loadMap(String mapFile) {
 		try {
-			BufferedImage b = ImageIO.read(new File(mapFile));
+			BufferedImage b = ImageIO.read(new File("../"+mapFile));
 			map = new MazeMap(b.getWidth(),b.getHeight());
 			
 			// load map
@@ -297,7 +302,7 @@ public class TMaze implements Simulator {
 		}
 		
 		public MAP_TYPE getType(int x, int y) {
-			if(x <= getWidth() && y <= getHeight() && x > -1 && y > -1)
+			if(x < getWidth() && y < getHeight() && x > -1 && y > -1)
 				return map[x][y];
 			
 			return MAP_TYPE.wall; // everything outside is wall

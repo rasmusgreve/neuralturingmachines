@@ -60,8 +60,10 @@ public abstract class BaseController implements Controller {
 			totalScore += sim.getCurrentScore();
 		}
 		
-		//System.out.println("Score: "+totalScore);
-		return Math.max(0, totalScore / iterations);
+		int result = Math.max(0, totalScore / iterations);
+		System.out.println("Avg Score: "+result + ", Total: "+totalScore);
+		
+		return result;
 	}
 	
 	protected double[] activateNeuralNetwork(Activator nn, double[] domainInput, double[] controllerInput){
