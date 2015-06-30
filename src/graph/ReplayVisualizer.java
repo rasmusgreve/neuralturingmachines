@@ -127,6 +127,8 @@ public class ReplayVisualizer {
 			
 			int yshift = 0;
 			
+			//TODO: Hardcoded that there is exactly one write and one read head
+			
 			yshift += drawFocus(g, Type.WRITE, 0, 0, yshift);
 			yshift += drawValue(g, Type.WRITE, 0, 0, yshift);
 			
