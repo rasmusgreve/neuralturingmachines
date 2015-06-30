@@ -58,8 +58,8 @@ hs_err_pid*
 
 # ANJI
 
-anji_2_01/db/*
-anji_2_01/nevt/*
+db/*
+nevt/*
 
 #Graphing
 tmp.gv
