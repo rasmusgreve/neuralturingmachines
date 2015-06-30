@@ -130,79 +130,7 @@ public class Replay {
 			
 			return neuralNetworkOutput;
 		};
-		
-		/*
-		@Override
-		protected double[] getSimulationResponse(double[] neuralNetworkDomainOutput) {
-			double[] simulationResponse = super.getSimulationResponse(neuralNetworkDomainOutput);
-			
-			
-			return simulationResponse;
-		};
-		
-		@Override
-		protected double[] getControllerResponse(double[] neuralNetworkControllerOutput) {
-			double[] controllerResponse = getControllerResponse(neuralNetworkControllerOutput);
-			
-			return controllerResponse;
-		};
-		*/
-		
-		/*
-		@Override
-		public double[] processOutputs(double[] fromNN) {
-			double[] result = super.processOutputs(fromNN);
-			
-			displayTMActivation(fromNN, result);
-			
-			return result;
-		}
-		
-		
-		private void displayTMActivation(double[] fromNN, double[] result){
 
-			double[][] readWeightings = tm.getReadWeightings();
-			double[][] writeWeightings = tm.getWriteWeightings();
-			
-			HeadVariables vars = tm.translateToHeadVars(fromNN);
-
-			System.out.println("-------- Activation ----------");
-			
-			for (int i = 0; i < writeWeightings.length; i++){
-				System.out.printf("Write head #%d focus: \n", i);
-				for (int j = 0; j < writeWeightings[i].length;j++){
-					System.out.printf("%.2f ", writeWeightings[i][j]);
-				}
-				System.out.println();
-				for (int mi = 0; mi < tm.getM(); mi++){
-					for (int j = 0; j < tm.getTape().size();j++){
-						System.out.printf("%.2f ", tm.getTape().get(j)[mi]);
-					}
-					System.out.println();
-				}
-				System.out.print(" | Value: [");
-				double[] add = vars.getWrite().get(i).getAdd();
-				for (int j = 0; j < add.length; j++)
-					System.out.printf("%.4f, ", add[j]);
-				System.out.print("] ");
-				System.out.println("Interp: " + vars.getWrite().get(i).getInterpolation());
-			}
-			
-			for (int i = 0; i < readWeightings.length; i++){
-				System.out.printf("Read  head #%d focus: ", i);
-				for (int j = 0; j < readWeightings[i].length;j++){
-					System.out.printf("%.2f ", readWeightings[i][j]);
-				}
-				System.out.print(" | Value: [");
-				for (int j = 0; j < tm.getM(); j++){
-					System.out.printf("%.4f, ",result[j + i * tm.getM()]);
-				}
-				System.out.println("]");
-			}
-			
-			
-		}
-		*/
 	}
 	
 }
