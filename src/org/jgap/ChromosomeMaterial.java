@@ -392,7 +392,7 @@ public double distance( ChromosomeMaterial target, SpeciationParms speciationPar
 					totalCommonDiff += aDistance;
 				++numComparableCommonAlleles;
 			}
-			catch ( UnsupportedOperationException|ClassCastException e ) {
+			catch ( UnsupportedOperationException/*|ClassCastException*/ e ) {
 				e.printStackTrace();
 			}
 		}

@@ -72,6 +72,7 @@ public class TMaze implements Simulator {
 		loadWalls();
 		reset();
 		initialObservation = getObservation();
+		moveGoal(true);
 	}
 
 	@Override
@@ -91,7 +92,6 @@ public class TMaze implements Simulator {
 		this.goal = null;
 		stepCounter = 0;
 		finished = -1;
-		moveGoal();
 	}
 
 	@Override
@@ -185,6 +185,14 @@ public class TMaze implements Simulator {
 	 */
 	public double[] getCurrentObservation() {
 		return getObservation();
+	}
+	
+	/**
+	 * Moves the goal from its current location to another
+	 * possible spot.
+	 */
+	public void swapGoal() {
+		moveGoal(false);
 	}
 	
 	// HELPER METHODS
@@ -359,11 +367,15 @@ public class TMaze implements Simulator {
 		return 0;
 	}
 	
-	private void moveGoal() {
+	private void moveGoal(boolean canBeSame) {
 		List<int[]> goals = map.getOfType(MAP_TYPE.goal);
 
-		int roll = rand.nextInt(goals.size()-1);
-		goal = Arrays.equals(goals.get(roll), goal) ? goals.get(goals.size()-1) : goals.get(roll);
+		if(canBeSame) {
+			goal = goals.get(rand.nextInt(goals.size()));
+		} else {
+			int roll = rand.nextInt(goals.size()-1);
+			goal = Arrays.equals(goals.get(roll), goal) ? goals.get(goals.size()-1) : goals.get(roll);
+		}
 	}
 	
 	private int[] getTile(double[] location) {
