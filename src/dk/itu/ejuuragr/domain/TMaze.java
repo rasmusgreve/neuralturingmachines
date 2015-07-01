@@ -206,7 +206,7 @@ public class TMaze implements Simulator {
 
 	private void loadMap(String mapFile) {
 		try {
-			BufferedImage b = ImageIO.read(new File("../"+mapFile));
+			BufferedImage b = ImageIO.read(new File(mapFile));
 			map = new MazeMap(b.getWidth(),b.getHeight());
 			
 			// load map
