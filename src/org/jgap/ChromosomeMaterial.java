@@ -392,8 +392,8 @@ public double distance( ChromosomeMaterial target, SpeciationParms speciationPar
 					totalCommonDiff += aDistance;
 				++numComparableCommonAlleles;
 			}
-			catch ( UnsupportedOperationException e ) {
-				// do nothing
+			catch ( UnsupportedOperationException|ClassCastException e ) {
+				e.printStackTrace();
 			}
 		}
 		avgCommonDiff = totalCommonDiff / numComparableCommonAlleles;
