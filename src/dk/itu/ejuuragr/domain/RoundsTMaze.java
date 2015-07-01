@@ -7,7 +7,7 @@ import com.anji.util.Properties;
 public class RoundsTMaze extends TMaze {
 	
 	private double swapFraction; // The center fraction of the stepLength
-	private int rounds; // The number of rounds in the test
+	private int rounds = -1; // The number of rounds in the test
 	private Random rand;
 	private int switchSpot;
 	
@@ -19,17 +19,18 @@ public class RoundsTMaze extends TMaze {
 		this.rounds = props.getIntProperty("simulator.tmaze.rounds");
 		this.swapFraction = props.getDoubleProperty("simulator.tmaze.swap.fraction");
 		this.rand = new Random(props.getIntProperty("random.seed"));
+		reset();
 	}
 
 	@Override
 	public void reset() {
-		if(rounds != -1){ // Not first time (called before constructor finished)
-			super.reset();
-			curRound = 0;
+		super.reset();
+		super.swapGoal(true); // select new goal randomly
+		curRound = 0;
 			
-			int swapArea = (int)(rounds * swapFraction); // The middle X rounds it can switch
-			this.switchSpot = (rounds - swapArea) / 2 + rand.nextInt(swapArea+1);
-		}
+		int swapArea = (int)(rounds * swapFraction); // The middle X rounds it can switch
+		this.switchSpot = (rounds - swapArea) / 2 + rand.nextInt(swapArea+1);
+		System.out.println(switchSpot);
 	}
 
 	@Override
@@ -42,7 +43,7 @@ public class RoundsTMaze extends TMaze {
 			super.reset();
 			curRound++;
 			if(curRound == switchSpot)
-				super.swapGoal();
+				super.swapGoal(false); // switch goal to another of the options
 		}
 		
 		return superResult;

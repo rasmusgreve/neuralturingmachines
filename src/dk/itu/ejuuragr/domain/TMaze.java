@@ -70,7 +70,7 @@ public class TMaze implements Simulator {
 		String mapFile = props.getProperty("simulator.tmaze.map");
 		loadMap(mapFile);
 		loadWalls();
-		reset();
+		init();
 		initialObservation = getObservation();
 		moveGoal(true);
 	}
@@ -87,11 +87,7 @@ public class TMaze implements Simulator {
 
 	@Override
 	public void reset() {
-		location = new double[]{startPos[0] + 0.5, startPos[1] + 0.5};
-		angle = Math.PI / 2.0;
-		this.goal = null;
-		stepCounter = 0;
-		finished = -1;
+		init();
 	}
 
 	@Override
@@ -190,12 +186,22 @@ public class TMaze implements Simulator {
 	/**
 	 * Moves the goal from its current location to another
 	 * possible spot.
+	 * @param canBeSame True if the goal can be the same as
+	 * what it is currently.
 	 */
-	public void swapGoal() {
-		moveGoal(false);
+	public void swapGoal(boolean canBeSame) {
+		moveGoal(canBeSame);
 	}
 	
 	// HELPER METHODS
+	
+	private void init() {
+		location = new double[]{startPos[0] + 0.5, startPos[1] + 0.5};
+		angle = Math.PI / 2.0;
+		this.goal = null;
+		stepCounter = 0;
+		finished = -1;
+	}
 	
 	private void printState(double steer, double[] sensors) {
 		if(DEBUG){
