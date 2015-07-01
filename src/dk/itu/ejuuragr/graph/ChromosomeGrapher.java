@@ -23,7 +23,7 @@ import org.xml.sax.helpers.XMLReaderFactory;
 public class ChromosomeGrapher {
 
 	private final static String outputFolder = "graphs";
-	private final static String chromosomeFolder = "anji_2_01/db/chromosome";
+	private final static String chromosomeFolder = "db/chromosome";
 	private final static String dotExeLocation = "./graphviz2.38/bin/dot.exe";
 	
 	/**
