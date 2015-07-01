@@ -15,13 +15,23 @@ import javax.imageio.ImageIO;
 
 import com.anji.util.Properties;
 
+/**
+ * The classical T-Maze of Machine Learning for challenging
+ * agents to use memory to consistently find the high-reward
+ * location during multiple tries.
+ * The maze is build from specifications in a BMP image, so
+ * any imaginable maze is possible.
+ * 
+ * @author Emil
+ *
+ */
 public class TMaze implements Simulator {
 	
-	public static final boolean DEBUG = false;
+	public static final boolean DEBUG = false; // If true the Simulator will print the state in each step
 	
 	public static final double SPEED = 0.1; // How many tiles you can move in one step
 	public static final double SENSOR_CUTOFF = 1; // The maximum distance of the sensors (wherefrom it will have a value of 1.0)
-	public static final double[] SENSOR_ANGLES = new double[]{-Math.PI / 4.0, 0, Math.PI / 4.0};
+	public static final double[] SENSOR_ANGLES = new double[]{-Math.PI / 4.0, 0, Math.PI / 4.0}; // What sensors and their angles to return
 	public static final double STEER_AMOUNT = Math.PI / 8; // Max 45 degrees to either side
  
 	// Random things
@@ -31,6 +41,8 @@ public class TMaze implements Simulator {
 	private MazeMap map;
 	private int[] startPos;
 	private int highReward, lowReward;
+	
+	private double[] initialObservation;
 	
 	// Distance helpers
 	private List<double[]> walls; // int[x1,y1,x2,y2]
@@ -42,7 +54,14 @@ public class TMaze implements Simulator {
 	
 	private int stepCounter;
 	private int finished = -1;
+
 	
+	
+	/**
+	 * The required constructor to instantiate the Simulator through
+	 * recursion.
+	 * @param props The properties from ANJI.
+	 */
 	public TMaze(Properties props) {
 		rand = new Random(props.getIntProperty("random.seed"));
 		highReward = props.getIntProperty("simulator.tmaze.reward.high");
@@ -51,6 +70,7 @@ public class TMaze implements Simulator {
 		String mapFile = props.getProperty("simulator.tmaze.map");
 		loadMap(mapFile);
 		loadWalls();
+		initialObservation = getObservation();
 	}
 
 	@Override
@@ -75,7 +95,7 @@ public class TMaze implements Simulator {
 
 	@Override
 	public double[] getInitialObservation() {
-		return getObservation();
+		return initialObservation;
 	}
 
 	@Override
@@ -109,24 +129,61 @@ public class TMaze implements Simulator {
 
 	// SPECIFIC PUBLIC METHODS
 	
+	/**
+	 * Returns the static map of the maze
+	 * @return The MazeMap including the different
+	 * types of wall/empty/goal at each position
+	 */
 	public MazeMap getMap() {
 		return map;
 	}
 	
+	/**
+	 * The current position of the agent in the maze
+	 * @return An array with two elements corresponding
+	 * to the x and y coordinates in the maze.
+	 */
 	public double[] getPosition() {
 		return new double[]{location[0],location[1]};
 	}
 	
+	/**
+	 * The tile index that the agent is currently within.
+	 * @return An array with two elements corresponding
+	 * to the x and y coordinates in the map.
+	 */
 	public int[] getPositionTile() {
 		return new int[]{(int) location[0],(int) location[1]};
 	}
 	
+	/**
+	 * Gets the angle that the agent is currently facing
+	 * in the maze. 
+	 * @return The angle in radians where 0 is to the right
+	 * (positive x), ½ * pi is up (positive y) etc.
+	 */
 	public double getAngle() {
 		return angle;
 	}
 	
+	/**
+	 * Gets the coordinates of the high reward tile in the map.
+	 * @return An array with two elements corresponding to
+	 * the x and y coordinates in the map.
+	 */
 	public int[] getHighRewardGoal() {
 		return new int[]{goal[0],goal[1]};
+	}
+	
+	/**
+	 * Gets the current observations from the agent in the maze.
+	 * @return An array with a value for each defined sensor 
+	 * angle. The value is between 0 and 1 normalized from how
+	 * far there is to the nearest wall in that direction
+	 * (cut off that the SENSOR_CUTOFF distance).
+	 */
+	public double[] getCurrentObservation() {
+		return getObservation();
 	}
 	
 	// HELPER METHODS
