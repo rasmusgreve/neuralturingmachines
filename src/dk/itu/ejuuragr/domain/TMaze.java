@@ -17,8 +17,10 @@ import com.anji.util.Properties;
 
 public class TMaze implements Simulator {
 	
+	public static final boolean DEBUG = false;
+	
 	public static final double SPEED = 0.1; // How many tiles you can move in one step
-	public static final int SENSOR_CUTOFF = 3; // The maximum distance of the sensors (wherefrom it will have a value of 1.0)
+	public static final double SENSOR_CUTOFF = 1; // The maximum distance of the sensors (wherefrom it will have a value of 1.0)
 	public static final double[] SENSOR_ANGLES = new double[]{-Math.PI / 4.0, 0, Math.PI / 4.0};
 	public static final double STEER_AMOUNT = Math.PI / 8; // Max 45 degrees to either side
  
@@ -130,9 +132,11 @@ public class TMaze implements Simulator {
 	// HELPER METHODS
 	
 	private void printState(double steer, double[] sensors) {
-		System.out.println("----------------------");
-		printMap();
-		System.out.println("\n Pos: "+Arrays.toString(getPosition())+", Angle: "+(angle / (2*Math.PI))*360+", Steer: "+steer+", sensors: "+Arrays.toString(sensors));
+		if(DEBUG){
+			System.out.println("----------------------");
+			printMap();
+			System.out.printf("\n Pos: %s, Angle: %.2f°, Steer: %.2f, sensors: %s\n",Arrays.toString(getPosition()),(angle / (2*Math.PI))*360,steer,Arrays.toString(sensors));
+		}
 	}
 	
 	private void printMap() {
@@ -173,12 +177,10 @@ public class TMaze implements Simulator {
 			for(int y = -1; y < map.getHeight(); y++) {
 				// Check upper and right side
 				MAP_TYPE cur = map.getType(x, y);
-				if(cur == wall) { // Only Check walls
-					MAP_TYPE upper = map.getType(x,y+1);
-					MAP_TYPE right = map.getType(x+1,y);
-					if(upper != wall) walls.add(new double[]{x,y+1,x+1,y+1});
-					if(right != wall) walls.add(new double[]{x+1,y,x+1,y+1});
-				}
+				MAP_TYPE upper = map.getType(x,y+1);
+				MAP_TYPE right = map.getType(x+1,y);
+				if(cur != upper && (cur == wall || upper == wall)) walls.add(new double[]{x,y+1,x+1,y+1});
+				if(cur != right && (cur == wall || right == wall)) walls.add(new double[]{x+1,y,x+1,y+1});
 			}
 		}
 	}
@@ -191,7 +193,6 @@ public class TMaze implements Simulator {
 	private void moveAgent() {
 		double dx = Math.cos(angle) * SPEED;
 		double dy = Math.sin(angle) * SPEED;
-		System.out.println("dx: "+dx+", dy: "+dy);
 		location[0] += dx;
 		location[1] += dy;
 	}
