@@ -1,10 +1,47 @@
 package dk.itu.ejuuragr.fitness;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 
 
 public class Utilities {
 
+	/**
+	 * Will instantiate an object using a constructor with the given parameter types and values.
+	 * @param className The full qualifying name of the Class to instantiate.
+	 * @param params The list of parameters for the constructor, or null to use the no-args
+	 * constructor.
+	 * @param constructor The actual types required by the constructor (the given params should
+	 * be of these types or subtypes thereof). Can be left as null if the wanted constructor
+	 * matches the actual types of the given parameters.
+	 * @return The instantiated object which can then be cast to its actual type.
+	 */
+	public static Object instantiateObject(String className, Object[] params, Class<?>[] constructor) {
+		Object result = null;
+		try {
+			if(params == null || params.length == 0) {
+				result = Class.forName(className).newInstance();
+			} else {
+				Constructor<?> con = Class.forName(className).getDeclaredConstructor(constructor == null ? getClasses(params) : constructor);
+				result = con.newInstance(params);
+			}
+		} catch (NoSuchMethodException | SecurityException
+				| ClassNotFoundException | InstantiationException 
+				| IllegalAccessException | IllegalArgumentException 
+				| InvocationTargetException e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
+	private static Class<?>[] getClasses(Object[] objects) {
+		Class<?>[] result = new Class[objects.length];
+		for(int i = 0; i < objects.length; i++)
+			result[i] = objects[i].getClass();
+		return result;
+	}
+	
 	/**
 	 * Takes a 2D array and returns the same elements
 	 * in a 1D array structure.

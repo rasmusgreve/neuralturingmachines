@@ -17,10 +17,10 @@ import com.anji.util.Properties;
 
 public class TMaze implements Simulator {
 	
-	private static final double SPEED = 0.1; // How many tiles you can move in one step
-	private static final int SENSOR_CUTOFF = 3; // The maximum distance of the sensors (wherefrom it will have a value of 1.0)
-	private static final double[] SENSOR_ANGLES = new double[]{-Math.PI / 4.0, 0, Math.PI / 4.0};
-	private static final double STEER_AMOUNT = Math.PI / 8; // Max 45 degrees to either side
+	public static final double SPEED = 0.1; // How many tiles you can move in one step
+	public static final int SENSOR_CUTOFF = 3; // The maximum distance of the sensors (wherefrom it will have a value of 1.0)
+	public static final double[] SENSOR_ANGLES = new double[]{-Math.PI / 4.0, 0, Math.PI / 4.0};
+	public static final double STEER_AMOUNT = Math.PI / 8; // Max 45 degrees to either side
  
 	// Random things
 	private Random rand;
@@ -50,24 +50,6 @@ public class TMaze implements Simulator {
 		loadMap(mapFile);
 		loadWalls();
 	}
-
-	private void loadWalls() {
-		walls = new ArrayList<double[]>();
-		
-		for(int x = -1; x < map.getWidth(); x++) {
-			for(int y = -1; y < map.getHeight(); y++) {
-				// Check upper and right side
-				MAP_TYPE cur = map.getType(x, y);
-				if(cur == wall) { // Only Check walls
-					MAP_TYPE upper = map.getType(x,y+1);
-					MAP_TYPE right = map.getType(x+1,y);
-					if(upper != wall) walls.add(new double[]{x,y+1,x+1,y+1});
-					if(right != wall) walls.add(new double[]{x+1,y,x+1,y+1});
-				}
-			}
-		}
-	}
-	
 
 	@Override
 	public int getInputCount() {
@@ -121,7 +103,42 @@ public class TMaze implements Simulator {
 		return isInWall() || finishedLastStep();
 	}
 
+	// SPECIFIC PUBLIC METHODS
+	
+	public MazeMap getMap() {
+		return map;
+	}
+	
+	public double[] getPosition() {
+		return new double[]{location[0],location[1]};
+	}
+	
+	public double getAngle() {
+		return angle;
+	}
+	
+	public int[] getHighRewardGoal() {
+		return new int[]{goal[0],goal[1]};
+	}
+	
 	// HELPER METHODS
+	
+	private void loadWalls() {
+		walls = new ArrayList<double[]>();
+		
+		for(int x = -1; x < map.getWidth(); x++) {
+			for(int y = -1; y < map.getHeight(); y++) {
+				// Check upper and right side
+				MAP_TYPE cur = map.getType(x, y);
+				if(cur == wall) { // Only Check walls
+					MAP_TYPE upper = map.getType(x,y+1);
+					MAP_TYPE right = map.getType(x+1,y);
+					if(upper != wall) walls.add(new double[]{x,y+1,x+1,y+1});
+					if(right != wall) walls.add(new double[]{x+1,y,x+1,y+1});
+				}
+			}
+		}
+	}
 	
 	private void steer(double dir) {
 		dir = dir * 2 - 1;
@@ -297,7 +314,7 @@ public class TMaze implements Simulator {
 			return map.length;
 		}
 
-		public void setType(int x, int y, MAP_TYPE type) {
+		private void setType(int x, int y, MAP_TYPE type) {
 			map[x][y] = type;
 		}
 		
