@@ -319,7 +319,7 @@ public class TMaze implements Simulator {
 	
 	// HELPER CLASSES & ENUMS
 	
-	enum MAP_TYPE { 
+	public enum MAP_TYPE { 
 		empty(new Color(255,255,255).getRGB()), 
 		wall(new Color(0,0,0).getRGB()), 
 		start(new Color(0,0,255).getRGB()), 
