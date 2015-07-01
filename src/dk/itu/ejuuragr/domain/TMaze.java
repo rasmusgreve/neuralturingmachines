@@ -85,7 +85,9 @@ public class TMaze implements Simulator {
 			finished = stepCounter;
 		stepCounter++; // next round
 		
-		return getObservation();
+		double[] obs = getObservation();
+		printState(action[0], obs);
+		return obs;
 	}
 
 	@Override
@@ -113,6 +115,10 @@ public class TMaze implements Simulator {
 		return new double[]{location[0],location[1]};
 	}
 	
+	public int[] getPositionTile() {
+		return new int[]{(int) location[0],(int) location[1]};
+	}
+	
 	public double getAngle() {
 		return angle;
 	}
@@ -123,6 +129,43 @@ public class TMaze implements Simulator {
 	
 	// HELPER METHODS
 	
+	private void printState(double steer, double[] sensors) {
+		System.out.println("----------------------");
+		printMap();
+		System.out.println("\n Pos: "+Arrays.toString(getPosition())+", Angle: "+(angle / (2*Math.PI))*360+", Steer: "+steer+", sensors: "+Arrays.toString(sensors));
+	}
+	
+	private void printMap() {
+		int[] pos = getPositionTile();
+		for(int y = map.getHeight()-1; y >= 0; y--) {
+			for(int x = 0; x < map.getWidth(); x++) {
+				if(x == pos[0] && y == pos[1]) {
+					System.out.print("o");
+				} else {
+					switch(map.getType(x, y)) {
+					case wall:
+						System.out.print("x");
+						break;
+					case empty:
+						System.out.print(" ");
+						break;
+					case goal:
+						if(x == goal[0] && y == goal[1]) {
+							System.out.print("G");
+						} else {
+							System.out.print("g");
+						}
+						break;
+					case start:
+						System.out.print("s");
+					}
+				}
+				
+			}
+			System.out.println();
+		}
+	}
+
 	private void loadWalls() {
 		walls = new ArrayList<double[]>();
 		
@@ -148,6 +191,7 @@ public class TMaze implements Simulator {
 	private void moveAgent() {
 		double dx = Math.cos(angle) * SPEED;
 		double dy = Math.sin(angle) * SPEED;
+		System.out.println("dx: "+dx+", dy: "+dy);
 		location[0] += dx;
 		location[1] += dy;
 	}
@@ -229,11 +273,12 @@ public class TMaze implements Simulator {
 			// load map
 			for(int x = 0; x < b.getWidth(); x++) {
 				for(int y = 0; y < b.getHeight(); y++) {
+					int realY = b.getHeight()-1-y;
 					MAP_TYPE type = MAP_TYPE.valueOf(b.getRGB(x, y));
-					map.setType(x, b.getHeight()-1-y, type);
+					map.setType(x, realY, type);
 					
 					if(type == MAP_TYPE.start)
-						this.startPos = new int[]{x,y};
+						this.startPos = new int[]{x,realY};
 				}
 			}
 			
@@ -247,7 +292,7 @@ public class TMaze implements Simulator {
 	}
 	
 	private boolean finishedLastStep() {
-		return stepCounter == finished + 1;
+		return finished != -1 && stepCounter == finished + 1;
 	}
 
 	private boolean isInWall() {

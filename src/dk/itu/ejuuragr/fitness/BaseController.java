@@ -61,7 +61,7 @@ public abstract class BaseController implements Controller {
 		}
 		
 		int result = Math.max(0, totalScore / iterations);
-		System.out.println("Avg Score: "+result + ", Total: "+totalScore);
+		//System.out.println("Avg Score: "+result + ", Total: "+totalScore);
 		
 		return result;
 	}
