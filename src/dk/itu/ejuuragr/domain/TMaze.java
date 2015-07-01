@@ -295,11 +295,11 @@ public class TMaze implements Simulator {
 		}
 	}
 	
-	private class MazeMap {
+	public class MazeMap {
 		
 		private MAP_TYPE[][] map;
 
-		public MazeMap(int width, int height) {
+		private MazeMap(int width, int height) {
 			this.map = new MAP_TYPE[width][];
 			for(int i = 0; i < width; i++) {
 				map[i] = new MAP_TYPE[height];
