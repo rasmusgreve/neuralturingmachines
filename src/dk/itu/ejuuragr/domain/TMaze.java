@@ -30,7 +30,7 @@ public class TMaze implements Simulator {
 	public static final boolean DEBUG = false; // If true the Simulator will print the state in each step
 	
 	public static final double SPEED = 0.1; // How many tiles you can move in one step
-	public static final double SENSOR_CUTOFF = 1; // The maximum distance of the sensors (wherefrom it will have a value of 1.0)
+	public static final double SENSOR_CUTOFF = 3; // The maximum distance of the sensors (wherefrom it will have a value of 1.0)
 	public static final double[] SENSOR_ANGLES = new double[]{-Math.PI / 4.0, 0, Math.PI / 4.0}; // What sensors and their angles to return
 	public static final double STEER_AMOUNT = Math.PI / 8; // Max 45 degrees to either side
  
@@ -263,7 +263,7 @@ public class TMaze implements Simulator {
 			
 			// calculate intersection to each 
 			List<double[]> wallIntersects = intersections(new double[]{location[0] ,location[1]
-							,location[0] + Math.cos(sensorAngle) ,location[1] + Math.sin(sensorAngle)}
+							,location[0] + Math.cos(sensorAngle) * SENSOR_CUTOFF ,location[1] + Math.sin(sensorAngle) * SENSOR_CUTOFF}
 					,walls);
 			double closest = lowestDistance(location,wallIntersects);
 			
@@ -287,14 +287,14 @@ public class TMaze implements Simulator {
 	private List<double[]> intersections(double[] fromLine, List<double[]> toSegments) {
 		List<double[]> result = new ArrayList<>();
 		for(double[] seg : toSegments) {
-			double[] intersect = lineIntersect(fromLine,seg);
-			if(intersect != null && isBetween(intersect,seg))
+			double[] intersect = lineSegIntersect(fromLine,seg);
+			if(intersect != null)
 				result.add(intersect);
 		}
 		return result;
 	}
 
-	private double[] lineIntersect(double[] first, double[] second) {
+	private double[] lineSegIntersect(double[] first, double[] second) {
 		double x1 = first[0];
 		double y1 = first[1];
 		double x2 = first[2];
@@ -316,13 +316,7 @@ public class TMaze implements Simulator {
 
 		return null;
 	}
-	
-	private boolean isBetween(double[] point, double[] segment) {
-		return point[0] >= Math.min(segment[0],segment[2])
-				&& point[0] <= Math.max(segment[0], segment[2])
-				&& point[1] >= Math.min(segment[1],segment[3])
-				&& point[1] <= Math.max(segment[1], segment[3]);
-	}
+
 
 	private void loadMap(String mapFile) {
 		try {
