@@ -6,6 +6,8 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 import java.awt.geom.AffineTransform;
@@ -33,7 +35,7 @@ public class TMazeVisualizer {
 	private final Color highRewardColor = Color.red;
 	private final Color lowRewardColor = Color.gray;
 	
-	public TMazeVisualizer(TMaze maze){
+	public TMazeVisualizer(final TMaze maze){
 		this.maze = maze;
 		this.map = maze.getMap();
 		
@@ -56,6 +58,30 @@ public class TMazeVisualizer {
 			public void mouseDragged(MouseEvent e) {
 				// TODO Auto-generated method stub
 				
+			}
+		});
+		frame.addKeyListener(new KeyListener() {
+			
+			@Override
+			public void keyTyped(KeyEvent e) {
+				
+			}
+			
+			@Override
+			public void keyReleased(KeyEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_UP)
+					maze.performAction(new double[]{.5});
+				if (e.getKeyCode() == KeyEvent.VK_LEFT)
+					maze.performAction(new double[]{1});
+				if (e.getKeyCode() == KeyEvent.VK_RIGHT)
+					maze.performAction(new double[]{0});
+				component.repaint();
 			}
 		});
 		frame.add(component, BorderLayout.CENTER);
