@@ -70,6 +70,7 @@ public class TMaze implements Simulator {
 		String mapFile = props.getProperty("simulator.tmaze.map");
 		loadMap(mapFile);
 		loadWalls();
+		reset();
 		initialObservation = getObservation();
 	}
 
@@ -160,7 +161,7 @@ public class TMaze implements Simulator {
 	 * Gets the angle that the agent is currently facing
 	 * in the maze. 
 	 * @return The angle in radians where 0 is to the right
-	 * (positive x), ½ * pi is up (positive y) etc.
+	 * (positive x), ï¿½ * pi is up (positive y) etc.
 	 */
 	public double getAngle() {
 		return angle;
@@ -192,7 +193,7 @@ public class TMaze implements Simulator {
 		if(DEBUG){
 			System.out.println("----------------------");
 			printMap();
-			System.out.printf("\n Pos: %s, Angle: %.2f°, Steer: %.2f, sensors: %s\n",Arrays.toString(getPosition()),(angle / (2*Math.PI))*360,steer,Arrays.toString(sensors));
+			System.out.printf("\n Pos: %s, Angle: %.2fï¿½, Steer: %.2f, sensors: %s\n",Arrays.toString(getPosition()),(angle / (2*Math.PI))*360,steer,Arrays.toString(sensors));
 		}
 	}
 	

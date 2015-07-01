@@ -1,5 +1,6 @@
 package dk.itu.ejuuragr.graph;
 
+import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Graphics;
@@ -7,6 +8,8 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Line2D;
 
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -24,7 +27,7 @@ public class TMazeVisualizer {
 	final TMazeVisualizerComponent component;
 	
 	
-	private final int blockSize = 150;
+	private final int blockSize = 250;
 	private final double rewardSize = 0.5;
 	private final double agentSize = 0.05;
 	private final Color highRewardColor = Color.red;
@@ -74,6 +77,10 @@ public class TMazeVisualizer {
 			Graphics2D g = (Graphics2D)arg0;
 			g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 			
+			AffineTransform transform = AffineTransform.getScaleInstance(1, -1);
+			transform.translate(0, -map.getHeight()*blockSize);
+			g.setTransform(transform);
+			
 			//Clear map
 			g.setColor(new Color(MAP_TYPE.empty.value));
 			g.fillRect(0, 0, 5000, 5000);
@@ -89,13 +96,34 @@ public class TMazeVisualizer {
 		//Agent
 		double[] position = maze.getPosition();
 		g.setColor(new Color(120,120,255));
-		drawCircle(g, position[0] * blockSize - agentSize * blockSize, position[1] * blockSize + agentSize * blockSize, agentSize);
+		drawCircle(g, position[0] * blockSize - agentSize * blockSize, position[1] * blockSize - agentSize * blockSize, agentSize);
 		
 		//Direction
-		double angle = maze.getAngle();
+		double[] endPoint = new double[]{position[0] + Math.cos(maze.getAngle()) * 0.2, position[1] + Math.sin(maze.getAngle()) * 0.2};
 		
 		g.setColor(Color.black);
-		g.drawLine((int)(position[0] * blockSize), ((map.getHeight())*blockSize) - (int)(position[1] * blockSize), 0, 0);
+		g.setStroke(new BasicStroke(2));
+		//g.draw(new Line2D.Double(position[0] * blockSize, position[1]*blockSize, endPoint[0]*blockSize, endPoint[1]*blockSize));
+		
+		//Sensors
+
+		g.setColor(Color.gray);
+		g.setStroke(new BasicStroke(1));
+		
+		double[] distances = maze.getCurrentObservation();
+		
+		for (int i = 0; i < TMaze.SENSOR_ANGLES.length; i++){
+			double sensorAngle = TMaze.SENSOR_ANGLES[i] + maze.getAngle();
+			double sensorLength = distances[i] * TMaze.SENSOR_CUTOFF;
+			double[] sensorEnd = new double[]{position[0] + Math.cos(sensorAngle) * sensorLength, position[1] + Math.sin(sensorAngle) * sensorLength};
+			
+			g.setColor(Color.gray);
+			g.draw(new Line2D.Double(position[0] * blockSize, position[1]*blockSize, sensorEnd[0]*blockSize, sensorEnd[1]*blockSize));
+			
+			g.setColor(Color.yellow);
+			drawCircleCenteredAt(g, sensorEnd[0], sensorEnd[1], 0.02);
+		}
+		
 	}
 	
 	private void drawMap(Graphics2D g){
@@ -123,19 +151,20 @@ public class TMazeVisualizer {
 		}
 	}
 	
-	private int fixY(int y){
-		return (map.getHeight()-1) * blockSize - y;
-	}
-	
 	private void drawBlock(Graphics2D g, Color color, int x, int y){
 		g.setColor(color);
-		g.fillRect(x * blockSize, fixY(y * blockSize), blockSize, blockSize);
+		g.fillRect(x * blockSize, y * blockSize, blockSize, blockSize);
+	}
+	
+	private void drawCircleCenteredAt(Graphics2D g, double x, double y, double size)
+	{
+		x = x * blockSize - size * blockSize;
+		y = y * blockSize - size * blockSize;
+		g.fillOval((int)x, (int)y, (int)(size*blockSize*2), (int)(size*blockSize*2));
 	}
 	
 	private void drawCircle(Graphics2D g, double x, double y, double size){
-		//double ny = ((map.getHeight())*blockSize) - y;
-		int ny = fixY((int)y);
-		g.fillOval((int)x, (int)ny, (int)(size*blockSize)*2, (int)(size*blockSize)*2);
+		g.fillOval((int)x, (int)y, (int)(size*blockSize*2), (int)(size*blockSize*2));
 	}
 	
 	private void drawCircle(Graphics2D g, int x, int y, double size){
@@ -149,6 +178,9 @@ public class TMazeVisualizer {
 		Properties props = new Properties("turingmachine.properties");
 		TMaze maze = new TMaze(props);
 		maze.reset();
+		maze.performAction(new double[]{.5});
+		maze.performAction(new double[]{.5});
+		maze.performAction(new double[]{.5});
 		TMazeVisualizer viz = new TMazeVisualizer(maze);		
 	}
 	
