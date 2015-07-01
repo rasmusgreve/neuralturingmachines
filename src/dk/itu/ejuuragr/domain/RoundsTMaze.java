@@ -30,7 +30,6 @@ public class RoundsTMaze extends TMaze {
 			
 		int swapArea = (int)(rounds * swapFraction); // The middle X rounds it can switch
 		this.switchSpot = (rounds - swapArea) / 2 + rand.nextInt(swapArea+1);
-		System.out.println(switchSpot);
 	}
 
 	@Override
@@ -56,6 +55,12 @@ public class RoundsTMaze extends TMaze {
 
 	@Override
 	public int getCurrentScore() {
-		return totalScore / rounds;
+//		System.out.println(totalScore);
+		return totalScore;
+	}
+
+	@Override
+	public int getMaxScore() {
+		return super.getMaxScore() * rounds;
 	}
 }

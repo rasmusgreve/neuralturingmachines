@@ -27,4 +27,11 @@ public interface Controller {
 	 * @return A reference to the internally used simulator
 	 */
 	Simulator getSimulator();
+
+	/**
+	 * Should calculate the maximum possible score based
+	 * on what the Simulator says and number of iterations.
+	 * @return
+	 */
+	int getMaxScore();
 }
