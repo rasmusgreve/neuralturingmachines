@@ -39,7 +39,7 @@ public class Replay {
 		
 		//Setup
 		Properties props = new Properties(propertiesFile); // "turingmachine.properties"
-		props.setProperty("base.dir", "./anji_2_01/db");
+		props.setProperty("base.dir", "./db");
 		
 		//Loading chromosome
 		FilePersistence db = new FilePersistence();
