@@ -24,12 +24,15 @@ public class RoundsTMaze extends TMaze {
 
 	@Override
 	public void reset() {
+		System.out.println("---------------------");
 		super.reset();
 		super.swapGoal(true); // select new goal randomly
 		curRound = 0;
+		totalScore = 0;
 			
 		int swapArea = (int)(rounds * swapFraction); // The middle X rounds it can switch
 		this.switchSpot = (rounds - swapArea) / 2 + rand.nextInt(swapArea+1);
+		System.out.println("Will swap after "+switchSpot+" of "+rounds);
 	}
 
 	@Override
@@ -37,7 +40,8 @@ public class RoundsTMaze extends TMaze {
 		double[] superResult = super.performAction(action);
 		
 		if(super.isTerminated()){ // Round over
-			this.totalScore = super.getCurrentScore();
+			System.out.println("Round "+curRound+": "+super.getCurrentScore());
+			this.totalScore += super.getCurrentScore();
 			
 			super.reset();
 			curRound++;
@@ -50,12 +54,15 @@ public class RoundsTMaze extends TMaze {
 
 	@Override
 	public boolean isTerminated() {
-		return curRound == rounds - 1;
+		boolean result = curRound == rounds - 1;
+		if(result)
+			System.out.println("breakz");
+		return result;
 	}
 
 	@Override
 	public int getCurrentScore() {
-//		System.out.println(totalScore);
+//		System.out.println(totalScore+" of "+getMaxScore());
 		return totalScore;
 	}
 
