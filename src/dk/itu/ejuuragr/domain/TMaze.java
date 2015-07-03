@@ -198,7 +198,6 @@ public class TMaze implements Simulator {
 	private void init() {
 		location = new double[]{startPos[0] + 0.5, startPos[1] + 0.5};
 		angle = Math.PI / 2.0;
-		this.goal = null;
 		stepCounter = 0;
 		finished = -1;
 	}

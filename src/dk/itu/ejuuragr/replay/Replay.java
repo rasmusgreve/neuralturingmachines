@@ -1,6 +1,7 @@
 package dk.itu.ejuuragr.replay;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,48 +16,83 @@ import com.anji.util.Properties;
 
 import dk.itu.ejuuragr.domain.RPSSimulator;
 import dk.itu.ejuuragr.domain.Simulator;
+import dk.itu.ejuuragr.domain.TMaze;
 import dk.itu.ejuuragr.fitness.Controller;
+import dk.itu.ejuuragr.fitness.Utilities;
 import dk.itu.ejuuragr.graph.ReplayVisualizer;
+import dk.itu.ejuuragr.graph.TMazeVisualizer;
+import dk.itu.ejuuragr.replay.StepSimulator.Stepper;
 import dk.itu.ejuuragr.turing.TuringController;
 import dk.itu.ejuuragr.turing.TuringMachine.TuringTimeStep;
 
 public class Replay {
 
 	public static void main(String[] args) throws Exception {
-		String chromosomeId, propertiesFile;
 		if (args.length == 0){
-			BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-			System.out.println("Properties filename: ");
-			propertiesFile = br.readLine();
-			System.out.println("Chromosome ID: ");
-			chromosomeId = br.readLine();
-		}
-		else
-		{
-			propertiesFile = args[0];
-			chromosomeId = args[1];
+			args = getArgsFromStdIn();
 		}
 		
 		//Setup
-		Properties props = new Properties(propertiesFile); // "turingmachine.properties"
+		Properties props = new Properties(args[0]);
 		props.setProperty("base.dir", "./db");
+		Chromosome chrom = loadChromosome(args[1], props);
 		
-		//Loading chromosome
-		FilePersistence db = new FilePersistence();
-		db.init(props);
-		Chromosome chrom = db.loadChromosome(chromosomeId, new DummyConfiguration());
 		
 		//Setup activator
 		ActivatorTranscriber activatorFactory = (ActivatorTranscriber) props.singletonObjectProperty(ActivatorTranscriber.class);
 		Activator activator = activatorFactory.newActivator(chrom);
 	
+		//Initiate simulator and controller from properties to test their types
+		Simulator simulator = (Simulator) Utilities.instantiateObject(props.getProperty("simulator.class"),new Object[]{props},null);
+		
+		StepSimulator stepStim = new StepSimulator(simulator);
+		
+		Controller controller = (Controller) Utilities.instantiateObject(props.getProperty("controller.class"),new Object[]{props,stepStim}, new Class<?>[]{Properties.class,Simulator.class});
+	
+		if (controller instanceof TuringController){
+			controller = new TuringControllerMemoryVizProxy(props, stepStim);
+		}
+		
+		if (simulator instanceof TMaze)
+		{
+			final TMaze tmaze = (TMaze)simulator;
+			final TMazeVisualizer mazeViz = new TMazeVisualizer(tmaze);
+			
+			stepStim.setStepper(new Stepper(){
+
+				@Override
+				public void step() {
+					mazeViz.update();
+					try {
+						new BufferedReader(new InputStreamReader(System.in)).readLine();
+					} catch (IOException e) {
+					}
+				}
+				
+			});
+		}
 		
 		//Simulator and controller
-		Simulator sim = new RPSSimulator(props);
-		TuringControllerMemoryVizProxy con = new TuringControllerMemoryVizProxy(props, sim);
 
-		int fitness = con.evaluate(activator);
-		new ReplayVisualizer().show(con.getSteps());
+		int fitness = controller.evaluate(activator);
+		if (controller instanceof TuringControllerMemoryVizProxy)
+			new ReplayVisualizer().show(((TuringControllerMemoryVizProxy)controller).getSteps());
+	}
+	
+	private static Chromosome loadChromosome(String id, Properties props){
+		FilePersistence db = new FilePersistence();
+		db.init(props);
+		return db.loadChromosome(id, new DummyConfiguration());
+	}
+	
+	private static String[] getArgsFromStdIn() throws IOException{
+		String[] result = new String[2];
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		System.out.println("Properties filename: ");
+		result[0] = br.readLine();
+		System.out.println("Chromosome ID: ");
+		result[1] = br.readLine();
+		return result;
 	}
 	
 	private static void printActivation(Activator activator, double[] activation){
