@@ -150,9 +150,9 @@ public class TMazeVisualizer {
 		
 		double[] distances = maze.getCurrentObservation();
 		
-		for (int i = 0; i < TMaze.SENSOR_ANGLES.length; i++){
-			double sensorAngle = TMaze.SENSOR_ANGLES[i] + maze.getAngle();
-			double sensorLength = distances[i] * TMaze.SENSOR_CUTOFF;
+		for (int i = 0; i < maze.SENSOR_ANGLES.length; i++){
+			double sensorAngle = maze.SENSOR_ANGLES[i] + maze.getAngle();
+			double sensorLength = distances[i] * maze.SENSOR_CUTOFF;
 			double[] sensorEnd = new double[]{position[0] + Math.cos(sensorAngle) * sensorLength, position[1] + Math.sin(sensorAngle) * sensorLength};
 			
 			g.setColor(Color.gray);

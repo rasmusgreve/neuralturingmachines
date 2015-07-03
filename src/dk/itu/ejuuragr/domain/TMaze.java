@@ -29,13 +29,15 @@ public class TMaze implements Simulator {
 	
 	public static final boolean DEBUG = false; // If true the Simulator will print the state in each step
 	
-	public static final double SPEED = 0.1; // How many tiles you can move in one step
-	public static final double SENSOR_CUTOFF = 3; // The maximum distance of the sensors (wherefrom it will have a value of 1.0)
-	public static final double[] SENSOR_ANGLES = new double[]{-Math.PI / 4.0, 0, Math.PI / 4.0}; // What sensors and their angles to return
-	public static final double STEER_AMOUNT = Math.PI / 8; // Max 45 degrees to either side
+	// Simulation specifics
+	public double SPEED; // How many tiles you can move in one step
+	public double SENSOR_CUTOFF; // The maximum distance of the sensors (wherefrom it will have a value of 1.0)
+	public final double[] SENSOR_ANGLES = new double[]{-Math.PI / 4.0, 0, Math.PI / 4.0}; // What sensors and their angles to return
+	public double STEER_AMOUNT; // Max 45 degrees to either side
  
 	// Random things
 	private Random rand;
+	private int maxSteps;
 	
 	// The map
 	private MazeMap map;
@@ -66,6 +68,10 @@ public class TMaze implements Simulator {
 		rand = new Random(props.getIntProperty("random.seed"));
 		highReward = props.getIntProperty("simulator.tmaze.reward.high");
 		lowReward = props.getIntProperty("simulator.tmaze.reward.low");
+		maxSteps = props.getIntProperty("simulator.steps.max");
+		SPEED = props.getDoubleProperty("simulator.tmaze.game.speed");
+		SENSOR_CUTOFF = props.getIntProperty("simulator.tmaze.game.sensors.length");
+		STEER_AMOUNT = (props.getIntProperty("simulator.tmaze.game.steer.max") / 180.0) * Math.PI;
 		
 		String mapFile = props.getProperty("simulator.tmaze.map");
 		loadMap(mapFile);
@@ -121,7 +127,7 @@ public class TMaze implements Simulator {
 
 	@Override
 	public boolean isTerminated() {
-		return isInWall() || finishedLastStep();
+		return isInWall() || finishedLastStep() || stepCounter == maxSteps-1;
 	}
 
 	// SPECIFIC PUBLIC METHODS
