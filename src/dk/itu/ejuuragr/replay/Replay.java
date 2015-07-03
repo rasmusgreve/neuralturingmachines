@@ -1,4 +1,4 @@
-package dk.itu.ejuuragr.run;
+package dk.itu.ejuuragr.replay;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -53,7 +53,7 @@ public class Replay {
 		
 		//Simulator and controller
 		Simulator sim = new RPSSimulator(props);
-		TuringControllerProxy con = new TuringControllerProxy(props, sim);
+		TuringControllerMemoryVizProxy con = new TuringControllerMemoryVizProxy(props, sim);
 
 		int fitness = con.evaluate(activator);
 		new ReplayVisualizer().show(con.getSteps());
@@ -69,67 +69,6 @@ public class Replay {
 		for (double d : arr)
 			sb.append(d).append(" ,");
 		return sb.substring(0, sb.length()-2) + "]";
-	}
-	
-	public static class TimeStep{
-		TuringTimeStep turingStep;
-		double[] domainInput;
-		//double[] domainOuput; //TODO: Might be interesting at some point
-		public TuringTimeStep getTuringStep() {
-			return turingStep;
-		}
-		public void setTuringStep(TuringTimeStep turingStep) {
-			this.turingStep = turingStep;
-		}
-		public double[] getDomainInput() {
-			return domainInput;
-		}
-		public void setDomainInput(double[] domainInput) {
-			this.domainInput = domainInput;
-		}
-		
-	}
-	
-	private static class TuringControllerProxy extends TuringController{
-
-		List<TimeStep> timeSteps = new ArrayList<TimeStep>();
-		
-		TimeStep currentTimeStep = new TimeStep();
-		
-		public TuringControllerProxy(Properties props, Simulator sim) {
-			super(props, sim);
-			iterations = 1; //Overwrite iteration count when replaying, since we don't care about properties
-			tm.setRecordTimeSteps(true);
-		}
-		
-		public List<TimeStep> getSteps(){
-			return timeSteps;
-		}
-		
-		
-		@Override
-		public double[] processOutputs(double[] fromNN) {
-			double[] result = super.processOutputs(fromNN);
-			
-			//Catch tm step
-			currentTimeStep.setTuringStep(tm.getLastTimeStep());
-			
-			//Store and get ready for next step
-			timeSteps.add(currentTimeStep);
-			currentTimeStep = new TimeStep();
-			
-			return result;
-		}
-		
-		@Override
-		protected double[] activateNeuralNetwork(Activator nn, double[] domainInput, double[] controllerInput) {
-			double[] neuralNetworkOutput = super.activateNeuralNetwork(nn, domainInput, controllerInput);
-			
-			currentTimeStep.setDomainInput(domainInput); //Catch domain input
-			
-			return neuralNetworkOutput;
-		};
-
 	}
 	
 }

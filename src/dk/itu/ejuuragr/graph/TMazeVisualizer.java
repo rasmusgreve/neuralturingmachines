@@ -12,10 +12,18 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Line2D;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 
+import org.jgap.Chromosome;
+
+import com.anji.integration.Activator;
+import com.anji.integration.ActivatorTranscriber;
+import com.anji.persistence.FilePersistence;
+import com.anji.util.DummyConfiguration;
 import com.anji.util.Properties;
 
 import dk.itu.ejuuragr.domain.TMaze;
@@ -27,6 +35,7 @@ public class TMazeVisualizer {
 	final TMaze maze;
 	final MazeMap map;
 	final TMazeVisualizerComponent component;
+	Activator activator;
 	
 	
 	private final int blockSize = 250;
@@ -47,19 +56,6 @@ public class TMazeVisualizer {
 		frame.setLayout(layout);
 		
 		component = new TMazeVisualizerComponent();
-		component.addMouseMotionListener(new MouseMotionListener() {
-			
-			@Override
-			public void mouseMoved(MouseEvent e) {
-				System.out.println(e.getX() + " , " + e.getY());
-			}
-			
-			@Override
-			public void mouseDragged(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-		});
 		frame.addKeyListener(new KeyListener() {
 			
 			@Override
@@ -81,13 +77,21 @@ public class TMazeVisualizer {
 					maze.performAction(new double[]{1});
 				if (e.getKeyCode() == KeyEvent.VK_RIGHT)
 					maze.performAction(new double[]{0});
+				if (e.getKeyCode() == KeyEvent.VK_SPACE)
+					System.out.println("TODO");
+					//maze.performAction(activator.next())
 				component.repaint();
+				System.out.println(maze.getCurrentScore());
 			}
 		});
 		frame.add(component, BorderLayout.CENTER);
 		
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);
+	}
+	
+	public void setNNActivator(Activator activator){
+		this.activator = activator;
 	}
 	
 	public void update(){
@@ -201,13 +205,44 @@ public class TMazeVisualizer {
 	
 	//Quick and dirty test main
 	public static void main(String[] args) throws Exception {
-		Properties props = new Properties("turingmachine.properties");
-		TMaze maze = new TMaze(props);
-		maze.reset();
-		maze.performAction(new double[]{.5});
-		maze.performAction(new double[]{.5});
-		maze.performAction(new double[]{.5});
-		TMazeVisualizer viz = new TMazeVisualizer(maze);		
+		String chromosomeId, propertiesFile;
+		if (args.length == 0){
+			BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+			System.out.println("Properties filename: ");
+			propertiesFile = br.readLine();
+			System.out.println("Chromosome ID: ");
+			chromosomeId = br.readLine();
+		}
+		else
+		{
+			propertiesFile = args[0];
+			chromosomeId = args[1];
+		}
+		
+		try{
+			//Setup
+			Properties props = new Properties(propertiesFile); // "turingmachine.properties"
+			props.setProperty("base.dir", "./db");
+			
+			TMaze maze = new TMaze(props);
+			maze.reset();
+			TMazeVisualizer viz = new TMazeVisualizer(maze);
+			
+			//Loading chromosome
+			FilePersistence db = new FilePersistence();
+			db.init(props);
+			Chromosome chrom = db.loadChromosome(chromosomeId, new DummyConfiguration());
+			
+			//Setup activator
+			ActivatorTranscriber activatorFactory = (ActivatorTranscriber) props.singletonObjectProperty(ActivatorTranscriber.class);
+			Activator activator = activatorFactory.newActivator(chrom);
+
+			viz.setNNActivator(activator);
+		}
+		catch (Exception e){
+			System.out.println("!!! Warning!");
+			System.out.println("Chromosome load failed!");
+		}
 	}
 	
 }
