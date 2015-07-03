@@ -43,6 +43,7 @@ public class TMazeVisualizer {
 	private final double agentSize = 0.05;
 	private final Color highRewardColor = Color.red;
 	private final Color lowRewardColor = Color.gray;
+	private boolean doProgress = false;
 	
 	public TMazeVisualizer(final TMaze maze){
 		this.maze = maze;
@@ -78,8 +79,7 @@ public class TMazeVisualizer {
 				if (e.getKeyCode() == KeyEvent.VK_RIGHT)
 					maze.performAction(new double[]{0});
 				if (e.getKeyCode() == KeyEvent.VK_SPACE)
-					System.out.println("TODO");
-					//maze.performAction(activator.next())
+					doProgress = true;
 				component.repaint();
 				System.out.println(maze.getCurrentScore());
 			}
@@ -88,6 +88,14 @@ public class TMazeVisualizer {
 		
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);
+	}
+	
+	public boolean getDoProgressAndReset(){
+		if (doProgress){
+			doProgress = false;
+			return true;
+		}
+		return false;
 	}
 	
 	public void setNNActivator(Activator activator){

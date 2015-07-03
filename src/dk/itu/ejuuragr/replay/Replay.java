@@ -63,9 +63,9 @@ public class Replay {
 				@Override
 				public void step() {
 					mazeViz.update();
-					try {
-						new BufferedReader(new InputStreamReader(System.in)).readLine();
-					} catch (IOException e) {
+					while (true){
+						if (mazeViz.getDoProgressAndReset())
+							break;
 					}
 				}
 				
