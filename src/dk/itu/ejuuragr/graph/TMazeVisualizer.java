@@ -74,8 +74,10 @@ public class TMazeVisualizer {
 					maze.performAction(new double[]{1});
 				if (e.getKeyCode() == KeyEvent.VK_RIGHT)
 					maze.performAction(new double[]{0});
-				if (e.getKeyCode() == KeyEvent.VK_SPACE)
+				if (e.getKeyCode() == KeyEvent.VK_SPACE) {
 					doProgress = true;
+					System.out.println("SPACE!");
+				}
 				component.repaint();
 				System.out.println(maze.getCurrentScore());
 			}

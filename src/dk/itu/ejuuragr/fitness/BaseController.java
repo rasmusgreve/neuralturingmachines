@@ -47,10 +47,10 @@ public abstract class BaseController implements Controller {
 			
 			int step = 0;
 			while(!sim.isTerminated() /*&& step < maxSteps*/){
-				double[] nnOutput = activateNeuralNetwork(nn, simOutput, controllerOutput);
+				double[] nnOutput = this.activateNeuralNetwork(nn, simOutput, controllerOutput);
 				
-				simOutput = getSimulationResponse(Arrays.copyOfRange(nnOutput, 0, sim.getInputCount()));
-				controllerOutput = getControllerResponse(Arrays.copyOfRange(nnOutput, sim.getInputCount(), nnOutput.length));
+				simOutput = this.getSimulationResponse(Arrays.copyOfRange(nnOutput, 0, sim.getInputCount()));
+				controllerOutput = this.getControllerResponse(Arrays.copyOfRange(nnOutput, sim.getInputCount(), nnOutput.length));
 				
 				step++;
 			}
