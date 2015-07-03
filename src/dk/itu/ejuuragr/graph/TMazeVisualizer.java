@@ -8,8 +8,6 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionListener;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Line2D;
 import java.io.BufferedReader;
@@ -35,8 +33,6 @@ public class TMazeVisualizer {
 	final TMaze maze;
 	final MazeMap map;
 	final TMazeVisualizerComponent component;
-	Activator activator;
-	
 	
 	private final int blockSize = 250;
 	private final double rewardSize = 0.5;
@@ -96,10 +92,6 @@ public class TMazeVisualizer {
 			return true;
 		}
 		return false;
-	}
-	
-	public void setNNActivator(Activator activator){
-		this.activator = activator;
 	}
 	
 	public void update(){
@@ -235,17 +227,7 @@ public class TMazeVisualizer {
 			TMaze maze = new TMaze(props);
 			maze.reset();
 			TMazeVisualizer viz = new TMazeVisualizer(maze);
-			
-			//Loading chromosome
-			FilePersistence db = new FilePersistence();
-			db.init(props);
-			Chromosome chrom = db.loadChromosome(chromosomeId, new DummyConfiguration());
-			
-			//Setup activator
-			ActivatorTranscriber activatorFactory = (ActivatorTranscriber) props.singletonObjectProperty(ActivatorTranscriber.class);
-			Activator activator = activatorFactory.newActivator(chrom);
 
-			viz.setNNActivator(activator);
 		}
 		catch (Exception e){
 			System.out.println("!!! Warning!");
