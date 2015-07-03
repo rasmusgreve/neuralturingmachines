@@ -36,8 +36,8 @@ public class StepSimulator implements Simulator {
 
 	@Override
 	public double[] performAction(double[] action) {
-		double[] result = simulator.performAction(action);
 		if (stepper != null) stepper.step();
+		double[] result = simulator.performAction(action);
 		return result;
 	}
 
