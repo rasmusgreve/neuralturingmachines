@@ -6,13 +6,15 @@ import com.anji.util.Properties;
 
 public class RoundsTMaze extends TMaze {
 	
+	private static final boolean DEBUG = false; // True if it should print scores for each round
+	
 	private double swapFraction; // The center fraction of the stepLength
 	private int rounds = -1; // The number of rounds in the test
 	private Random rand;
-	private int switchSpot;
+	private int switchSpot; // The spot to switch goal at
 	
-	private int curRound;
-	private int totalScore;
+	private int curRound; // The current round number
+	private int totalScore; // The accumulated score over all rounds
 
 	public RoundsTMaze(Properties props) {
 		super(props);
@@ -24,7 +26,7 @@ public class RoundsTMaze extends TMaze {
 
 	@Override
 	public void reset() {
-		System.out.println("---------------------");
+		if(DEBUG) System.out.println("---------------------");
 		super.reset();
 		super.swapGoal(true); // select new goal randomly
 		curRound = 0;
@@ -32,7 +34,7 @@ public class RoundsTMaze extends TMaze {
 			
 		int swapArea = (int)(rounds * swapFraction); // The middle X rounds it can switch
 		this.switchSpot = (rounds - swapArea) / 2 + rand.nextInt(swapArea+1);
-		System.out.println("Will swap after "+switchSpot+" of "+rounds);
+		if(DEBUG) System.out.println("Will swap after "+switchSpot+" of "+rounds);
 	}
 
 	@Override
@@ -40,7 +42,7 @@ public class RoundsTMaze extends TMaze {
 		double[] superResult = super.performAction(action);
 		
 		if(super.isTerminated()){ // Round over
-			System.out.println("Round "+curRound+": "+super.getCurrentScore());
+			if(DEBUG) System.out.println("Round "+curRound+": "+super.getCurrentScore());
 			this.totalScore += super.getCurrentScore();
 			
 			super.reset();
@@ -54,9 +56,7 @@ public class RoundsTMaze extends TMaze {
 
 	@Override
 	public boolean isTerminated() {
-		boolean result = curRound == rounds - 1;
-		if(result)
-			System.out.println("breakz");
+		boolean result = curRound == rounds;
 		return result;
 	}
 

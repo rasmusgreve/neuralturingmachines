@@ -18,12 +18,10 @@ public abstract class BaseController implements Controller {
 	
 	protected Simulator sim;
 	protected int inputTotal;
-	protected int maxSteps;
 	protected int iterations;
 
 	public BaseController(Properties props, Simulator sim){
 		this.sim = sim;
-		this.maxSteps = props.getIntProperty("controller.steps.max");
 		this.iterations = props.getIntProperty("controller.iterations");
 		
 		// how many inputs for controller and simulator?
@@ -48,7 +46,7 @@ public abstract class BaseController implements Controller {
 			double[] simOutput = sim.getInitialObservation();
 			
 			int step = 0;
-			while(!sim.isTerminated() && step < maxSteps){
+			while(!sim.isTerminated() /*&& step < maxSteps*/){
 				double[] nnOutput = activateNeuralNetwork(nn, simOutput, controllerOutput);
 				
 				simOutput = getSimulationResponse(Arrays.copyOfRange(nnOutput, 0, sim.getInputCount()));
