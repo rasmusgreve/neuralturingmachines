@@ -39,7 +39,7 @@ public class TMazeVisualizer {
 	private final double agentSize = 0.05;
 	private final Color highRewardColor = Color.red;
 	private final Color lowRewardColor = Color.gray;
-	private boolean doProgress = false;
+	private volatile boolean doProgress = false;
 	
 	public TMazeVisualizer(final TMaze maze){
 		this.maze = maze;
