@@ -75,6 +75,7 @@ public class Replay {
 		//Simulator and controller
 
 		int fitness = controller.evaluate(activator);
+		System.out.println("FINAL FITNESS: "+fitness);
 		if (controller instanceof TuringControllerMemoryVizProxy)
 			new ReplayVisualizer().show(((TuringControllerMemoryVizProxy)controller).getSteps());
 	}
