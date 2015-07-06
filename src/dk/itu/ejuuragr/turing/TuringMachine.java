@@ -111,33 +111,33 @@ public class TuringMachine {
 	 * @return A HeadVariables object with all the values properly
 	 * packed.
 	 */
-	public HeadVariables translateToHeadVars(double[] flatVars){
+	private HeadVariables translateToHeadVars(double[] flatVars){
 		HeadVariables vars = new HeadVariables();
 		int offset = 0;
 		
 		// Package for TM
 		for(int i = 0; i < getReadHeadCount(); i++) {
-			vars.addRead(Arrays.copyOfRange(flatVars,offset,offset+m), 
-					flatVars[offset+m], 
-					flatVars[offset+m+1], 
-					Utilities.normalize(Arrays.copyOfRange(flatVars,offset+m+2,offset+m+2+shiftLength)), 
-					flatVars[offset+m+2+shiftLength]);
+			vars.addRead(Arrays.copyOfRange(flatVars,offset,offset+m), 	// Key (k)
+					flatVars[offset+m], 								// Key Strength (beta)
+					flatVars[offset+m+1], 								// Interpolation (g)
+					Utilities.normalize(Arrays.copyOfRange(flatVars,offset+m+2,offset+m+2+shiftLength)), // Shifting (s)
+					1 + flatVars[offset+m+2+shiftLength]); 				// Sharpening (gamma)
 			offset += m+3+shiftLength;
 		}
 		
 		for(int i = 0; i < getWriteHeadCount(); i++) {
-			vars.addWrite(Arrays.copyOfRange(flatVars, offset, offset+m), 
-					Arrays.copyOfRange(flatVars, offset+m, offset+2*m), 
-					Arrays.copyOfRange(flatVars, offset+2*m, offset+3*m),  
-					flatVars[offset+3*m], 
-					flatVars[offset+3*m+1], 
-					Utilities.normalize(Arrays.copyOfRange(flatVars,offset+3*m+2,offset+3*m+2+shiftLength)), 
-					flatVars[offset+3*m+2+shiftLength]);
+			vars.addWrite(Arrays.copyOfRange(flatVars, offset, offset+m), 	// Erase Vector (e)
+					Arrays.copyOfRange(flatVars, offset+m, offset+2*m),   	// Add Vector (a)
+					Arrays.copyOfRange(flatVars, offset+2*m, offset+3*m),	// Key (k)
+					flatVars[offset+3*m], 									// Key Strength (beta)
+					flatVars[offset+3*m+1], 								// Interpolation (g)
+					Utilities.normalize(Arrays.copyOfRange(flatVars,offset+3*m+2,offset+3*m+2+shiftLength)), // Shifting (s)
+					1 + flatVars[offset+3*m+2+shiftLength]);				// Sharpening (gamma)
 			offset += 3*m+3+shiftLength;
 		}
 		return vars;
 	}
-	
+
 	/**
 	 * Processes the input for the TM and gets all the
 	 * reads out.
