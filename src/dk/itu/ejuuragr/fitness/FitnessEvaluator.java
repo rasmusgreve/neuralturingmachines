@@ -37,7 +37,9 @@ public class FitnessEvaluator implements BulkFitnessFunction, Configurable {
 
 	@Override
 	public int getMaxFitnessValue() {
-		return controller.getMaxScore();
+		int result = controller.getMaxScore();
+//		System.out.println("Max Score: "+result);
+		return result;
 	}
 
 	@Override

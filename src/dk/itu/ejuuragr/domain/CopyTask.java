@@ -52,7 +52,7 @@ public class CopyTask implements Simulator {
 	@Override
 	public void reset() {
 		// Create the random sequence
-		int length = rand.nextInt(this.maxLength);
+		int length = rand.nextInt(this.maxLength) + 1;
 		
 		this.sequence = new double[length][];
 		for(int i = 0; i < length; i++) {
