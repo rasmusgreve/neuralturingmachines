@@ -6,7 +6,6 @@ import com.anji.integration.Activator;
 import com.anji.util.Properties;
 
 import dk.itu.ejuuragr.domain.Simulator;
-import dk.itu.ejuuragr.fitness.Utilities;
 
 /**
  * Abstracts the flow of evaluating away from subclasses
@@ -45,14 +44,11 @@ public abstract class BaseController implements Controller {
 			double[] controllerOutput = this.getInitialInput();
 			double[] simOutput = sim.getInitialObservation();
 			
-			int step = 0;
 			while(!sim.isTerminated() /*&& step < maxSteps*/){
 				double[] nnOutput = this.activateNeuralNetwork(nn, simOutput, controllerOutput);
 				
 				simOutput = this.getSimulationResponse(Arrays.copyOfRange(nnOutput, 0, sim.getInputCount()));
 				controllerOutput = this.getControllerResponse(Arrays.copyOfRange(nnOutput, sim.getInputCount(), nnOutput.length));
-				
-				step++;
 			}
 
 			totalScore += sim.getCurrentScore();
