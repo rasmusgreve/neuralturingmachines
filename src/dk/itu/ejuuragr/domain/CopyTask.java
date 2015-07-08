@@ -8,22 +8,22 @@ import com.anji.util.Properties;
 import dk.itu.ejuuragr.fitness.Utilities;
 
 /**
- * This is the Copy Task as described by Graves et.al.
- * in "Neural Turing Machine".
- * It tests the controller in first receiving a random
- * sequence of vectors of a random length and then
- * sees if it can then output it correctly.
+ * This is the Copy Task as described by Graves et.al. in
+ * "Neural Turing Machine". It tests the controller in first receiving a random
+ * sequence of vectors of a random length and then sees if it can then output it
+ * correctly.
  * 
  * @author Emil
  *
  */
 public class CopyTask implements Simulator {
 	
+	private static final boolean DEBUG = false; // True if it should print all input and output
+
 	private int m;
 	private Random rand;
 	private int maxLength;
-	private double[] zeroVector;
-	
+
 	private double[][] sequence;
 	private int step;
 	private double score;
@@ -32,8 +32,6 @@ public class CopyTask implements Simulator {
 		this.m = props.getIntProperty("tm.m");
 		this.rand = new Random(props.getIntProperty("random.seed"));
 		this.maxLength = props.getIntProperty("simulator.copytask.length.max");
-		
-		this.zeroVector = new double[this.m];
 		reset();
 	}
 
@@ -44,26 +42,28 @@ public class CopyTask implements Simulator {
 
 	@Override
 	public int getOutputCount() {
-		return this.m; // The input we give the controller in each iteration
+		return this.m + 2; // The input we give the controller in each iteration
 		// Will be empty when we expect the controller to read back
 		// the sequence.
+		// The two extra ones are START and DELIMITER bits.
 	}
 
 	@Override
 	public void reset() {
+		if(DEBUG) System.out.print("Reset: [");
 		// Create the random sequence
 		int length = rand.nextInt(this.maxLength) + 1;
-		
+
 		this.sequence = new double[length][];
-		for(int i = 0; i < length; i++) {
+		for (int i = 0; i < length; i++) {
 			sequence[i] = new double[this.m];
-			for(int j = 0; j < m; j++) {
+			for (int j = 0; j < m; j++) {
 				sequence[i][j] = rand.nextInt(2);
 			}
-			//System.out.println(Arrays.toString(sequence[i]));
+			if(DEBUG) System.out.print(Arrays.toString(sequence[i])+",");
 		}
-		
-		
+		if(DEBUG) System.out.println("]");
+
 		// reset variables
 		this.step = 1;
 		this.score = 0.0;
@@ -76,22 +76,26 @@ public class CopyTask implements Simulator {
 
 	@Override
 	public double[] performAction(double[] action) {
-		double[] result;
-		if(step < sequence.length) { // First we don't care what it reads
-			result = getObservation(step);
-		} else { // The controllers "action" is the reading after |seq| steps
-			this.score += calcSimilarity(sequence[step - sequence.length],action);
-			// Just return the 0-vector (so we don't aid it in reading)
-			result = zeroVector;
+		double[] result = getObservation(step);
+
+		// Compare and score (if reading)
+		if (step >= sequence.length + 2) {
+			// The controllers "action" is the reading after 2 + |seq| steps
+			
+			int index = step - sequence.length - 2;
+			double thisScore = calcSimilarity(sequence[index], action);
+			this.score += thisScore;
+			
+			if(DEBUG) System.out.println("\tReading: "+Arrays.toString(action)+" compared to "+Arrays.toString(sequence[index])+" = "+thisScore);
 		}
-		
+
 		step++; // Increment step
 		return result;
 	}
 
 	@Override
 	public int getCurrentScore() {
-		return (int)(score * 10.0 * (maxLength / (1.0 * sequence.length)));
+		return (int) (score * 10.0 * (maxLength / (1.0 * sequence.length)));
 	}
 
 	@Override
@@ -101,32 +105,50 @@ public class CopyTask implements Simulator {
 
 	@Override
 	public boolean isTerminated() {
-		return this.step >= 2*sequence.length;
+		return this.step >= 2 * sequence.length + 2;
 	}
-	
+
 	// PRIVATE HELPER METHODS
-	
+
 	/**
 	 * Gets the observations at the given step.
-	 * @param step The point in the sequence to give
-	 * observations from. Must be below 2*m and will
-	 * be the 0-vector after m steps.
-	 * @return The content of the sequence at that
-	 * step.
+	 * 
+	 * @param step
+	 *            The point in the sequence to give observations from. Must be
+	 *            below 2*|seq|+2.
+	 * @return The content of the sequence at that step.
 	 */
 	private double[] getObservation(int step) {
-		if(step < this.sequence.length)
-			return sequence[step];
-		return zeroVector;
+		double[] result = new double[this.m + 2];
+		
+		if (step == 0) { // Send start vector
+			result[this.m] = 1; // START bit
+
+		} else if (step <= this.sequence.length) { // sending the sequence
+			Utilities.copy(sequence[step - 1],result,0);
+
+		} else if (step == this.sequence.length + 1) { // DELIMITER bit
+			result[result.length - 1] = 1;
+
+		} else { // When we are reading we just send zeros
+
+		}
+		
+		if(DEBUG) System.out.println(step+": "+Arrays.toString(result));
+		
+		return result;
 	}
-	
+
 	/**
-	 * Calculates how similar the two vectors are as
-	 * a value between 0.0 and 1.0;
-	 * @param first The first vector to compare.
-	 * @param second The vector to compare it to.
-	 * @return 0.0 if the vectors are totally different,
-	 * 1.0 if they are identical, or somewhere in between.
+	 * Calculates how similar the two vectors are as a value between 0.0 and
+	 * 1.0;
+	 * 
+	 * @param first
+	 *            The first vector to compare.
+	 * @param second
+	 *            The vector to compare it to.
+	 * @return 0.0 if the vectors are totally different, 1.0 if they are
+	 *         identical, or somewhere in between.
 	 */
 	private double calcSimilarity(double[] first, double[] second) {
 		return Utilities.emilarity(first, second);
