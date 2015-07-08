@@ -45,7 +45,7 @@ public abstract class BaseController implements Controller {
 			double[] controllerOutput = this.getInitialInput();
 			double[] simOutput = sim.getInitialObservation();
 			
-			while(!sim.isTerminated() /*&& step < maxSteps*/){
+			while(!sim.isTerminated()){
 				double[] nnOutput = this.activateNeuralNetwork(nn, simOutput, controllerOutput);
 				
 				simOutput = this.getSimulationResponse(Arrays.copyOfRange(nnOutput, 0, sim.getInputCount()));

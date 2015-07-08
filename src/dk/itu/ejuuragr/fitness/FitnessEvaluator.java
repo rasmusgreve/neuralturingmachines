@@ -20,10 +20,12 @@ public class FitnessEvaluator implements BulkFitnessFunction, Configurable {
 
 	private int generation;
 
+	private boolean toOffset = true;
+
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	final public void evaluate(List arg0) {
-		controller.getSimulator().setRandomOffset(generation);
+		if(toOffset) controller.getSimulator().setRandomOffset(generation);
 		
 		List<Chromosome> list = (List<Chromosome>) arg0;
 		for (Chromosome chromosome : list) {
@@ -50,6 +52,7 @@ public class FitnessEvaluator implements BulkFitnessFunction, Configurable {
 	public void init(Properties properties) {
 		// Load properties
 		activatorFactory = (ActivatorTranscriber) properties.singletonObjectProperty(ActivatorTranscriber.class);
+		toOffset = properties.getBooleanProperty("simulate.generations.identical");
 
 		// Initialize
 		generation = 0;

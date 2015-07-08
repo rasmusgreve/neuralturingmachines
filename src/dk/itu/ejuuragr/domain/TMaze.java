@@ -195,6 +195,20 @@ public class TMaze extends BaseSimulator {
 		moveGoal(canBeSame);
 	}
 	
+	/**
+	 * Finds the id of the goal at the given tile.
+	 * @param tile The coordinates in the maze of the goal.
+	 * @return The id between 0 and the number of goals (exclusive),
+	 * or -1 of there is no goal at that tile.
+	 */
+	public int getGoalId(int[] tile) {
+		List<int[]> goals = this.getMap().getOfType(MAP_TYPE.goal);
+		for(int i = 0; i < goals.size(); i++)
+			if(goals.get(i)[0] == tile[0] && goals.get(i)[1] == tile[1])
+				return i;
+		return -1;
+	}
+	
 	// HELPER METHODS
 	
 	private void init() {
