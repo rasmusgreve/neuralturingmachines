@@ -25,7 +25,7 @@ import com.anji.util.Properties;
  * @author Emil
  *
  */
-public class TMaze implements Simulator {
+public class TMaze extends BaseSimulator {
 	
 	public static final boolean DEBUG = false; // If true the Simulator will print the state in each step
 	
@@ -35,9 +35,7 @@ public class TMaze implements Simulator {
 	public final double[] SENSOR_ANGLES = new double[]{-Math.PI / 4.0, 0, Math.PI / 4.0}; // What sensors and their angles to return
 	public double STEER_AMOUNT; // Max 45 degrees to either side
  
-	// Random things
-	private int randomSeed;
-	private Random rand;
+	// Things
 	private int maxSteps;
 	
 	// The map
@@ -64,7 +62,7 @@ public class TMaze implements Simulator {
 	 * @param props The properties from ANJI.
 	 */
 	public TMaze(Properties props) {
-		randomSeed = props.getIntProperty("random.seed");
+		super(props);
 		highReward = props.getIntProperty("simulator.tmaze.reward.high");
 		lowReward = props.getIntProperty("simulator.tmaze.reward.low");
 		maxSteps = props.getIntProperty("simulator.steps.max");
@@ -75,9 +73,6 @@ public class TMaze implements Simulator {
 		String mapFile = props.getProperty("simulator.tmaze.map");
 		loadMap(mapFile);
 		loadWalls();
-		/*restart();
-		initialObservation = getObservation();
-		moveGoal(true);*/
 	}
 	
 	@Override
@@ -93,12 +88,6 @@ public class TMaze implements Simulator {
 	@Override
 	public int getOutputCount() {
 		return 3; // Distance sensor at 45, 90 and 135 degrees
-	}
-
-	@Override
-	public void reset() {
-		rand = new Random(randomSeed);
-		init();
 	}
 
 	@Override
@@ -389,9 +378,9 @@ public class TMaze implements Simulator {
 		List<int[]> goals = map.getOfType(MAP_TYPE.goal);
 
 		if(canBeSame) {
-			goal = goals.get(rand.nextInt(goals.size()));
+			goal = goals.get(getRandom().nextInt(goals.size()));
 		} else {
-			int roll = rand.nextInt(goals.size()-1);
+			int roll = getRandom().nextInt(goals.size()-1);
 			goal = Arrays.equals(goals.get(roll), goal) ? goals.get(goals.size()-1) : goals.get(roll);
 		}
 	}

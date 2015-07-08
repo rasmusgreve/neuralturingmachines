@@ -1,5 +1,7 @@
 package dk.itu.ejuuragr.domain;
 
+import java.util.Random;
+
 /**
  * A Simulator should have a constructor taking a single Properties object.
  * This way it can be used by simply referencing it in the properties file.
@@ -57,4 +59,18 @@ public interface Simulator {
 	 * @return True in case the simulation must stop now (e.g. you won/lost the entire thing)
 	 */
 	boolean isTerminated();
+	
+	/**
+	 * Gives the live Random object.
+	 * @return The Random object for generating pseudo-random numbers.
+	 */
+	Random getRandom();
+	
+	/**
+	 * Sets an offset which will be used in all future calls to
+	 * reset().
+	 * @param offset A number which will be added to the seed for the
+	 * random number generator.
+	 */
+	void setRandomOffset(int offset);
 }

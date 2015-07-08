@@ -16,13 +16,11 @@ import dk.itu.ejuuragr.fitness.Utilities;
  * @author Emil
  *
  */
-public class CopyTask implements Simulator {
+public class CopyTask extends BaseSimulator {
 	
-	private static final boolean DEBUG = true; // True if it should print all input and output
+	private static final boolean DEBUG = false; // True if it should print all input and output
 
 	private int m;
-	private int randomSeed;
-	private Random rand;
 	private int maxLength;
 
 	private double[][] sequence;
@@ -32,23 +30,22 @@ public class CopyTask implements Simulator {
 
 
 	public CopyTask(Properties props) {
+		super(props);
 		this.m = props.getIntProperty("tm.m");
-		this.randomSeed = props.getIntProperty("random.seed");
 		this.maxLength = props.getIntProperty("simulator.copytask.length.max");
-		//reset();
 	}
 	
 	@Override
 	public void restart() {
 		if(DEBUG) System.out.print("Restart: [");
 		// Create the random sequence
-		int length = rand.nextInt(this.maxLength) + 1;
+		int length = getRandom().nextInt(this.maxLength) + 1;
 
 		this.sequence = new double[length][];
 		for (int i = 0; i < length; i++) {
 			sequence[i] = new double[this.m];
 			for (int j = 0; j < m; j++) {
-				sequence[i][j] = rand.nextInt(2);
+				sequence[i][j] = getRandom().nextInt(2);
 			}
 			if(DEBUG) System.out.print(Arrays.toString(sequence[i])+",");
 		}
@@ -75,8 +72,7 @@ public class CopyTask implements Simulator {
 	@Override
 	public void reset() {
 		if(DEBUG) System.out.println("---------- RESET ----------");
-		rand = new Random(randomSeed);
-		restart();
+		super.reset();
 	}
 
 	@Override

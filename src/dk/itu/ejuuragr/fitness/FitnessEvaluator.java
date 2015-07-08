@@ -18,12 +18,15 @@ public class FitnessEvaluator implements BulkFitnessFunction, Configurable {
 	ActivatorTranscriber activatorFactory;
 	private Controller controller;
 
+	private int generation;
+
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	final public void evaluate(List arg0) {
+		controller.getSimulator().setRandomOffset(generation);
+		
 		List<Chromosome> list = (List<Chromosome>) arg0;
 		for (Chromosome chromosome : list) {
-			controller.reset();
 			try {
 				int score = controller.evaluate(activatorFactory.newActivator(chromosome));
 				chromosome.setFitnessValue(score);
@@ -33,6 +36,7 @@ public class FitnessEvaluator implements BulkFitnessFunction, Configurable {
 			}
 
 		}
+		generation++;
 	}
 
 	@Override
@@ -48,9 +52,13 @@ public class FitnessEvaluator implements BulkFitnessFunction, Configurable {
 		activatorFactory = (ActivatorTranscriber) properties.singletonObjectProperty(ActivatorTranscriber.class);
 
 		// Initialize
+		generation = 0;
 		Simulator simulator = (Simulator) Utilities.instantiateObject(properties.getProperty("simulator.class"),
 				new Object[] { properties }, null);
 		controller = (Controller) Utilities.instantiateObject(properties.getProperty("controller.class"),
 				new Object[] { properties, simulator }, new Class<?>[] { Properties.class, Simulator.class });
+		simulator.reset();
+		simulator.restart();
+		controller.reset();
 	}
 }

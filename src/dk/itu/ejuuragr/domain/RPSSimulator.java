@@ -15,7 +15,7 @@ import dk.itu.ejuuragr.fitness.Utilities;
  * @author Emil
  *
  */
-public class RPSSimulator implements Simulator {
+public class RPSSimulator extends BaseSimulator {
 
 	static final int[][] WINNER = new int[][] { {0,-1,1},
 												{1,0,-1},
@@ -25,21 +25,18 @@ public class RPSSimulator implements Simulator {
 
 	private int score;
 	private int stepsTotal;
-	private Random rand;
 	private String mode;
 	
 	private int[] sequence;
 	private int step; // how far we are in the sequence
 
 	private int sequenceLength;
-	private int randomSeed;
 	
 	public RPSSimulator(Properties props){
+		super(props);
 		stepsTotal = props.getIntProperty("controller.steps.max");
 		sequenceLength = props.getIntProperty("simulator.rps.sequence.length");
 		mode = props.getProperty("simulator.rps.mode");
-		randomSeed = props.getIntProperty("random.seed");
-		reset();
 	}
 	
 	@Override
@@ -80,13 +77,6 @@ public class RPSSimulator implements Simulator {
 	public int getMaxScore() {
 		return stepsTotal; // if you win all
 	}
-	
-
-	@Override
-	public void reset() {
-		rand = new Random(randomSeed);
-		reset();
-	}
 
 	@Override
 	public void restart() {
@@ -111,9 +101,9 @@ public class RPSSimulator implements Simulator {
 	private int[] swapSequence() {
 		int[] result = new int[stepsTotal];
 		int swapArea = (int)(stepsTotal * SWAP_AREA);
-		int switchSpot = (stepsTotal - swapArea) / 2 + rand.nextInt(swapArea+1);
-		int first = rand.nextInt(3);
-		int second = rand.nextInt(2);
+		int switchSpot = (stepsTotal - swapArea) / 2 + getRandom().nextInt(swapArea+1);
+		int first = getRandom().nextInt(3);
+		int second = getRandom().nextInt(2);
 		if(second == first)
 			second = 2;
 		
@@ -126,7 +116,7 @@ public class RPSSimulator implements Simulator {
 	private int[] randomSequence(int size) {
 		int[] result = new int[size];
 		for(int i = 0; i < size; i++)
-			result[i] = rand.nextInt(3);
+			result[i] = getRandom().nextInt(3);
 		return result;
 	}
 }

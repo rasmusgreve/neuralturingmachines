@@ -29,13 +29,13 @@ public abstract class BaseSimulator implements Simulator {
 	@Override
 	public void reset() {
 		resetRandom();
-		this.restart();
 	}
 
 	/**
 	 * Gives the live Random object.
 	 * @return The Random object for generating pseudo-random numbers.
 	 */
+	@Override
 	public Random getRandom() {
 		return rand;
 	}
@@ -46,6 +46,7 @@ public abstract class BaseSimulator implements Simulator {
 	 * @param offset A number which will be added to the seed for the
 	 * random number generator.
 	 */
+	@Override
 	public void setRandomOffset(int offset) {
 		this.offset = offset;
 	}

@@ -1,5 +1,7 @@
 package dk.itu.ejuuragr.replay;
 
+import java.util.Random;
+
 import dk.itu.ejuuragr.domain.Simulator;
 
 public class StepSimulator implements Simulator {
@@ -64,5 +66,15 @@ public class StepSimulator implements Simulator {
 	@Override
 	public void restart() {
 		simulator.restart();
+	}
+
+	@Override
+	public Random getRandom() {
+		return simulator.getRandom();
+	}
+
+	@Override
+	public void setRandomOffset(int offset) {
+		simulator.setRandomOffset(offset);
 	}
 }
