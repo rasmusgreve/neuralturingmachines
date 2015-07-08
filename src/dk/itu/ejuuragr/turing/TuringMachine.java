@@ -25,9 +25,13 @@ public class TuringMachine {
 	private int shiftLength;
 	private int readHeads;
 	private int writeHeads;
+	private int readHeadOutputs;
+	private int writeHeadOutputs;
 	
 	private boolean recordTimeSteps = false;
 	private TuringTimeStep currentStep;
+
+
 
 	/**
 	 * Instantiating the TM with the necessary parameters.
@@ -43,6 +47,10 @@ public class TuringMachine {
 		this.readHeads = readHeads;
 		this.writeHeads = writeHeads;
 		this.shiftLength = shiftLength;
+		
+		// sizes for array handling
+		this.readHeadOutputs = 3 + m + shiftLength;
+		this.writeHeadOutputs = 3 + 3 * m + shiftLength;
 		
 		this.reset();
 	}
@@ -112,6 +120,10 @@ public class TuringMachine {
 	 * packed.
 	 */
 	private HeadVariables translateToHeadVars(double[] flatVars){
+		int varsNeeded = this.getReadHeadCount() * this.readHeadOutputs + this.getWriteHeadCount() * this.writeHeadOutputs;
+		if(flatVars.length != varsNeeded)
+			throw new IllegalArgumentException("The number of elements ("+flatVars.length+") to the TM doesn't match the needed ("+varsNeeded+")");
+		
 		HeadVariables vars = new HeadVariables();
 		int offset = 0;
 		
@@ -122,7 +134,7 @@ public class TuringMachine {
 					flatVars[offset+m+1], 								// Interpolation (g)
 					Utilities.normalize(Arrays.copyOfRange(flatVars,offset+m+2,offset+m+2+shiftLength)), // Shifting (s)
 					1 + flatVars[offset+m+2+shiftLength]); 				// Sharpening (gamma)
-			offset += m+3+shiftLength;
+			offset += this.readHeadOutputs;
 		}
 		
 		for(int i = 0; i < getWriteHeadCount(); i++) {
@@ -133,7 +145,7 @@ public class TuringMachine {
 					flatVars[offset+3*m+1], 								// Interpolation (g)
 					Utilities.normalize(Arrays.copyOfRange(flatVars,offset+3*m+2,offset+3*m+2+shiftLength)), // Shifting (s)
 					1 + flatVars[offset+3*m+2+shiftLength]);				// Sharpening (gamma)
-			offset += 3*m+3+shiftLength;
+			offset += this.writeHeadOutputs;
 		}
 		return vars;
 	}
@@ -164,7 +176,7 @@ public class TuringMachine {
 			throw new IllegalArgumentException("You must define as many read and write heads as when the TM was created.");
 
 		// First all WRITES
-		//System.out.println("Erasing");
+		
 		// Erase
 		for(int i = 0; i < vars.getWrite().size(); i++){
 			Head current = vars.getWrite().get(i);
@@ -176,7 +188,7 @@ public class TuringMachine {
 				}
 			}
 		}
-		//System.out.println("Adding");
+		
 		// Add
 		for(int i = 0; i < vars.getWrite().size(); i++){
 			Head current = vars.getWrite().get(i);
@@ -219,27 +231,6 @@ public class TuringMachine {
 		return result;
 	}
 
-	/*
-	public double[][] getReadWeightings() {
-		return readWeightings;
-	}
-
-	public double[][] getWriteWeightings() {
-		return writeWeightings;
-	}
-	
-	public ArrayList<double[]> getTape(){
-		return tape;
-	}
-	
-	public int getM(){
-		return m;
-	}
-	
-	public int getN(){
-		return n;
-	}
-	*/
 	public static class TuringTimeStep{
 		
 		List<HeadTimeStep> writeHeads = new ArrayList<HeadTimeStep>();

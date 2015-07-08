@@ -68,6 +68,34 @@ public class Utilities {
 //		System.out.println(Arrays.toString(fromArray)+", "+Arrays.toString(toArray)+" offset="+offset);
 		System.arraycopy(fromArray,0,toArray,offset,fromArray.length);
 	}
+	
+	/**
+	 * Makes a String representation of the given array using
+	 * the given format for each element.
+	 * @param array The array to make a String of.
+	 * @param format The way to format each double, e.g. "2d1"
+	 * @return The string...
+	 */
+	public static String toString(double[] array, String format) {
+		StringBuilder b = new StringBuilder();
+		b.append('[');
+		for(int i = 0; i < array.length; i++) {
+			b.append(String.format(format, array[i]));
+			if(i < array.length - 1)
+				b.append(", ");
+		}
+		b.append(']');
+		return b.toString();
+	}
+	
+	/**
+	 * Makes a String of the given array with two digits precision.
+	 * @param array The array to make a String of.
+	 * @return The String...
+	 */
+	public static String toString(double[] array) {
+		return Utilities.toString(array,"%.2f");
+	}
 
 	/**
 	 * Count the total number of elements in a 2 dimensional matrix

@@ -1,7 +1,6 @@
 package dk.itu.ejuuragr.domain;
 
 import java.util.Arrays;
-import java.util.Random;
 
 import com.anji.util.Properties;
 
@@ -92,7 +91,7 @@ public class CopyTask extends BaseSimulator {
 			double thisScore = calcSimilarity(sequence[index], action);
 			this.score += thisScore;
 			
-			if(DEBUG) System.out.println("\tReading: "+Arrays.toString(action)+" compared to "+Arrays.toString(sequence[index])+" = "+thisScore);
+			if(DEBUG) System.out.println("\tReading: "+Utilities.toString(action)+" compared to "+Utilities.toString(sequence[index])+" = "+thisScore);
 		}
 
 		step++; // Increment step

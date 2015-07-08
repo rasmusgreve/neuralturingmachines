@@ -1,5 +1,7 @@
 package dk.itu.ejuuragr.turing;
 
+import java.util.Arrays;
+
 import com.anji.util.Properties;
 
 import dk.itu.ejuuragr.domain.Simulator;
@@ -40,8 +42,8 @@ public class TuringController extends BaseController {
 	public double[] processOutputs(double[] fromNN) {
 		double[] result = Utilities.flatten(tm.processInput(fromNN));
 		
-		//System.out.println("fromNN: "+Arrays.toString(fromNN));
-		//System.out.println("toNN: "+Arrays.toString(result));
+//		System.out.println("fromNN: "+Arrays.toString(fromNN));
+//		System.out.println("toNN: "+Arrays.toString(result));
 		
 		return result;
 	}
