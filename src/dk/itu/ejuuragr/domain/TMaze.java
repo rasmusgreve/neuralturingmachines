@@ -36,6 +36,7 @@ public class TMaze implements Simulator {
 	public double STEER_AMOUNT; // Max 45 degrees to either side
  
 	// Random things
+	private int randomSeed;
 	private Random rand;
 	private int maxSteps;
 	
@@ -56,8 +57,6 @@ public class TMaze implements Simulator {
 	
 	private int stepCounter;
 	private int finished = -1;
-
-	
 	
 	/**
 	 * The required constructor to instantiate the Simulator through
@@ -65,20 +64,25 @@ public class TMaze implements Simulator {
 	 * @param props The properties from ANJI.
 	 */
 	public TMaze(Properties props) {
-		rand = new Random(props.getIntProperty("random.seed"));
+		randomSeed = props.getIntProperty("random.seed");
 		highReward = props.getIntProperty("simulator.tmaze.reward.high");
 		lowReward = props.getIntProperty("simulator.tmaze.reward.low");
 		maxSteps = props.getIntProperty("simulator.steps.max");
 		SPEED = props.getDoubleProperty("simulator.tmaze.game.speed");
 		SENSOR_CUTOFF = props.getIntProperty("simulator.tmaze.game.sensors.length");
 		STEER_AMOUNT = (props.getIntProperty("simulator.tmaze.game.steer.max") / 180.0) * Math.PI;
-		
+	
 		String mapFile = props.getProperty("simulator.tmaze.map");
 		loadMap(mapFile);
 		loadWalls();
-		init();
+		/*restart();
 		initialObservation = getObservation();
-		moveGoal(true);
+		moveGoal(true);*/
+	}
+	
+	@Override
+	public void restart() {
+		init();
 	}
 
 	@Override
@@ -93,11 +97,14 @@ public class TMaze implements Simulator {
 
 	@Override
 	public void reset() {
+		rand = new Random(randomSeed);
 		init();
 	}
 
 	@Override
 	public double[] getInitialObservation() {
+		if(initialObservation == null)
+			initialObservation = getObservation();
 		return initialObservation;
 	}
 
@@ -461,5 +468,4 @@ public class TMaze implements Simulator {
 			return result;
 		}
 	}
-
 }

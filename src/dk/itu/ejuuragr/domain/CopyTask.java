@@ -18,9 +18,10 @@ import dk.itu.ejuuragr.fitness.Utilities;
  */
 public class CopyTask implements Simulator {
 	
-	private static final boolean DEBUG = false; // True if it should print all input and output
+	private static final boolean DEBUG = true; // True if it should print all input and output
 
 	private int m;
+	private int randomSeed;
 	private Random rand;
 	private int maxLength;
 
@@ -28,11 +29,34 @@ public class CopyTask implements Simulator {
 	private int step;
 	private double score;
 
+
+
 	public CopyTask(Properties props) {
 		this.m = props.getIntProperty("tm.m");
-		this.rand = new Random(props.getIntProperty("random.seed"));
+		this.randomSeed = props.getIntProperty("random.seed");
 		this.maxLength = props.getIntProperty("simulator.copytask.length.max");
-		reset();
+		//reset();
+	}
+	
+	@Override
+	public void restart() {
+		if(DEBUG) System.out.print("Restart: [");
+		// Create the random sequence
+		int length = rand.nextInt(this.maxLength) + 1;
+
+		this.sequence = new double[length][];
+		for (int i = 0; i < length; i++) {
+			sequence[i] = new double[this.m];
+			for (int j = 0; j < m; j++) {
+				sequence[i][j] = rand.nextInt(2);
+			}
+			if(DEBUG) System.out.print(Arrays.toString(sequence[i])+",");
+		}
+		if(DEBUG) System.out.println("]");
+
+		// reset variables
+		this.step = 1;
+		this.score = 0.0;
 	}
 
 	@Override
@@ -50,23 +74,9 @@ public class CopyTask implements Simulator {
 
 	@Override
 	public void reset() {
-		if(DEBUG) System.out.print("Reset: [");
-		// Create the random sequence
-		int length = rand.nextInt(this.maxLength) + 1;
-
-		this.sequence = new double[length][];
-		for (int i = 0; i < length; i++) {
-			sequence[i] = new double[this.m];
-			for (int j = 0; j < m; j++) {
-				sequence[i][j] = rand.nextInt(2);
-			}
-			if(DEBUG) System.out.print(Arrays.toString(sequence[i])+",");
-		}
-		if(DEBUG) System.out.println("]");
-
-		// reset variables
-		this.step = 1;
-		this.score = 0.0;
+		if(DEBUG) System.out.println("---------- RESET ----------");
+		rand = new Random(randomSeed);
+		restart();
 	}
 
 	@Override
@@ -153,5 +163,4 @@ public class CopyTask implements Simulator {
 	private double calcSimilarity(double[] first, double[] second) {
 		return Utilities.emilarity(first, second);
 	}
-
 }

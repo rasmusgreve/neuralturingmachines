@@ -61,5 +61,8 @@ public class StepSimulator implements Simulator {
 		return simulator.getMaxScore();
 	}
 
-	
+	@Override
+	public void restart() {
+		simulator.restart();
+	}
 }

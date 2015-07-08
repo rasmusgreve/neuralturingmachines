@@ -19,9 +19,16 @@ public interface Simulator {
 	int getOutputCount();
 	
 	/**
-	 * Reset the simulator to some initial state
+	 * Reset the simulator to some initial state (for new agents
+	 * to be tested under same circumstances
 	 */
 	void reset();
+	
+	/**
+	 * Move the agent back to start for a new round of evaluation
+	 * (can be different from the previous state).
+	 */
+	void restart();
 	
 	/**
 	 * Get values for the first input to the neural network

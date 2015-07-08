@@ -35,11 +35,12 @@ public abstract class BaseController implements Controller {
 	@Override
 	public int evaluate(Activator nn) {
 		int totalScore = 0;
+		sim.reset();
 		
 		// For each iteration
 		for(int i = 0; i < iterations; i++) {
 			this.reset();
-			sim.reset();
+			sim.restart();
 			
 			double[] controllerOutput = this.getInitialInput();
 			double[] simOutput = sim.getInitialObservation();

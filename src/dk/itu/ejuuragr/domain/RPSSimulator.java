@@ -32,12 +32,13 @@ public class RPSSimulator implements Simulator {
 	private int step; // how far we are in the sequence
 
 	private int sequenceLength;
+	private int randomSeed;
 	
 	public RPSSimulator(Properties props){
 		stepsTotal = props.getIntProperty("controller.steps.max");
 		sequenceLength = props.getIntProperty("simulator.rps.sequence.length");
 		mode = props.getProperty("simulator.rps.mode");
-		rand = new Random(props.getIntProperty("random.seed"));
+		randomSeed = props.getIntProperty("random.seed");
 		reset();
 	}
 	
@@ -79,9 +80,16 @@ public class RPSSimulator implements Simulator {
 	public int getMaxScore() {
 		return stepsTotal; // if you win all
 	}
+	
 
 	@Override
 	public void reset() {
+		rand = new Random(randomSeed);
+		reset();
+	}
+
+	@Override
+	public void restart() {
 		score = 0;
 		step = 0;
 		

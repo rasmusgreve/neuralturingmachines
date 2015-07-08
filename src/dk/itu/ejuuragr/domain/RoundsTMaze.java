@@ -21,7 +21,7 @@ public class RoundsTMaze extends TMaze {
 		this.rounds = props.getIntProperty("simulator.tmaze.rounds");
 		this.swapFraction = props.getDoubleProperty("simulator.tmaze.swap.fraction");
 		this.rand = new Random(props.getIntProperty("random.seed"));
-		reset();
+		//reset();
 	}
 
 	@Override
@@ -45,7 +45,7 @@ public class RoundsTMaze extends TMaze {
 			if(DEBUG) System.out.println("Round "+curRound+": "+super.getCurrentScore());
 			this.totalScore += super.getCurrentScore();
 			
-			super.reset();
+			super.restart();
 			curRound++;
 			if(curRound == switchSpot)
 				super.swapGoal(false); // switch goal to another of the options
