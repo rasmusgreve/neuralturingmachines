@@ -3,8 +3,6 @@ package dk.itu.ejuuragr.replay;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.jgap.Chromosome;
 
@@ -14,7 +12,6 @@ import com.anji.persistence.FilePersistence;
 import com.anji.util.DummyConfiguration;
 import com.anji.util.Properties;
 
-import dk.itu.ejuuragr.domain.RPSSimulator;
 import dk.itu.ejuuragr.domain.Simulator;
 import dk.itu.ejuuragr.domain.TMaze;
 import dk.itu.ejuuragr.fitness.Controller;
@@ -23,7 +20,6 @@ import dk.itu.ejuuragr.graph.ReplayVisualizer;
 import dk.itu.ejuuragr.graph.TMazeVisualizer;
 import dk.itu.ejuuragr.replay.StepSimulator.Stepper;
 import dk.itu.ejuuragr.turing.TuringController;
-import dk.itu.ejuuragr.turing.TuringMachine.TuringTimeStep;
 
 public class Replay {
 
@@ -33,9 +29,12 @@ public class Replay {
 		}
 		
 		//Setup
-		Properties props = new Properties(args[0]);
+		String propsFilename = args.length > 0 ? args[0] : prompt("Properties filename: ");
+		if(!propsFilename.endsWith(".properties"))
+			propsFilename += ".properties";
+		Properties props = new Properties(propsFilename);
 		props.setProperty("base.dir", "./db");
-		Chromosome chrom = loadChromosome(args[1], props);
+		Chromosome chrom = loadChromosome(args.length > 1 ? args[1] : prompt("Chromosome ID: "), props);
 		
 		
 		//Setup activator
@@ -80,6 +79,16 @@ public class Replay {
 			new ReplayVisualizer().show(((TuringControllerMemoryVizProxy)controller).getSteps());
 	}
 	
+	private static String prompt(String string) {
+		System.out.println(string);
+		try {
+			return new BufferedReader(new InputStreamReader(System.in)).readLine();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
 	private static Chromosome loadChromosome(String id, Properties props){
 		FilePersistence db = new FilePersistence();
 		db.init(props);
