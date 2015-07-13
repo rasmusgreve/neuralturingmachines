@@ -70,10 +70,24 @@ public class Utilities {
 	}
 	
 	/**
+	 * Copies a subsection of the given array into a new
+	 * array.
+	 * @param fromArray The array to copy from.
+	 * @param start The first index to copy (inclusive).
+	 * @param end The index to copy to (exclusive).
+	 * @return A new array with the specified content copied into.
+	 */
+	public static double[] copy(double[] fromArray, int start, int end) {
+		double[] result = new double[end-start];
+		System.arraycopy(fromArray, start, result, 0, result.length);
+		return result;
+	}
+	
+	/**
 	 * Makes a String representation of the given array using
 	 * the given format for each element.
 	 * @param array The array to make a String of.
-	 * @param format The way to format each double, e.g. "2d1"
+	 * @param format The way to format each double, e.g. "%.2f"
 	 * @return The string...
 	 */
 	public static String toString(double[] array, String format) {
@@ -97,6 +111,23 @@ public class Utilities {
 		return Utilities.toString(array,"%.2f");
 	}
 
+	/**
+	 * Makes a pretty String from a 2D double array
+	 * @param array
+	 * @return
+	 */
+	public static String toString(double[][] array) {
+		StringBuilder b = new StringBuilder();
+		b.append('[');
+		for(int i = 0; i < array.length; i++) {
+			b.append(Utilities.toString(array[i]));
+			if(i < array.length - 1)
+				b.append(", ");
+		}
+		b.append(']');
+		return b.toString();
+	}
+	
 	/**
 	 * Count the total number of elements in a 2 dimensional matrix
 	 * @param arrays The 2d matrix to count
