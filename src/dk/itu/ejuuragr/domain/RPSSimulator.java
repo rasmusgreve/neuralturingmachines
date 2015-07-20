@@ -1,8 +1,5 @@
 package dk.itu.ejuuragr.domain;
 
-import java.util.Arrays;
-import java.util.Random;
-
 import com.anji.util.Properties;
 
 import dk.itu.ejuuragr.fitness.Utilities;
@@ -16,10 +13,12 @@ import dk.itu.ejuuragr.fitness.Utilities;
  *
  */
 public class RPSSimulator extends BaseSimulator {
+	
+	static final boolean DEBUG = false;
 
-	static final int[][] WINNER = new int[][] { {0,-1,1},
-												{1,0,-1},
-												{-1,1,0}
+	static final int[][] WINNER = new int[][] { {0,1,-1},
+												{-1,0,1},
+												{1,-1,0}
 											  };
 	static final double SWAP_AREA = 0.3; // The center 30% of the stepLength
 
@@ -32,9 +31,9 @@ public class RPSSimulator extends BaseSimulator {
 
 	private int sequenceLength;
 	
-	public RPSSimulator(Properties props){
+	public RPSSimulator(Properties props) {
 		super(props);
-		stepsTotal = props.getIntProperty("controller.steps.max");
+		stepsTotal = props.getIntProperty("simulator.steps.max");
 		sequenceLength = props.getIntProperty("simulator.rps.sequence.length");
 		mode = props.getProperty("simulator.rps.mode");
 	}
@@ -56,10 +55,18 @@ public class RPSSimulator extends BaseSimulator {
 
 	@Override
 	public double[] performAction(double[] action) {
-		int curScore = WINNER[Utilities.maxPos(action)][sequence[step]];
-		step = (step + 1) % sequence.length;
-
-		score += curScore;
+		int index = step % sequenceLength;
+		int choice = Utilities.maxPos(action);
+		int curScore = WINNER[choice][sequence[index]];
+		if(curScore == 1) score++; // Only get a point for winning
+		
+		if(DEBUG) {
+			System.out.printf("Step %d: Choice=%d, Opponent=%d, Result=% 2d, Score=%d",step,choice,sequence[index],curScore,score);
+			System.out.println();
+		}
+		
+		step++;
+		
 		return new double[]{(curScore + 1) / 2.0}; // 0 is losing, � is tie, 1 is winning.
 	}
 
@@ -70,16 +77,19 @@ public class RPSSimulator extends BaseSimulator {
 
 	@Override
 	public boolean isTerminated() {
-		return score >= stepsTotal;
+//		System.out.printf("Step=%d, Total=%d",score,stepsTotal);
+//		System.out.println();
+		return step >= (stepsTotal * sequence.length);
 	}
 
 	@Override
 	public int getMaxScore() {
-		return stepsTotal; // if you win all
+		return stepsTotal * sequence.length; // if you win all
 	}
 
 	@Override
 	public void restart() {
+		if(DEBUG) System.out.println("-----------------");
 		score = 0;
 		step = 0;
 		
@@ -94,7 +104,11 @@ public class RPSSimulator extends BaseSimulator {
 		case "swap":
 			sequence = swapSequence();
 			sequenceLength = stepsTotal;
+			break;
+		default:
+			throw new IllegalArgumentException(mode+" is not a legal mode");
 		}
+
 		//System.out.println(Arrays.toString(sequence));
 	}
 

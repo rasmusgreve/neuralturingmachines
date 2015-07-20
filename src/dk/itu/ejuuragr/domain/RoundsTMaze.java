@@ -1,7 +1,5 @@
 package dk.itu.ejuuragr.domain;
 
-import java.util.Random;
-
 import com.anji.util.Properties;
 
 public class RoundsTMaze extends TMaze {
@@ -39,7 +37,7 @@ public class RoundsTMaze extends TMaze {
 		
 		if(super.isTerminated()){ // Round over
 			if(DEBUG) {
-				System.out.printf("Round %d: %d (G%s) %s",curRound,super.getCurrentScore(),super.getGoalId(super.getPositionTile()),curRound == switchSpot ? "~" : "");
+				System.out.printf("Round %d: %d (G%s) step=%02d %s",curRound,super.getCurrentScore(),super.getGoalId(super.getPositionTile()),getStep(),curRound == switchSpot ? "~" : "");
 				System.out.println();
 			}
 			this.totalScore += super.getCurrentScore();
@@ -56,6 +54,7 @@ public class RoundsTMaze extends TMaze {
 	@Override
 	public boolean isTerminated() {
 		boolean result = curRound == rounds;
+		if(DEBUG && result) System.out.println("Rounds done");
 		return result;
 	}
 

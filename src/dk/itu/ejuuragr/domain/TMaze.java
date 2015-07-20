@@ -209,6 +209,14 @@ public class TMaze extends BaseSimulator {
 		return -1;
 	}
 	
+	/**
+	 * Gets the current step in the simulation.
+	 * @return A number between 0 and maxSteps.
+	 */
+	public int getStep() {
+		return this.stepCounter;
+	}
+	
 	// HELPER METHODS
 	
 	private void init() {
