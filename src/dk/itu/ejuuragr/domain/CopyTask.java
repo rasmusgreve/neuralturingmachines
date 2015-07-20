@@ -139,7 +139,7 @@ public class CopyTask extends BaseSimulator {
 
 		}
 		
-		if(DEBUG) System.out.println(step+": "+Arrays.toString(result));
+		if(DEBUG) System.out.println(step+": "+Utilities.toString(result,"%.0f"));
 		
 		return result;
 	}
