@@ -9,7 +9,7 @@ import javax.swing.JComponent;
 import javax.swing.JFrame;
 
 import dk.itu.ejuuragr.replay.TimeStep;
-import dk.itu.ejuuragr.turing.TuringMachine.HeadTimeStep;
+import dk.itu.ejuuragr.turing.GravesTuringMachine.HeadTimeStep;
 
 public class ReplayVisualizer {
 

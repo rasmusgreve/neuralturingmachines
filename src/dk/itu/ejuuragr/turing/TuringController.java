@@ -30,12 +30,7 @@ public class TuringController extends BaseController {
 	public TuringController(Properties props, Simulator sim) {
 		super(props,sim);
 		// Initialize everything (using properties)
-		int n = props.getIntProperty("tm.n");
-		int m = props.getIntProperty("tm.m");
-		int shiftLength = props.getIntProperty("tm.shift.length");
-		int readHeads = props.getIntProperty("tm.heads.read");
-		int writeHeads = props.getIntProperty("tm.heads.write");
-		this.tm = new TuringMachine(n,m,readHeads,writeHeads,shiftLength);
+		this.tm = (TuringMachine) Utilities.instantiateObject(props.getProperty("tm.class"), new Object[]{props}, null);
 	}
 
 	@Override

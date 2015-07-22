@@ -2,14 +2,14 @@ package dk.itu.ejuuragr.tests;
 
 import org.junit.*;
 
-import dk.itu.ejuuragr.turing.TuringMachine;
-import dk.itu.ejuuragr.turing.TuringMachine.HeadVariables;
+import dk.itu.ejuuragr.turing.GravesTuringMachine;
+import dk.itu.ejuuragr.turing.GravesTuringMachine.HeadVariables;
 
 public class TuringMachineTest {
 
 	@Test
 	public void testWrite(){
-		TuringMachine machine = new TuringMachine(10, 1, 0, 1, 3);
+		GravesTuringMachine machine = new GravesTuringMachine(10, 1, 0, 1, 3);
 		HeadVariables hv = new HeadVariables();
 		hv.addWrite(new double[]{0}, new double[]{1}, new double[]{0}, 0, 0, new double[]{0,1,0}, 4);
 		
@@ -22,7 +22,7 @@ public class TuringMachineTest {
 	public void testWriteRead1(){
 		final double value = 1.0;
 		
-		TuringMachine machine = new TuringMachine(5, 1, 1, 1, 3);
+		GravesTuringMachine machine = new GravesTuringMachine(5, 1, 1, 1, 3);
 		HeadVariables hv = new HeadVariables();
 		
 		hv.addWrite(new double[]{0}, new double[]{value}, new double[]{0}, 1, 0, new double[]{0,1,0}, 4);
@@ -41,7 +41,7 @@ public class TuringMachineTest {
 	public void testWriteRead05(){
 		final double value = 0.5;
 		
-		TuringMachine machine = new TuringMachine(5, 1, 1, 1, 3);
+		GravesTuringMachine machine = new GravesTuringMachine(5, 1, 1, 1, 3);
 		HeadVariables hv = new HeadVariables();
 		
 		hv.addWrite(new double[]{0}, new double[]{value}, new double[]{0}, 1, 0, new double[]{0,1,0}, 4);

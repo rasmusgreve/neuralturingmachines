@@ -5,8 +5,8 @@ import java.util.List;
 
 import dk.itu.ejuuragr.graph.ReplayVisualizer;
 import dk.itu.ejuuragr.replay.TimeStep;
-import dk.itu.ejuuragr.turing.TuringMachine.HeadTimeStep;
-import dk.itu.ejuuragr.turing.TuringMachine.TuringTimeStep;
+import dk.itu.ejuuragr.turing.GravesTuringMachine.HeadTimeStep;
+import dk.itu.ejuuragr.turing.GravesTuringMachine.TuringTimeStep;
 
 public class ReplayVisualizerTest {
 

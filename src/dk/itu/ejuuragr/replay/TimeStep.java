@@ -1,6 +1,6 @@
 package dk.itu.ejuuragr.replay;
 
-import dk.itu.ejuuragr.turing.TuringMachine.TuringTimeStep;
+import dk.itu.ejuuragr.turing.GravesTuringMachine.TuringTimeStep;
 
 public class TimeStep{
 	TuringTimeStep turingStep;
