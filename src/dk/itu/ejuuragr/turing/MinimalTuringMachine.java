@@ -4,11 +4,9 @@ import java.util.LinkedList;
 
 import com.anji.util.Properties;
 
-import dk.itu.ejuuragr.domain.Simulator;
-import dk.itu.ejuuragr.fitness.BaseController;
 import dk.itu.ejuuragr.fitness.Utilities;
 
-public class MinimalTuringMachine extends BaseController {
+public class MinimalTuringMachine implements TuringMachine {
 
 	private static final boolean DEBUG = false;
 
@@ -17,12 +15,16 @@ public class MinimalTuringMachine extends BaseController {
 	private int m;
 	private int shiftLength;
 
-	public MinimalTuringMachine(Properties props, Simulator sim) {
-		super(props, sim);
+	private double[][] initialRead;
+
+	public MinimalTuringMachine(Properties props) {
 		this.m = props.getIntProperty("tm.m");
 		this.shiftLength = props.getIntProperty("tm.shift.length");
 
 		tape = new LinkedList<double[]>();
+		
+		this.reset();
+		initialRead = new double[][]{getRead()};
 	}
 
 	@Override
@@ -33,19 +35,39 @@ public class MinimalTuringMachine extends BaseController {
 	}
 
 	@Override
-	public double[] processOutputs(double[] fromNN) {
+	public double[][] processInput(double[] fromNN) {
 		if (DEBUG) printState();
 
 		// Should be M + 1 + S elements
 		write(Utilities.copy(fromNN, 0, this.m), fromNN[this.m]);
 		moveHead(Utilities.copy(fromNN, this.m + 1, this.shiftLength));
 
-		return getRead();
+		return new double[][]{getRead()};
 	}
 
 	@Override
-	public double[] getInitialInput() {
-		return getRead();
+	public double[][] getDefaultRead() {
+		return initialRead;
+	}
+	
+	@Override
+	public int getReadHeadCount() {
+		return 1;
+	}
+
+	@Override
+	public int getWriteHeadCount() {
+		return 1;
+	}
+
+	@Override
+	public int getInputCount() {
+		return this.m + 1 + this.shiftLength;
+	}
+
+	@Override
+	public int getOutputCount() {
+		return this.m;
 	}
 
 	// PRIVATE HELPER METHODS
