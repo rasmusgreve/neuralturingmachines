@@ -69,6 +69,21 @@ public class MinimalTuringMachine implements TuringMachine {
 	public int getOutputCount() {
 		return this.m;
 	}
+	
+	@Override
+	public double[][] getTapeValues() {
+		return Utilities.deepCopy(tape.toArray(new double[tape.size()][]));
+	}
+	
+	@Override
+	public String toString() {
+		StringBuilder b = new StringBuilder();
+		b.append(Utilities.toString(tape.toArray(new double[tape.size()][])));
+		b.append("\n");
+		b.append("Pointer=");
+		b.append(pointer);
+		return b.toString();
+	}
 
 	// PRIVATE HELPER METHODS
 
@@ -113,5 +128,4 @@ public class MinimalTuringMachine implements TuringMachine {
 	private double[] getRead() {
 		return tape.get(pointer).clone();
 	}
-
 }

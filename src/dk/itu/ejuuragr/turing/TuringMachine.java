@@ -9,4 +9,7 @@ public interface TuringMachine {
 	public int getOutputCount();
 	public double[][] processInput(double[] input);
 	public double[][] getDefaultRead();
+	
+	// Get the info saved
+	public double[][] getTapeValues();
 }

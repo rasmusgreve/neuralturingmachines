@@ -76,6 +76,7 @@ public class GravesTuringMachine implements TuringMachine {
 	/**
 	 * Reset the TM to its default state.
 	 */
+	@Override
 	public void reset() {
 		// Initialize memory tape
 		tape = new ArrayList<double[]>(n);
@@ -99,6 +100,7 @@ public class GravesTuringMachine implements TuringMachine {
 	 * Gets the number of read heads specified in initialization.
 	 * @return
 	 */
+	@Override
 	public int getReadHeadCount() {
 		return readHeads;
 	}
@@ -107,6 +109,7 @@ public class GravesTuringMachine implements TuringMachine {
 	 * Gets the number of write heads specified in initialization.
 	 * @return
 	 */
+	@Override
 	public int getWriteHeadCount() {
 		return writeHeads;
 	}
@@ -121,57 +124,23 @@ public class GravesTuringMachine implements TuringMachine {
 		return this.getReadHeadCount() * this.m;
 	}
 	
+	@Override
+	public double[][] getTapeValues() {
+		return Utilities.deepCopy(tape.toArray(new double[tape.size()][]));
+	}
+	
 	/**
 	 * Gets the read of the default state.
 	 * @return An array for each read head
 	 * with an array of the memory location size (M).
 	 */
+	@Override
 	public double[][] getDefaultRead() {
 		double[][] result = new double[readWeightings.length][];
 		for(int i = 0; i < readWeightings.length; i++) {
 			result[i] = new double[m];
 		}
 		return result;
-	}
-	
-	/**
-	 * Translates a flat array of values to the default
-	 * positions in the HeadVariables object matching the
-	 * number of read and write heads.
-	 * @param flatVars The 1d array of variables. First all
-	 * the read heads and then all the write heads in order.
-	 * @return A HeadVariables object with all the values properly
-	 * packed.
-	 */
-	private HeadVariables translateToHeadVars(double[] flatVars){
-		int varsNeeded = getInputCount();
-		if(flatVars.length != varsNeeded)
-			throw new IllegalArgumentException("The number of elements ("+flatVars.length+") to the TM doesn't match the needed ("+varsNeeded+")");
-		
-		HeadVariables vars = new HeadVariables();
-		int offset = 0;
-		
-		// Package for TM
-		for(int i = 0; i < getReadHeadCount(); i++) {
-			vars.addRead(Arrays.copyOfRange(flatVars,offset,offset+m), 	// Key (k)
-					flatVars[offset+m], 								// Key Strength (beta)
-					flatVars[offset+m+1], 								// Interpolation (g)
-					Utilities.normalize(Arrays.copyOfRange(flatVars,offset+m+2,offset+m+2+shiftLength)), // Shifting (s)
-					1 + flatVars[offset+m+2+shiftLength]); 				// Sharpening (gamma)
-			offset += this.readHeadOutputs;
-		}
-		
-		for(int i = 0; i < getWriteHeadCount(); i++) {
-			vars.addWrite(Arrays.copyOfRange(flatVars, offset, offset+m), 	// Erase Vector (e)
-					Arrays.copyOfRange(flatVars, offset+m, offset+2*m),   	// Add Vector (a)
-					Arrays.copyOfRange(flatVars, offset+2*m, offset+3*m),	// Key (k)
-					flatVars[offset+3*m], 									// Key Strength (beta)
-					flatVars[offset+3*m+1], 								// Interpolation (g)
-					Utilities.normalize(Arrays.copyOfRange(flatVars,offset+3*m+2,offset+3*m+2+shiftLength)), // Shifting (s)
-					1 + flatVars[offset+3*m+2+shiftLength]);				// Sharpening (gamma)
-			offset += this.writeHeadOutputs;
-		}
-		return vars;
 	}
 
 	/**
@@ -182,6 +151,7 @@ public class GravesTuringMachine implements TuringMachine {
 	 * @return An array for each read head with the m
 	 * elements read from the TM.
 	 */
+	@Override
 	public double[][] processInput(double[] flatVars) {
 		return processInput(translateToHeadVars(flatVars));
 	}
@@ -194,7 +164,7 @@ public class GravesTuringMachine implements TuringMachine {
 	 * @return An array for each read head with the m
 	 * elements read from the TM.
 	 */
-	public double[][] processInput(HeadVariables vars){
+	private double[][] processInput(HeadVariables vars){
 		if(vars.getRead().size() != getReadHeadCount() 
 				|| vars.getWrite().size() != getWriteHeadCount())
 			throw new IllegalArgumentException("You must define as many read and write heads as when the TM was created.");
@@ -343,19 +313,59 @@ public class GravesTuringMachine implements TuringMachine {
 		return result;
 	}
 
-	public static double cosineSim(double[] key, double[] inMemory) {
-		//0 test
-		boolean allZeros = true;
-		for (double d : key) if (d != 0) allZeros = false;
-		for (double d : inMemory) if (d != 0) allZeros = false;
-		if (allZeros) return 1;
+//	private static double cosineSim(double[] key, double[] inMemory) {
+//		//0 test
+//		boolean allZeros = true;
+//		for (double d : key) if (d != 0) allZeros = false;
+//		for (double d : inMemory) if (d != 0) allZeros = false;
+//		if (allZeros) return 1;
+//		
+//		ArrayRealVector vecA = new ArrayRealVector(key);
+//		ArrayRealVector vecB = new ArrayRealVector(inMemory);
+//		
+//		double similarity = vecA.dotProduct(vecB) / (vecA.getNorm() * vecB.getNorm());
+//		
+//		return similarity;
+//	}
+	
+	/**
+	 * Translates a flat array of values to the default
+	 * positions in the HeadVariables object matching the
+	 * number of read and write heads.
+	 * @param flatVars The 1d array of variables. First all
+	 * the read heads and then all the write heads in order.
+	 * @return A HeadVariables object with all the values properly
+	 * packed.
+	 */
+	private HeadVariables translateToHeadVars(double[] flatVars){
+		int varsNeeded = getInputCount();
+		if(flatVars.length != varsNeeded)
+			throw new IllegalArgumentException("The number of elements ("+flatVars.length+") to the TM doesn't match the needed ("+varsNeeded+")");
 		
-		ArrayRealVector vecA = new ArrayRealVector(key);
-		ArrayRealVector vecB = new ArrayRealVector(inMemory);
+		HeadVariables vars = new HeadVariables();
+		int offset = 0;
 		
-		double similarity = vecA.dotProduct(vecB) / (vecA.getNorm() * vecB.getNorm());
+		// Package for TM
+		for(int i = 0; i < getReadHeadCount(); i++) {
+			vars.addRead(Arrays.copyOfRange(flatVars,offset,offset+m), 	// Key (k)
+					flatVars[offset+m], 								// Key Strength (beta)
+					flatVars[offset+m+1], 								// Interpolation (g)
+					Utilities.normalize(Arrays.copyOfRange(flatVars,offset+m+2,offset+m+2+shiftLength)), // Shifting (s)
+					1 + flatVars[offset+m+2+shiftLength]); 				// Sharpening (gamma)
+			offset += this.readHeadOutputs;
+		}
 		
-		return similarity;
+		for(int i = 0; i < getWriteHeadCount(); i++) {
+			vars.addWrite(Arrays.copyOfRange(flatVars, offset, offset+m), 	// Erase Vector (e)
+					Arrays.copyOfRange(flatVars, offset+m, offset+2*m),   	// Add Vector (a)
+					Arrays.copyOfRange(flatVars, offset+2*m, offset+3*m),	// Key (k)
+					flatVars[offset+3*m], 									// Key Strength (beta)
+					flatVars[offset+3*m+1], 								// Interpolation (g)
+					Utilities.normalize(Arrays.copyOfRange(flatVars,offset+3*m+2,offset+3*m+2+shiftLength)), // Shifting (s)
+					1 + flatVars[offset+3*m+2+shiftLength]);				// Sharpening (gamma)
+			offset += this.writeHeadOutputs;
+		}
+		return vars;
 	}
 
 	public static class HeadVariables {
