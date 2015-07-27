@@ -20,7 +20,7 @@ public abstract class BaseController implements Controller {
 
 	public BaseController(Properties props, Simulator sim){
 		this.sim = sim;
-		this.iterations = props.getIntProperty("controller.iterations");
+		this.iterations = props.getIntProperty("controller.iterations", 10);
 	}
 	
 	@Override

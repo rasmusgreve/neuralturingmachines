@@ -19,9 +19,9 @@ public class CopyTask extends BaseSimulator {
 	
 	private static final boolean DEBUG = false; // True if it should print all input and output
 
-	private int elementLength;
-	private int maxSeqLength;
-	private String lengthRule;
+	private int elementLength; // The length of an element in the sequence (usually M - 1)
+	private int maxSeqLength; // The maximum length that the sequence can be (if random), else the actual sequence length.
+	private String lengthRule; // If the sequence length should be "fixed" or "random"ly determined.
 
 	private double[][] sequence;
 	private int step;

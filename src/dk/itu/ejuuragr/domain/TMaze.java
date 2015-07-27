@@ -63,14 +63,14 @@ public class TMaze extends BaseSimulator {
 	 */
 	public TMaze(Properties props) {
 		super(props);
-		highReward = props.getIntProperty("simulator.tmaze.reward.high");
-		lowReward = props.getIntProperty("simulator.tmaze.reward.low");
-		maxSteps = props.getIntProperty("simulator.steps.max");
-		SPEED = props.getDoubleProperty("simulator.tmaze.game.speed");
-		SENSOR_CUTOFF = props.getIntProperty("simulator.tmaze.game.sensors.length");
-		STEER_AMOUNT = (props.getIntProperty("simulator.tmaze.game.steer.max") / 180.0) * Math.PI;
+		highReward = props.getIntProperty("simulator.tmaze.reward.high", 10);
+		lowReward = props.getIntProperty("simulator.tmaze.reward.low", 1);
+		maxSteps = props.getIntProperty("simulator.steps.max", 50);
+		SPEED = props.getDoubleProperty("simulator.tmaze.game.speed", 0.1);
+		SENSOR_CUTOFF = props.getIntProperty("simulator.tmaze.game.sensors.length", 1);
+		STEER_AMOUNT = (props.getIntProperty("simulator.tmaze.game.steer.max", 45) / 180.0) * Math.PI;
 	
-		String mapFile = props.getProperty("simulator.tmaze.map");
+		String mapFile = props.getProperty("simulator.tmaze.map", "tmaze.bmp");
 		loadMap(mapFile);
 		loadWalls();
 	}

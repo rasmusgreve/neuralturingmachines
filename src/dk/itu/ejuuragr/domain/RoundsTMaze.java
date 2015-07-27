@@ -15,8 +15,8 @@ public class RoundsTMaze extends TMaze {
 
 	public RoundsTMaze(Properties props) {
 		super(props);
-		this.rounds = props.getIntProperty("simulator.tmaze.rounds");
-		this.swapFraction = props.getDoubleProperty("simulator.tmaze.swap.fraction");
+		this.rounds = props.getIntProperty("simulator.tmaze.rounds", 10);
+		this.swapFraction = props.getDoubleProperty("simulator.tmaze.swap.fraction", 0.3);
 	}
 
 	@Override

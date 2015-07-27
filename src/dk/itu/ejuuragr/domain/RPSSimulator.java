@@ -33,9 +33,9 @@ public class RPSSimulator extends BaseSimulator {
 	
 	public RPSSimulator(Properties props) {
 		super(props);
-		stepsTotal = props.getIntProperty("simulator.steps.max");
-		sequenceLength = props.getIntProperty("simulator.rps.sequence.length");
-		mode = props.getProperty("simulator.rps.mode");
+		stepsTotal = props.getIntProperty("simulator.steps.max", 5);
+		sequenceLength = props.getIntProperty("simulator.rps.sequence.length", 3);
+		mode = props.getProperty("simulator.rps.mode", "fixed");
 	}
 	
 	@Override
