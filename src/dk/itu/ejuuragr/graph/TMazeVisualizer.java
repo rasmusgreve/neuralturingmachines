@@ -34,7 +34,7 @@ public class TMazeVisualizer {
 	final MazeMap map;
 	final TMazeVisualizerComponent component;
 	
-	private final int blockSize = 250;
+	private final int blockSize = 25;
 	private final double rewardSize = 0.5;
 	private final double agentSize = 0.05;
 	private final Color highRewardColor = Color.red;

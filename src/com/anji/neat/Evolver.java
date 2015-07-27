@@ -242,7 +242,7 @@ private static void logConclusion( int generationOfFirstSolution, Chromosome cha
  * @throws Throwable
  */
 public static void main( String[] args ) throws Throwable {
-	//try {
+	try {
 		System.out.println( Copyright.STRING );
 
 		if ( args.length != 1 ) {
@@ -255,11 +255,11 @@ public static void main( String[] args ) throws Throwable {
 		evolver.init( props );
 		evolver.run();
 		System.exit( 0 );
-	//}
-	/*catch ( Throwable th ) {
+	}
+	catch ( Throwable th ) {
 		logger.error( "", th );
 		throw th;
-	}*/
+	}
 }
 
 /**
