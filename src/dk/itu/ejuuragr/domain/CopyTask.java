@@ -19,31 +19,29 @@ public class CopyTask extends BaseSimulator {
 	
 	private static final boolean DEBUG = true; // True if it should print all input and output
 
-	private int m;
-	private int maxLength;
+	private int elementLength;
+	private int maxSeqLength;
 
 	private double[][] sequence;
 	private int step;
 	private double score;
 
-
-
 	public CopyTask(Properties props) {
 		super(props);
-		this.m = props.getIntProperty("tm.m");
-		this.maxLength = props.getIntProperty("simulator.copytask.length.max");
+		this.elementLength = props.getIntProperty("tm.m") - 1; // To allow for the network to store extra
+		this.maxSeqLength = props.getIntProperty("simulator.copytask.length.max");
 	}
 	
 	@Override
 	public void restart() {
 		if(DEBUG) System.out.print("Restart: [");
 		// Create the random sequence
-		int length = getRandom().nextInt(this.maxLength) + 1;
+		int length = getRandom().nextInt(this.maxSeqLength) + 1;
 
 		this.sequence = new double[length][];
 		for (int i = 0; i < length; i++) {
-			sequence[i] = new double[this.m];
-			for (int j = 0; j < m; j++) {
+			sequence[i] = new double[this.elementLength];
+			for (int j = 0; j < elementLength; j++) {
 				sequence[i][j] = getRandom().nextInt(2);
 			}
 			if(DEBUG) System.out.print(Arrays.toString(sequence[i])+",");
@@ -57,12 +55,12 @@ public class CopyTask extends BaseSimulator {
 
 	@Override
 	public int getInputCount() {
-		return this.m; // The read output from the controller
+		return this.elementLength; // The read output from the controller
 	}
 
 	@Override
 	public int getOutputCount() {
-		return this.m + 2; // The input we give the controller in each iteration
+		return this.elementLength + 2; // The input we give the controller in each iteration
 		// Will be empty when we expect the controller to read back
 		// the sequence.
 		// The two extra ones are START and DELIMITER bits.
@@ -100,12 +98,12 @@ public class CopyTask extends BaseSimulator {
 
 	@Override
 	public int getCurrentScore() {
-		return (int) (score * 10.0 * (maxLength / (1.0 * sequence.length)));
+		return (int) (score * 10.0 * (maxSeqLength / (1.0 * sequence.length)));
 	}
 
 	@Override
 	public int getMaxScore() {
-		return (int) (sequence.length * 10.0 * (maxLength / (1.0 * sequence.length)));
+		return (int) (sequence.length * 10.0 * (maxSeqLength / (1.0 * sequence.length)));
 	}
 
 	@Override
@@ -124,10 +122,10 @@ public class CopyTask extends BaseSimulator {
 	 * @return The content of the sequence at that step.
 	 */
 	private double[] getObservation(int step) {
-		double[] result = new double[this.m + 2];
+		double[] result = new double[this.elementLength + 2];
 		
 		if (step == 0) { // Send start vector
-			result[this.m] = 1; // START bit
+			result[this.elementLength] = 1; // START bit
 
 		} else if (step <= this.sequence.length) { // sending the sequence
 			Utilities.copy(sequence[step - 1],result,0);

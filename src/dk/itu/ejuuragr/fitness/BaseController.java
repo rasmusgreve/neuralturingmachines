@@ -64,14 +64,31 @@ public abstract class BaseController implements Controller {
 		return sim.getMaxScore() * iterations;
 	}
 
-	protected double[] activateNeuralNetwork(Activator nn, double[] domainInput, double[] controllerInput){
+	protected double[] activateNeuralNetwork(Activator nn, double[] domainInput, double[] controllerInput) {
+		System.out.println("Activate from Domain: "+Utilities.toString(domainInput));
+		System.out.println("Activate from Controller: "+Utilities.toString(controllerInput));
+		System.out.println("Wanted length = "+inputTotal);
+		
 		double[] input = new double[inputTotal];
 		Utilities.copy(domainInput,input,0);
 		Utilities.copy(controllerInput,input,domainInput.length);
 		
+		// Cap values at 1
+		cleanInput(input);
+		
 		return nn.next(input);
 	}
 	
+	private void cleanInput(double[] array) {
+		for(int i = 0; i < array.length; i++) {
+			if(array[i] > 1.0) {
+//				System.out.printf("WARNING: Input value (%f, index=%d) to NN is greater than 1.0, truncating.",array[i],i);
+//				System.out.println();
+				array[i] = 1.0;
+			}
+		}
+	}
+
 	protected double[] getSimulationResponse(double[] neuralNetworkDomainOutput){
 		return sim.performAction(neuralNetworkDomainOutput);
 	}
