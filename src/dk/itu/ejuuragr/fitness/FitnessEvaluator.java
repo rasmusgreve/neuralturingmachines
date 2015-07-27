@@ -12,12 +12,13 @@ import com.anji.util.Configurable;
 import com.anji.util.Properties;
 
 import dk.itu.ejuuragr.domain.Simulator;
+import dk.itu.ejuuragr.turing.TuringController;
 
 public class FitnessEvaluator implements BulkFitnessFunction, Configurable {
 	private static final long serialVersionUID = 1L;
 
 	ActivatorTranscriber activatorFactory;
-	private Controller[] controllers;
+	private TuringController[] controllers;
 
 	private int generation;
 	private boolean toOffset = true;
@@ -97,24 +98,24 @@ public class FitnessEvaluator implements BulkFitnessFunction, Configurable {
 
 		// Prepare for multi-threading
 		cores = threading ? Runtime.getRuntime().availableProcessors() : 1;
-		controllers = new Controller[cores];
+		controllers = new TuringController[cores];
 
 		// Initialize
 		generation = 0;
 
 		for (int i = 0; i < cores; i++) {
-			Simulator simulator = (Simulator) Utilities.instantiateObject(
-					properties.getProperty("simulator.class"),
-					new Object[] { properties }, null);
-			Controller controller = (Controller) Utilities.instantiateObject(
-					properties.getProperty("controller.class"), new Object[] {
-							properties, simulator }, new Class<?>[] {
-							Properties.class, Simulator.class });
-			simulator.reset();
-			simulator.restart();
-			controller.reset();
-			controllers[i] = controller;
+			controllers[i] = FitnessEvaluator.loadController(properties);
 		}
-
+	}
+	
+	public static TuringController loadController(Properties props) {
+		Simulator simulator = (Simulator) Utilities.instantiateObject(
+				props.getProperty("simulator.class"),
+				new Object[] { props }, null);
+		TuringController result = new TuringController(props,simulator);
+		simulator.reset();
+		simulator.restart();
+		result.reset();
+		return result;
 	}
 }

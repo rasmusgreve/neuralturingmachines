@@ -16,15 +16,11 @@ import dk.itu.ejuuragr.domain.Simulator;
 public abstract class BaseController implements Controller {
 	
 	protected Simulator sim;
-	protected int inputTotal;
 	protected int iterations;
 
 	public BaseController(Properties props, Simulator sim){
 		this.sim = sim;
 		this.iterations = props.getIntProperty("controller.iterations");
-		
-		// how many inputs for controller and simulator?
-		this.inputTotal = props.getIntProperty("stimulus.size");
 	}
 	
 	@Override
@@ -65,11 +61,11 @@ public abstract class BaseController implements Controller {
 	}
 
 	protected double[] activateNeuralNetwork(Activator nn, double[] domainInput, double[] controllerInput) {
-		System.out.println("Activate from Domain: "+Utilities.toString(domainInput));
-		System.out.println("Activate from Controller: "+Utilities.toString(controllerInput));
-		System.out.println("Wanted length = "+inputTotal);
+//		System.out.println("Activate from Domain: "+Utilities.toString(domainInput));
+//		System.out.println("Activate from Controller: "+Utilities.toString(controllerInput));
+//		System.out.println("Wanted length = "+inputTotal);
 		
-		double[] input = new double[inputTotal];
+		double[] input = new double[domainInput.length + controllerInput.length];
 		Utilities.copy(domainInput,input,0);
 		Utilities.copy(controllerInput,input,domainInput.length);
 		

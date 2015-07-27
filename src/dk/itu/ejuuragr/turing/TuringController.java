@@ -52,4 +52,8 @@ public class TuringController extends BaseController {
 	public void reset() {
 		this.tm.reset();
 	}
+	
+	public TuringMachine getTuringMachine() {
+		return tm;
+	}
 }
