@@ -33,7 +33,7 @@ public class TuringControllerMemoryVizProxy extends TuringController{
 		
 		//Catch tm step
 		currentTimeStep.setTuringStep(((GravesTuringMachine) tm).getLastTimeStep());
-		
+		System.out.println("Processing outputs");
 		//Store and get ready for next step
 		timeSteps.add(currentTimeStep);
 		currentTimeStep = new TimeStep();
