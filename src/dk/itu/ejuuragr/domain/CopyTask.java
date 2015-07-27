@@ -156,6 +156,18 @@ public class CopyTask extends BaseSimulator {
 	 *         identical, or somewhere in between.
 	 */
 	private double calcSimilarity(double[] first, double[] second) {
-		return Utilities.emilarity(first, second);
+//		return Utilities.emilarity(first, second);
+		return strictCloseToTarget(first, second);
+	}
+	
+	private double strictCloseToTarget(double[] target, double[] actual) {
+		final double threshold = 0.25;
+		double result = 0.0;
+		
+		for(int i = 0; i < target.length; i++) {
+			result += 1.0 - Math.min(threshold, Math.abs(target[i] - actual[i])) / threshold;
+		}
+		
+		return result / target.length;
 	}
 }
