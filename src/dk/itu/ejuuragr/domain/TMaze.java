@@ -471,7 +471,7 @@ public class TMaze extends BaseSimulator {
 		public List<int[]> getOfType(MAP_TYPE type) {
 			ArrayList<int[]> result = new ArrayList<>();
 			for(int x = 0; x < map.length; x++) {
-				for(int y = 0; y < map.length; y++) {
+				for(int y = 0; y < map[0].length; y++) {
 					if(map[x][y] == type)
 						result.add(new int[]{x,y});
 				}
