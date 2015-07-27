@@ -21,23 +21,36 @@ public class CopyTask extends BaseSimulator {
 
 	private int elementLength;
 	private int maxSeqLength;
+	private String lengthRule;
 
 	private double[][] sequence;
 	private int step;
 	private double score;
 
+	
+
 	public CopyTask(Properties props) {
 		super(props);
 		this.elementLength = props.getIntProperty("tm.m") - 1; // To allow for the network to store extra
-		this.maxSeqLength = props.getIntProperty("simulator.copytask.length.max");
+		this.maxSeqLength = props.getIntProperty("simulator.copytask.length.max", 10);
+		this.lengthRule = props.getProperty("simulator.copytask.length.rule", "fixed");
 	}
 	
 	@Override
 	public void restart() {
 		if(DEBUG) System.out.print("Restart: [");
 		// Create the random sequence
-		int length = getRandom().nextInt(this.maxSeqLength) + 1;
+		int length = 1;
+		switch(lengthRule) {
+			case "random":
+				length = this.getRandom().nextInt(this.maxSeqLength) + 1;
+				break;
+			default: // fixed
+				length = maxSeqLength;
+				break;
+		}
 
+		// CREATE SEQUENCE
 		this.sequence = new double[length][];
 		for (int i = 0; i < length; i++) {
 			sequence[i] = new double[this.elementLength];
