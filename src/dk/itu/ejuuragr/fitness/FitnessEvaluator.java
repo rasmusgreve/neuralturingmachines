@@ -27,19 +27,19 @@ public class FitnessEvaluator implements BulkFitnessFunction, Configurable {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	final public void evaluate(List arg0) {
-		List<Chromosome> list = (List<Chromosome>) arg0;
+		final List<Chromosome> list = (List<Chromosome>) arg0;
 
 		if (threading) {
 			int perThread = list.size() / cores;
-			CountDownLatch latch = new CountDownLatch(cores);
+			final CountDownLatch latch = new CountDownLatch(cores);
 
 			for (int i = 0; i < cores; i++) {
 				if (toOffset)
 					controllers[i].getSimulator().setRandomOffset(generation);
 
 				final int finalI = i;
-				int start = i * perThread;
-				int end = i + 1 == cores ? list.size() : (i + 1) * perThread;
+				final int start = i * perThread;
+				final int end = i + 1 == cores ? list.size() : (i + 1) * perThread;
 
 				Thread th = new Thread() {
 					@Override
