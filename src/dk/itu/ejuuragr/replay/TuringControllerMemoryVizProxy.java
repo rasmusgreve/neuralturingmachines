@@ -27,7 +27,6 @@ public class TuringControllerMemoryVizProxy extends TuringController{
 		return timeSteps;
 	}
 	
-	
 	@Override
 	public double[] processOutputs(double[] fromNN) {
 		double[] result = super.processOutputs(fromNN);

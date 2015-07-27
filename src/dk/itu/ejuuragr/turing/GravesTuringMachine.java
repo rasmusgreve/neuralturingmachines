@@ -164,7 +164,7 @@ public class GravesTuringMachine implements TuringMachine {
 	 * @return An array for each read head with the m
 	 * elements read from the TM.
 	 */
-	private double[][] processInput(HeadVariables vars){
+	public double[][] processInput(HeadVariables vars){
 		if(vars.getRead().size() != getReadHeadCount() 
 				|| vars.getWrite().size() != getWriteHeadCount())
 			throw new IllegalArgumentException("You must define as many read and write heads as when the TM was created.");
