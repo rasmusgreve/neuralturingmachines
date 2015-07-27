@@ -260,6 +260,20 @@ public class GravesTuringMachine implements TuringMachine {
 		return currentStep;
 	}
 
+	public TuringTimeStep getInitialTimeStep(){
+		TuringTimeStep timeStep = new TuringTimeStep();
+		
+		for (int i = 0; i < getWriteHeadCount(); i++){
+			timeStep.getWriteHeads().add(new HeadTimeStep(writeWeightings[i], new double[m]));
+		}
+		double[][] defaultRead = getDefaultRead();
+		for (int i = 0; i < getReadHeadCount(); i++){
+			timeStep.getReadHeads().add(new HeadTimeStep(readWeightings[i], defaultRead[i]));
+		}
+		
+		return timeStep;
+	}
+	
 	// Wrapper of variables for heads.
 	
 	private double[] weighting(Head current, double[] oldWeight) {

@@ -17,7 +17,7 @@ import dk.itu.ejuuragr.fitness.Utilities;
  */
 public class CopyTask extends BaseSimulator {
 	
-	private static final boolean DEBUG = false; // True if it should print all input and output
+	private static final boolean DEBUG = true; // True if it should print all input and output
 
 	private int m;
 	private int maxLength;

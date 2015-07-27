@@ -19,8 +19,17 @@ public class TuringControllerMemoryVizProxy extends TuringController{
 	public TuringControllerMemoryVizProxy(Properties props, Simulator sim) {
 		super(props, sim);
 		iterations = 1; //Overwrite iteration count when replaying, since we don't care about properties
-		((GravesTuringMachine) tm).setRecordTimeSteps(true);
+		
 		// TODO: HACK TO ONLY WORK FOR GRAVES
+		if (tm instanceof GravesTuringMachine){
+			GravesTuringMachine gtm = (GravesTuringMachine)tm;
+			gtm.setRecordTimeSteps(true);
+			
+			TimeStep first = new TimeStep();
+			first.setTuringStep(gtm.getInitialTimeStep());
+			first.setDomainInput(sim.getInitialObservation());
+			timeSteps.add(first);
+		}
 	}
 	
 	public List<TimeStep> getSteps(){
@@ -33,7 +42,6 @@ public class TuringControllerMemoryVizProxy extends TuringController{
 		
 		//Catch tm step
 		currentTimeStep.setTuringStep(((GravesTuringMachine) tm).getLastTimeStep());
-		System.out.println("Processing outputs");
 		//Store and get ready for next step
 		timeSteps.add(currentTimeStep);
 		currentTimeStep = new TimeStep();

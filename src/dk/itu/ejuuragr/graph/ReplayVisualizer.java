@@ -13,7 +13,7 @@ import dk.itu.ejuuragr.turing.GravesTuringMachine.HeadTimeStep;
 
 public class ReplayVisualizer {
 
-	public final static int pixelSize = 16;
+	public final static int pixelSize = 25;
 	
 	public void show(List<TimeStep> steps){
 		JFrame frame = new JFrame();
