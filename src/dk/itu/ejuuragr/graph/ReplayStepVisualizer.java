@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.List;
@@ -11,6 +12,7 @@ import java.util.List;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 
+import dk.itu.ejuuragr.fitness.Utilities;
 import dk.itu.ejuuragr.replay.TimeStep;
 import dk.itu.ejuuragr.turing.GravesTuringMachine.HeadTimeStep;
 
@@ -77,74 +79,10 @@ public final static int pixelSize = 50;
 			repaint();
 		}
 		
-		
-		//returns height of what is drawn
-		/*private int drawFocus(Graphics2D g, Type headType, int headIndex, int startX, int startY){
-			g.setColor(Color.black);
-			g.drawString(headType + " head #" + headIndex + " focus", startX, startY+20);
-			startY += 30;
-			
-			int height = 0;
-			for (int timeStep = 0; timeStep < steps.size(); timeStep++){
-				TimeStep step = steps.get(timeStep);
-				
-				//Get correct head
-				HeadTimeStep hst;
-				if (headType == Type.WRITE)
-					hst = step.getTuringStep().getWriteHeads().get(headIndex);
-				else
-					hst = step.getTuringStep().getReadHeads().get(headIndex);
-				
-				
-				for (int memoryLocation = 0; memoryLocation < hst.weights.length; memoryLocation++){
-					double weight = hst.weights[memoryLocation];
-					
-					g.setColor(weightToColor(weight));
-					g.fillRect(startX + timeStep * pixelSize, startY + memoryLocation * pixelSize, pixelSize, pixelSize);
-					height += pixelSize;
-				}
-			}
-			
-			return height / steps.size() + 30;
-		}
-		
-		private int drawValue(Graphics2D g, Type headType, int headIndex, int startX, int startY){
-			g.setColor(Color.black);
-			g.drawString(headType + " head #" + headIndex + " value", startX, startY+20);
-			startY += 30;
-			
-			int height = 0;
-			for (int timeStep = 0; timeStep < steps.size(); timeStep++){
-				TimeStep step = steps.get(timeStep);
-				
-				//Get correct head
-				HeadTimeStep hst;
-				if (headType == Type.WRITE)
-					hst = step.getTuringStep().getWriteHeads().get(headIndex);
-				else
-					hst = step.getTuringStep().getReadHeads().get(headIndex);
-				
-				for (int memoryLocation = 0; memoryLocation < hst.value.length; memoryLocation++){
-					double value = hst.value[memoryLocation];
-					
-					g.setColor(valueToColor(value));
-					g.fillRect(timeStep*pixelSize, startY+ memoryLocation*pixelSize, pixelSize, pixelSize);
-					
-					height += pixelSize;
-					
-					g.setColor(Color.black);
-					g.drawString(String.format("%.1f", value).substring(0), timeStep*pixelSize+2, startY+memoryLocation*pixelSize + pixelSize - 5);
-				}
-				
-			}
-			return height / steps.size() + 30;
-		}
-		*/
-		
 		@Override
 		public void paint(Graphics arg0) {
 			Graphics2D g = (Graphics2D) arg0;
-			
+			g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
 			//Clear
 			g.setColor(Color.white);
@@ -223,7 +161,7 @@ public final static int pixelSize = 50;
 			g.setColor(Color.black);
 			g.drawString("Idx: " + stepIndex, (N+3) * pixelSize, (M+3) * pixelSize);
 			
-			//step.getTuringStep().
+			//System.out.println(Utilities.toString(step.getDomainInput()));
 			
 			
 			

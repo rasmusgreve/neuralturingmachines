@@ -8,6 +8,7 @@ import com.anji.util.Properties;
 
 import dk.itu.ejuuragr.domain.Simulator;
 import dk.itu.ejuuragr.turing.GravesTuringMachine;
+import dk.itu.ejuuragr.turing.GravesTuringMachineSimplified;
 import dk.itu.ejuuragr.turing.TuringController;
 
 public class TuringControllerMemoryVizProxy extends TuringController{
@@ -28,7 +29,18 @@ public class TuringControllerMemoryVizProxy extends TuringController{
 			TimeStep first = new TimeStep();
 			first.setTuringStep(gtm.getInitialTimeStep());
 			first.setDomainInput(sim.getInitialObservation());
-			first.setTuringMachineContent(gtm.getTapeValues());
+			first.setTuringMachineContent(tm.getTapeValues());
+			timeSteps.add(first);
+		}
+		
+		if (tm instanceof GravesTuringMachineSimplified){
+			GravesTuringMachineSimplified gtm = (GravesTuringMachineSimplified)tm;
+			gtm.setRecordTimeSteps(true);
+			
+			TimeStep first = new TimeStep();
+			first.setTuringStep(gtm.getInitialTimeStep());
+			first.setDomainInput(sim.getInitialObservation());
+			first.setTuringMachineContent(tm.getTapeValues());
 			timeSteps.add(first);
 		}
 	}
@@ -42,7 +54,13 @@ public class TuringControllerMemoryVizProxy extends TuringController{
 		double[] result = super.processOutputs(fromNN);
 		
 		//Catch tm step
-		currentTimeStep.setTuringStep(((GravesTuringMachine) tm).getLastTimeStep());
+		if (tm instanceof GravesTuringMachine){
+			currentTimeStep.setTuringStep(((GravesTuringMachine) tm).getLastTimeStep());
+		}
+		if (tm instanceof GravesTuringMachineSimplified){
+			currentTimeStep.setTuringStep(((GravesTuringMachineSimplified) tm).getLastTimeStep());
+		}
+			
 		currentTimeStep.setTuringMachineContent(tm.getTapeValues());
 		//Store and get ready for next step
 		timeSteps.add(currentTimeStep);
