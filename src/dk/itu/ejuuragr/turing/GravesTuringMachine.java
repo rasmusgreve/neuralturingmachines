@@ -42,11 +42,11 @@ public class GravesTuringMachine implements TuringMachine {
 	 * @param props The properties to take attributes for.
 	 */
 	public GravesTuringMachine(Properties props) {
-		this(	props.getIntProperty("tm.n"),
-				props.getIntProperty("tm.m"),
-				props.getIntProperty("tm.heads.read"),
-				props.getIntProperty("tm.heads.write"),
-				props.getIntProperty("tm.shift.length"));
+		this(	props.getIntProperty("tm.n", 10),
+				props.getIntProperty("tm.m", 3),
+				props.getIntProperty("tm.heads.read", 1),
+				props.getIntProperty("tm.heads.write", 1),
+				props.getIntProperty("tm.shift.length" , 3));
 		this.sharpeningFactor = props.getDoubleProperty("tm.sharpening.factor", sharpeningFactor);
 	}
 
