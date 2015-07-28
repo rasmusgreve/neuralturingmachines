@@ -16,6 +16,7 @@ import dk.itu.ejuuragr.domain.Simulator;
 import dk.itu.ejuuragr.domain.TMaze;
 import dk.itu.ejuuragr.fitness.Controller;
 import dk.itu.ejuuragr.fitness.Utilities;
+import dk.itu.ejuuragr.graph.ReplayStepVisualizer;
 import dk.itu.ejuuragr.graph.ReplayVisualizer;
 import dk.itu.ejuuragr.graph.TMazeVisualizer;
 import dk.itu.ejuuragr.replay.StepSimulator.Stepper;
@@ -76,7 +77,8 @@ public class Replay {
 		int fitness = controller.evaluate(activator);
 		System.out.println("FINAL FITNESS: "+fitness);
 		if (controller instanceof TuringControllerMemoryVizProxy)
-			new ReplayVisualizer().show(((TuringControllerMemoryVizProxy)controller).getSteps());
+			//new ReplayVisualizer().show(((TuringControllerMemoryVizProxy)controller).getSteps());
+			new ReplayStepVisualizer().show(((TuringControllerMemoryVizProxy)controller).getSteps());
 	}
 	
 	private static String prompt(String string) {

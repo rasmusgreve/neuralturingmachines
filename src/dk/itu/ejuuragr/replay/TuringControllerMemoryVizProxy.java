@@ -28,6 +28,7 @@ public class TuringControllerMemoryVizProxy extends TuringController{
 			TimeStep first = new TimeStep();
 			first.setTuringStep(gtm.getInitialTimeStep());
 			first.setDomainInput(sim.getInitialObservation());
+			first.setTuringMachineContent(gtm.getTapeValues());
 			timeSteps.add(first);
 		}
 	}
@@ -42,6 +43,7 @@ public class TuringControllerMemoryVizProxy extends TuringController{
 		
 		//Catch tm step
 		currentTimeStep.setTuringStep(((GravesTuringMachine) tm).getLastTimeStep());
+		currentTimeStep.setTuringMachineContent(tm.getTapeValues());
 		//Store and get ready for next step
 		timeSteps.add(currentTimeStep);
 		currentTimeStep = new TimeStep();
