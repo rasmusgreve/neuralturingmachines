@@ -30,10 +30,12 @@ public class GravesTuringMachine implements TuringMachine {
 	private int readHeadOutputs;
 	private int writeHeadOutputs;
 	
+	private double sharpeningFactor = 1;
+	
 	private boolean recordTimeSteps = false;
 	private TuringTimeStep currentStep;
 
-
+	
 	/**
 	 * The required constructur for automatic instantiation
 	 * of the TM through reflection
@@ -45,6 +47,7 @@ public class GravesTuringMachine implements TuringMachine {
 				props.getIntProperty("tm.heads.read"),
 				props.getIntProperty("tm.heads.write"),
 				props.getIntProperty("tm.shift.length"));
+		this.sharpeningFactor = props.getDoubleProperty("tm.sharpening.factor", sharpeningFactor);
 	}
 
 	/**
@@ -365,7 +368,7 @@ public class GravesTuringMachine implements TuringMachine {
 					flatVars[offset+m], 								// Key Strength (beta)
 					flatVars[offset+m+1], 								// Interpolation (g)
 					Utilities.normalize(Arrays.copyOfRange(flatVars,offset+m+2,offset+m+2+shiftLength)), // Shifting (s)
-					1 + flatVars[offset+m+2+shiftLength]); 				// Sharpening (gamma)
+					1 + this.sharpeningFactor * flatVars[offset+m+2+shiftLength]); 				// Sharpening (gamma)
 			offset += this.readHeadOutputs;
 		}
 		
@@ -376,7 +379,7 @@ public class GravesTuringMachine implements TuringMachine {
 					flatVars[offset+3*m], 									// Key Strength (beta)
 					flatVars[offset+3*m+1], 								// Interpolation (g)
 					Utilities.normalize(Arrays.copyOfRange(flatVars,offset+3*m+2,offset+3*m+2+shiftLength)), // Shifting (s)
-					1 + flatVars[offset+3*m+2+shiftLength]);				// Sharpening (gamma)
+					1 + this.sharpeningFactor * flatVars[offset+3*m+2+shiftLength]);				// Sharpening (gamma)
 			offset += this.writeHeadOutputs;
 		}
 		return vars;
