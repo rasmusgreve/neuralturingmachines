@@ -17,23 +17,24 @@ import dk.itu.ejuuragr.fitness.Utilities;
  */
 public class CopyTask extends BaseSimulator {
 	
-	private static final boolean DEBUG = true; // True if it should print all input and output
+	private static final boolean DEBUG = false; // True if it should print all input and output
 
 	private int elementLength; // The length of an element in the sequence (usually M - 1)
 	private int maxSeqLength; // The maximum length that the sequence can be (if random), else the actual sequence length.
 	private String lengthRule; // If the sequence length should be "fixed" or "random"ly determined.
+	private int leaveMemory; // How much of each memory element not to use for copytask
 
 	private double[][] sequence;
 	private int step;
 	private double score;
 
-	
-
 	public CopyTask(Properties props) {
 		super(props);
-		this.elementLength = props.getIntProperty("tm.m") - 1; // To allow for the network to store extra
+		this.leaveMemory = props.getIntProperty("simulator.copytask.leave.memory", 0);
 		this.maxSeqLength = props.getIntProperty("simulator.copytask.length.max", 10);
 		this.lengthRule = props.getProperty("simulator.copytask.length.rule", "fixed");
+		
+		this.elementLength = props.getIntProperty("tm.m") - this.leaveMemory; // To allow for the network to store extra
 	}
 	
 	@Override
@@ -53,7 +54,7 @@ public class CopyTask extends BaseSimulator {
 		// CREATE SEQUENCE
 		this.sequence = new double[length][];
 		for (int i = 0; i < length; i++) {
-			sequence[i] = new double[this.elementLength];
+			sequence[i] = new double[elementLength];
 			for (int j = 0; j < elementLength; j++) {
 				sequence[i][j] = getRandom().nextInt(2);
 			}
@@ -68,12 +69,12 @@ public class CopyTask extends BaseSimulator {
 
 	@Override
 	public int getInputCount() {
-		return this.elementLength; // The read output from the controller
+		return elementLength; // The read output from the controller
 	}
 
 	@Override
 	public int getOutputCount() {
-		return this.elementLength + 2; // The input we give the controller in each iteration
+		return elementLength + 2; // The input we give the controller in each iteration
 		// Will be empty when we expect the controller to read back
 		// the sequence.
 		// The two extra ones are START and DELIMITER bits.
@@ -81,8 +82,8 @@ public class CopyTask extends BaseSimulator {
 
 	@Override
 	public void reset() {
-		if(DEBUG) System.out.println("---------- RESET ----------");
 		super.reset();
+		if(DEBUG) System.out.println("---------- RESET ----------");
 	}
 
 	@Override
@@ -93,7 +94,7 @@ public class CopyTask extends BaseSimulator {
 	@Override
 	public double[] performAction(double[] action) {
 		double[] result = getObservation(step);
-
+		
 		// Compare and score (if reading)
 		if (step >= sequence.length + 2) {
 			// The controllers "action" is the reading after 2 + |seq| steps
