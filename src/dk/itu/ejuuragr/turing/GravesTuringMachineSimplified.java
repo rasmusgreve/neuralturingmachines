@@ -212,11 +212,21 @@ public class GravesTuringMachineSimplified implements TuringMachine {
 		if (recordTimeSteps){
 			currentStep = new TuringTimeStep();
 			for (int i = 0; i < getWriteHeadCount(); i++){
-				currentStep.getWriteHeads().add(new HeadTimeStep(writeWeightings[i], vars.getWrite().get(i).getAdd()));
+				currentStep.getWriteHeads().add(new HeadTimeStep(
+						writeWeightings[i], 
+						vars.getWrite().get(i).getAdd(),
+						vars.getWrite().get(i).getKey(),
+						vars.getWrite().get(i).getKeyStrength(),
+						vars.getWrite().get(i).getInterpolation()));
 			}
 			
 			for (int i = 0; i < getReadHeadCount(); i++){
-				currentStep.getReadHeads().add(new HeadTimeStep(readWeightings[i], result[i]));
+				currentStep.getReadHeads().add(new HeadTimeStep(
+						readWeightings[i], 
+						result[i],
+						vars.getRead().get(i).getKey(),
+						vars.getRead().get(i).getKeyStrength(),
+						vars.getRead().get(i).getInterpolation()));
 			}
 		}
 		
@@ -231,11 +241,11 @@ public class GravesTuringMachineSimplified implements TuringMachine {
 		TuringTimeStep timeStep = new TuringTimeStep();
 		
 		for (int i = 0; i < getWriteHeadCount(); i++){
-			timeStep.getWriteHeads().add(new HeadTimeStep(writeWeightings[i], new double[m]));
+			timeStep.getWriteHeads().add(new HeadTimeStep(writeWeightings[i], new double[m], new double[m], 0, 1));
 		}
 		double[][] defaultRead = getDefaultRead();
 		for (int i = 0; i < getReadHeadCount(); i++){
-			timeStep.getReadHeads().add(new HeadTimeStep(readWeightings[i], defaultRead[i]));
+			timeStep.getReadHeads().add(new HeadTimeStep(readWeightings[i], defaultRead[i], new double[m], 0, 1));
 		}
 		
 		return timeStep;

@@ -10,7 +10,7 @@ import dk.itu.ejuuragr.turing.GravesTuringMachine.TuringTimeStep;
 
 public class ReplayVisualizerTest {
 
-	
+	/*
 	public void testFocused(){
 		List<TimeStep> steps = new ArrayList<TimeStep>();
 		
@@ -91,5 +91,5 @@ public class ReplayVisualizerTest {
 		//tester.testFocused();
 		tester.testBlurry();
 	}
-	
+	*/
 }
