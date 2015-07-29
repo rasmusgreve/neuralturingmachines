@@ -123,7 +123,9 @@ public class MinimalTuringMachine implements TuringMachine {
 			int bestPos = 0;
 			double similarity = -1d;
 			for(int i = 0; i < tape.size(); i++) {
-				if(Utilities.emilarity(key, tape.get(i)) > similarity) {
+				double curSim = Utilities.emilarity(key, tape.get(i));
+				if(curSim > similarity) {
+					similarity = curSim;
 					bestPos = i;
 				}
 			}
