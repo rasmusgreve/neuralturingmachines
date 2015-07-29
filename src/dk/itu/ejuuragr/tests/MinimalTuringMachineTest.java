@@ -27,7 +27,7 @@ public class MinimalTuringMachineTest {
 		//1 * content jump
 		//(3) * shift
 	
-	//write
+		//write
 		//jump
 		//shift
 		//read
@@ -128,12 +128,12 @@ public class MinimalTuringMachineTest {
 		Assert.assertArrayEquals(new double[]{1, 0}, result, 0.0);
 	}
 	
-	
+	@Test
 	public void testCopyTaskSimple(){
 		double[][] seq = new double[][]{
 				{0,1,0}, //Start
 				{1,0,0}, //Data
-				{1,0,0}, //Data
+				{0,0,0}, //Data
 				{0,0,0}, //Data
 				{1,0,0}, //Data
 				{1,0,0}, //Data
@@ -145,58 +145,33 @@ public class MinimalTuringMachineTest {
 				{0,0,0}, //Poll
 		};
 		
+		double[] lastRoundRead = new double[]{0,0}; 
+		
 		for (int round = 0; round < seq.length; round++){
 			
+			double d = seq[round][0];
+			double s = seq[round][1];
+			double b = seq[round][2];
 			
-			
-			
-			
-			
-		
+			lastRoundRead = act(d + lastRoundRead[0],s + b + lastRoundRead[1], 1-b, b, 0, b ,1-b);
+			double roundResult = lastRoundRead[0];
+
 			if (round > 6){
-				double[] verify = seq[round-6];
-				//Assert
+				double verify = seq[round-6][0];
+				Assert.assertEquals(verify, roundResult, 0.00);
 			}
 		}
 	}
-	
-	private enum Shift {LEFT,NONE,RIGHT;}
-	
-	private double[] write(double d1, double d2, Shift shift){
-		double s0 = (shift == Shift.LEFT) ? 1 : 0;
-		double s1 = (shift == Shift.NONE) ? 1 : 0;
-		double s2 = (shift == Shift.RIGHT) ? 1 : 0;
+
+	private double[] act(double d1, double d2, double write, double jump, double shiftLeft, double shiftStay, double shiftRight){
 		return tm.processInput(new double[]{
 				d1, d2,		//Write
-				1,			//Write interpolation
-				0,			//Content jump
-				s0, s1, s2	//Shift
+				write,		//Write interpolation
+				jump,		//Content jump
+				shiftLeft, shiftStay, shiftRight	//Shift
 		})[0];
 	}
 	
-	private double[] jump(double d1, double d2, Shift shift){
-		double s0 = (shift == Shift.LEFT) ? 1 : 0;
-		double s1 = (shift == Shift.NONE) ? 1 : 0;
-		double s2 = (shift == Shift.RIGHT) ? 1 : 0;
-		return tm.processInput(new double[]{
-				d1, d2,		//Write
-				0,			//Write interpolation
-				1,			//Content jump
-				s0, s1, s2	//Shift
-		})[0];
-	}
-	
-	private double[] shift(Shift shift){
-		double s0 = (shift == Shift.LEFT) ? 1 : 0;
-		double s1 = (shift == Shift.NONE) ? 1 : 0;
-		double s2 = (shift == Shift.RIGHT) ? 1 : 0;
-		return tm.processInput(new double[]{
-				0, 0,		//Write
-				0,			//Write interpolation
-				0,			//Content jump
-				s0, s1, s2	//Shift
-		})[0];
-	}
 	
 	
 	
