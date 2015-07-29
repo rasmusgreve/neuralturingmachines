@@ -17,7 +17,7 @@ public class Evolver {
 		Simulator sim = controller.getSimulator();
 		TuringMachine tm = controller.getTuringMachine();
 		
-		props.setProperty("stimulus.size", String.valueOf(tm.getOutputCount() + sim.getOutputCount()) + 1); //Plus a bias input that is always 1
+		props.setProperty("stimulus.size", String.valueOf(tm.getOutputCount() + sim.getOutputCount() + 1)); //Plus a bias input that is always 1
 		props.setProperty("response.size", String.valueOf(tm.getInputCount() + sim.getInputCount()));
 		
 		evolver.init(props);
