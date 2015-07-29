@@ -1,6 +1,8 @@
 package dk.itu.ejuuragr.turing;
 
+import java.util.Arrays;
 import java.util.LinkedList;
+import java.util.Queue;
 
 import com.anji.util.Properties;
 
@@ -37,12 +39,23 @@ public class MinimalTuringMachine implements TuringMachine {
 	@Override
 	public double[][] processInput(double[] fromNN) {
 		if (DEBUG) printState();
-
-		// Should be M + 1 + S elements
-		write(Utilities.copy(fromNN, 0, this.m), fromNN[this.m]);
-		moveHead(Utilities.copy(fromNN, this.m + 1, this.shiftLength));
+		Queue<Double> queue = new LinkedList<Double>();
+		for(double d : fromNN) queue.add(d);
+		
+		// Should be M + 2 + S elements
+		double[] writeKey = take(queue,this.m);
+		
+		write(writeKey, queue.poll());
+		moveHead(queue.poll(), writeKey, take(queue,this.shiftLength));
 
 		return new double[][]{getRead()};
+	}
+	
+	private static double[] take(Queue<Double> coll, int amount) {
+		double[] result = new double[amount];
+		for(int i = 0; i < amount; i++)
+			result[i] = coll.poll();
+		return result;
 	}
 
 	@Override
@@ -62,7 +75,8 @@ public class MinimalTuringMachine implements TuringMachine {
 
 	@Override
 	public int getInputCount() {
-		return this.m + 1 + this.shiftLength;
+		// WriteKey, Interpolation, ToContentJump, Shift
+		return this.m + 2 + this.shiftLength;
 	}
 
 	@Override
@@ -103,7 +117,20 @@ public class MinimalTuringMachine implements TuringMachine {
 		return result;
 	}
 
-	private void moveHead(double[] shift) {
+	private void moveHead(double contentJump, double[] key, double[] shift) {
+		if(contentJump >= 0.5) {
+			// JUMPING POINTER TO BEST MATCH
+			int bestPos = 0;
+			double similarity = -1d;
+			for(int i = 0; i < tape.size(); i++) {
+				if(Utilities.emilarity(key, tape.get(i)) > similarity) {
+					bestPos = i;
+				}
+			}
+			this.pointer = bestPos;
+		}
+
+		// SHIFTING
 		int highest = Utilities.maxPos(shift);
 		int offset = highest - (shift.length / 2);
 
