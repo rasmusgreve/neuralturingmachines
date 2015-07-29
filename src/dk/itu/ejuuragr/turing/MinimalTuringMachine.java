@@ -9,7 +9,7 @@ import dk.itu.ejuuragr.fitness.Utilities;
 
 public class MinimalTuringMachine implements TuringMachine {
 
-	private static final boolean DEBUG = false;
+	private static final boolean DEBUG = true;
 
 	private LinkedList<double[]> tape;
 	private int pointer;
@@ -33,21 +33,29 @@ public class MinimalTuringMachine implements TuringMachine {
 		tape.clear();
 		tape.add(new double[m]);
 		pointer = 0;
+		if (DEBUG) printState();
 	}
 
 	@Override
-	public double[][] processInput(double[] fromNN) {
-		if (DEBUG) printState();
-		
+	public double[][] processInput(double[] fromNN) {		
 		Queue<Double> queue = new LinkedList<Double>();
 		for(double d : fromNN) queue.add(d);
 		
 		// Should be M + 2 + S elements
 		double[] writeKey = take(queue,this.m);
+		double interp = queue.poll();
+		double content = queue.poll();
+		double[] shift = take(queue,this.shiftLength);
 		
-		write(writeKey, queue.poll());
-		moveHead(queue.poll(), writeKey, take(queue,this.shiftLength));
+		write(writeKey, interp);
+		moveHead(content, writeKey, shift);
 
+		if (DEBUG) {
+			System.out.println("Write="+Utilities.toString(writeKey)+" Interp="+interp);
+			System.out.println("Content?="+content+" Shift="+Utilities.toString(shift));
+			printState();
+		}
+		
 		return new double[][]{getRead()};
 	}
 	
