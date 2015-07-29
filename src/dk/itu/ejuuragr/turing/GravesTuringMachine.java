@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.apache.commons.math3.linear.ArrayRealVector;
-
 import com.anji.util.Properties;
 
 import dk.itu.ejuuragr.fitness.Utilities;

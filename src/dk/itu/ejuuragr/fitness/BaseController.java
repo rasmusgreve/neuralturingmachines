@@ -38,8 +38,8 @@ public abstract class BaseController implements Controller {
 			this.reset();
 			sim.restart();
 			
-			double[] controllerOutput = this.getInitialInput();
 			double[] simOutput = sim.getInitialObservation();
+			double[] controllerOutput = this.getInitialInput();
 			
 			while(!sim.isTerminated()){
 				double[] nnOutput = this.activateNeuralNetwork(nn, simOutput, controllerOutput);
@@ -65,12 +65,13 @@ public abstract class BaseController implements Controller {
 //		System.out.println("Activate from Controller: "+Utilities.toString(controllerInput));
 //		System.out.println("Wanted length = "+inputTotal);
 		
-		double[] input = new double[domainInput.length + controllerInput.length];
+		double[] input = new double[domainInput.length + controllerInput.length + 1];
 		Utilities.copy(domainInput,input,0);
 		Utilities.copy(controllerInput,input,domainInput.length);
+		input[input.length-1] = 1.0; // Bias node
 		
 		// Cap values at 1
-		cleanInput(input);
+		cleanInput(input); // FIXME: This might be a symptom in the GTM.
 		
 		return nn.next(input);
 	}
