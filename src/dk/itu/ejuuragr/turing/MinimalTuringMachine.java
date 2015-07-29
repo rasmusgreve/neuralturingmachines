@@ -1,6 +1,5 @@
 package dk.itu.ejuuragr.turing;
 
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -39,6 +38,7 @@ public class MinimalTuringMachine implements TuringMachine {
 	@Override
 	public double[][] processInput(double[] fromNN) {
 		if (DEBUG) printState();
+		
 		Queue<Double> queue = new LinkedList<Double>();
 		for(double d : fromNN) queue.add(d);
 		
@@ -60,6 +60,7 @@ public class MinimalTuringMachine implements TuringMachine {
 
 	@Override
 	public double[][] getDefaultRead() {
+		if(DEBUG) printState();
 		return initialRead;
 	}
 	
