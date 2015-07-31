@@ -3,6 +3,7 @@ package dk.itu.ejuuragr.replay;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.List;
 
 import org.jgap.Chromosome;
 
@@ -16,10 +17,11 @@ import dk.itu.ejuuragr.domain.Simulator;
 import dk.itu.ejuuragr.domain.TMaze;
 import dk.itu.ejuuragr.fitness.Controller;
 import dk.itu.ejuuragr.fitness.Utilities;
-import dk.itu.ejuuragr.graph.ReplayStepVisualizer;
-import dk.itu.ejuuragr.graph.ReplayVisualizer;
+import dk.itu.ejuuragr.graph.StepReplayVisualizer;
+import dk.itu.ejuuragr.graph.StaticReplayVisualizer;
 import dk.itu.ejuuragr.graph.TMazeVisualizer;
 import dk.itu.ejuuragr.replay.StepSimulator.Stepper;
+import dk.itu.ejuuragr.turing.GravesTuringMachine.GravesTuringMachineTimeStep;
 import dk.itu.ejuuragr.turing.TuringController;
 
 public class Replay {
@@ -45,20 +47,21 @@ public class Replay {
 		//Initiate simulator and controller from properties to test their types
 		Simulator simulator = (Simulator) Utilities.instantiateObject(props.getProperty("simulator.class"),new Object[]{props},null);
 		
-		StepSimulator stepStim = new StepSimulator(simulator);
+		StepSimulator stepSim = new StepSimulator(simulator);
 		
-		Controller controller = (Controller) Utilities.instantiateObject(props.getProperty("controller.class"),new Object[]{props,stepStim}, new Class<?>[]{Properties.class,Simulator.class});
+		Controller controller = (Controller) Utilities.instantiateObject(props.getProperty("controller.class"),new Object[]{props,stepSim}, new Class<?>[]{Properties.class,Simulator.class});
 	
 		if (controller instanceof TuringController){
-			controller = new TuringControllerMemoryVizProxy(props, stepStim);
+			controller = new TuringControllerRecorder(props, stepSim);
 		}
 		
+		//In the TMaze we want to be able to step through the simulation
 		if (simulator instanceof TMaze)
 		{
 			final TMaze tmaze = (TMaze)simulator;
 			final TMazeVisualizer mazeViz = new TMazeVisualizer(tmaze);
 			
-			stepStim.setStepper(new Stepper(){
+			stepSim.setStepper(new Stepper(){
 
 				@Override
 				public void step() {
@@ -76,9 +79,14 @@ public class Replay {
 
 		int fitness = controller.evaluate(activator);
 		System.out.println("FINAL FITNESS: "+fitness);
-		if (controller instanceof TuringControllerMemoryVizProxy)
+		if (controller instanceof TuringControllerRecorder){
 			//new ReplayVisualizer().show(((TuringControllerMemoryVizProxy)controller).getSteps());
-			new ReplayStepVisualizer().show(((TuringControllerMemoryVizProxy)controller).getSteps());
+			
+			Recording<?> recording = ((TuringControllerRecorder)controller).getRecording();
+			//new StaticReplayVisualizer(recording).show();
+			new StepReplayVisualizer(recording).show();
+			//new ReplayStepVisualizer().show((List<TimeStep<GravesTuringMachineTimeStep>>)timeSteps);
+		}
 	}
 	
 	private static String prompt(String string) {

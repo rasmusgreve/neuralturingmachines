@@ -21,19 +21,8 @@ public class MinimalTuringMachineTest {
 		tm = new MinimalTuringMachine(props);
 	}
 	
-	//Inputs to tm:
-		//m * write
-		//1 * interpolation
-		//1 * content jump
-		//(3) * shift
-	
-		//write
-		//jump
-		//shift
-		//read
-	
 	@Test
-	public void testShift1(){
+	public void testShift(){
 		double[] tmstim = new double[]{
 				0, 1,	//Write
 				1,		//Write interpolation
@@ -57,7 +46,7 @@ public class MinimalTuringMachineTest {
 	}
 	
 	@Test
-	public void testContentBasedJump1(){
+	public void testContentBasedJump(){
 		//Write jump target
 		double[] tmstim = new double[]{
 				0, 1,	//Write

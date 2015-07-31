@@ -6,15 +6,22 @@ import java.util.Queue;
 import com.anji.util.Properties;
 
 import dk.itu.ejuuragr.fitness.Utilities;
+import dk.itu.ejuuragr.replay.Replayable;
+import dk.itu.ejuuragr.replay.TuringTimeStep;
+import dk.itu.ejuuragr.turing.MinimalTuringMachine.MinimalTuringMachineTimeStep;
 
-public class MinimalTuringMachine implements TuringMachine {
+public class MinimalTuringMachine implements TuringMachine, Replayable<MinimalTuringMachineTimeStep> {
 
-	private static final boolean DEBUG = true;
+	private static final boolean DEBUG = false;
 
 	private LinkedList<double[]> tape;
 	private int pointer;
 	private int m;
 	private int shiftLength;
+
+	private boolean recordTimeSteps = false;
+	private MinimalTuringMachineTimeStep lastTimeStep;
+	private boolean increasedSizeDown = false;
 
 	private double[][] initialRead;
 
@@ -36,6 +43,13 @@ public class MinimalTuringMachine implements TuringMachine {
 		if (DEBUG) printState();
 	}
 
+	/**
+	 * Operation order:
+	 * 	write
+	 *	jump
+	 *	shift
+	 *	read
+	 */
 	@Override
 	public double[][] processInput(double[] fromNN) {		
 		Queue<Double> queue = new LinkedList<Double>();
@@ -47,16 +61,64 @@ public class MinimalTuringMachine implements TuringMachine {
 		double content = queue.poll();
 		double[] shift = take(queue,this.shiftLength);
 		
+		int writePosition = pointer;
+		increasedSizeDown = false;
+		
 		write(writeKey, interp);
 		moveHead(content, writeKey, shift);
-
+		
+		
 		if (DEBUG) {
 			System.out.println("Write="+Utilities.toString(writeKey)+" Interp="+interp);
 			System.out.println("Content?="+content+" Shift="+Utilities.toString(shift));
 			printState();
 		}
 		
-		return new double[][]{getRead()};
+		double[] result = getRead();
+		
+		if (recordTimeSteps){
+			int readPosition = pointer;
+			if (increasedSizeDown) writePosition++;
+			lastTimeStep = new MinimalTuringMachineTimeStep(writeKey, interp, content, shift, result, writePosition, readPosition);
+		}
+		
+		return new double[][]{result};
+	}
+	
+	public MinimalTuringMachineTimeStep getLastTimeStep(){
+		return lastTimeStep;
+	}
+	
+
+	@Override
+	public void setRecordTimeSteps(boolean setRecordTimeSteps) {
+		recordTimeSteps = setRecordTimeSteps;
+	}
+
+	@Override
+	public MinimalTuringMachineTimeStep getInitialTimeStep() {
+		return new MinimalTuringMachineTimeStep(new double[m], 0, 0, new double[shiftLength], new double[m],0,0);
+	}
+
+	
+	public static class MinimalTuringMachineTimeStep implements TuringTimeStep{
+		public final double[] key;
+		public final double writeInterpolation, contentJump;
+		public final double[] shift;
+		public final double[] read;
+		public final int writePosition;
+		public final int readPosition;
+		
+		public MinimalTuringMachineTimeStep(double[] key, double write, double jump, double[] shift, double[] read, int writePosition, int readPosition){
+			this.key = key;
+			writeInterpolation = write;
+			contentJump = jump;
+			this.shift = shift;
+			this.read = read;
+			this.writePosition = writePosition;
+			this.readPosition = readPosition;
+		}
+		
 	}
 	
 	private static double[] take(Queue<Double> coll, int amount) {
@@ -156,6 +218,7 @@ public class MinimalTuringMachine implements TuringMachine {
 				if (pointer < 0) {
 					tape.addFirst(new double[this.m]);
 					pointer = 0;
+					increasedSizeDown = true;
 				}
 			}
 
@@ -166,4 +229,5 @@ public class MinimalTuringMachine implements TuringMachine {
 	private double[] getRead() {
 		return tape.get(pointer).clone();
 	}
+
 }

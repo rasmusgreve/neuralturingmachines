@@ -3,10 +3,10 @@ package dk.itu.ejuuragr.tests;
 import java.util.ArrayList;
 import java.util.List;
 
-import dk.itu.ejuuragr.graph.ReplayVisualizer;
+import dk.itu.ejuuragr.graph.StaticReplayVisualizer;
 import dk.itu.ejuuragr.replay.TimeStep;
 import dk.itu.ejuuragr.turing.GravesTuringMachine.HeadTimeStep;
-import dk.itu.ejuuragr.turing.GravesTuringMachine.TuringTimeStep;
+import dk.itu.ejuuragr.turing.GravesTuringMachine.GravesTuringMachineTimeStep;
 
 public class ReplayVisualizerTest {
 

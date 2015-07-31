@@ -1,13 +1,21 @@
 package dk.itu.ejuuragr.replay;
 
-import dk.itu.ejuuragr.turing.GravesTuringMachine.TuringTimeStep;
 
-public class TimeStep{
-	TuringTimeStep turingStep;
+public class TimeStep<T extends TuringTimeStep>{
+	T turingStep;
 	double[] domainInput;
 	double[][] turingMachineContent;
 	//double[] domainOuput; //TODO: Might be interesting at some point
-	public TuringTimeStep getTuringStep() {
+	
+	public TimeStep(){
+		
+	}
+	
+	public TimeStep(T turingStep){
+		this.turingStep = turingStep;
+	}
+	
+	public T getTuringStep() {
 		return turingStep;
 	}
 	public void setTuringMachineContent(double[][] content){
@@ -16,7 +24,7 @@ public class TimeStep{
 	public double[][] getTuringMachineContent(){
 		return turingMachineContent;
 	}
-	public void setTuringStep(TuringTimeStep turingStep) {
+	public void setTuringStep(T turingStep) {
 		this.turingStep = turingStep;
 	}
 	public double[] getDomainInput() {
