@@ -6,8 +6,9 @@ import java.util.Arrays;
 import com.anji.util.Properties;
 
 import dk.itu.ejuuragr.fitness.Utilities;
+import dk.itu.ejuuragr.replay.Replayable;
 import dk.itu.ejuuragr.turing.GravesTuringMachine.HeadTimeStep;
-import dk.itu.ejuuragr.turing.GravesTuringMachine.TuringTimeStep;
+import dk.itu.ejuuragr.turing.GravesTuringMachine.GravesTuringMachineTimeStep;
 import dk.itu.ejuuragr.turing.GravesTuringMachineSimplified.HeadVariables.Head;
 
 /**
@@ -16,7 +17,7 @@ import dk.itu.ejuuragr.turing.GravesTuringMachineSimplified.HeadVariables.Head;
  * @author Emil
  *
  */
-public class GravesTuringMachineSimplified implements TuringMachine {
+public class GravesTuringMachineSimplified implements TuringMachine, Replayable<GravesTuringMachineTimeStep> {
 	
 	private ArrayList<double[]> tape;
 	private int m;
@@ -29,7 +30,7 @@ public class GravesTuringMachineSimplified implements TuringMachine {
 	private int writeHeadOutputs;
 	
 	private boolean recordTimeSteps = false;
-	private TuringTimeStep currentStep;
+	private GravesTuringMachineTimeStep currentStep;
 
 	
 	/**
@@ -210,7 +211,7 @@ public class GravesTuringMachineSimplified implements TuringMachine {
 		}
 		
 		if (recordTimeSteps){
-			currentStep = new TuringTimeStep();
+			currentStep = new GravesTuringMachineTimeStep();
 			for (int i = 0; i < getWriteHeadCount(); i++){
 				currentStep.getWriteHeads().add(new HeadTimeStep(
 						writeWeightings[i], 
@@ -233,12 +234,12 @@ public class GravesTuringMachineSimplified implements TuringMachine {
 		return result;
 	}
 	
-	public TuringTimeStep getLastTimeStep(){
+	public GravesTuringMachineTimeStep getLastTimeStep(){
 		return currentStep;
 	}
 
-	public TuringTimeStep getInitialTimeStep(){
-		TuringTimeStep timeStep = new TuringTimeStep();
+	public GravesTuringMachineTimeStep getInitialTimeStep(){
+		GravesTuringMachineTimeStep timeStep = new GravesTuringMachineTimeStep();
 		
 		for (int i = 0; i < getWriteHeadCount(); i++){
 			timeStep.getWriteHeads().add(new HeadTimeStep(writeWeightings[i], new double[m], new double[m], 0, 1));

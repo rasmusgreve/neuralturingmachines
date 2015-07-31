@@ -7,7 +7,10 @@ import java.util.List;
 import com.anji.util.Properties;
 
 import dk.itu.ejuuragr.fitness.Utilities;
+import dk.itu.ejuuragr.replay.Replayable;
+import dk.itu.ejuuragr.replay.TuringTimeStep;
 import dk.itu.ejuuragr.turing.GravesTuringMachine.HeadVariables.Head;
+import dk.itu.ejuuragr.turing.GravesTuringMachine.GravesTuringMachineTimeStep;
 
 /**
  * The Turing Machine for integration with ANNs as described
@@ -15,7 +18,7 @@ import dk.itu.ejuuragr.turing.GravesTuringMachine.HeadVariables.Head;
  * @author Emil
  *
  */
-public class GravesTuringMachine implements TuringMachine {
+public class GravesTuringMachine implements TuringMachine, Replayable<GravesTuringMachineTimeStep> {
 	
 	private ArrayList<double[]> tape;
 	private int m;
@@ -31,7 +34,7 @@ public class GravesTuringMachine implements TuringMachine {
 	private double sharpeningFactor = 1;
 	
 	private boolean recordTimeSteps = false;
-	private TuringTimeStep currentStep;
+	private GravesTuringMachineTimeStep currentStep;
 
 	
 	/**
@@ -213,7 +216,7 @@ public class GravesTuringMachine implements TuringMachine {
 		}
 		
 		if (recordTimeSteps){
-			currentStep = new TuringTimeStep();
+			currentStep = new GravesTuringMachineTimeStep();
 			for (int i = 0; i < getWriteHeadCount(); i++){
 				currentStep.getWriteHeads().add(new HeadTimeStep(
 						writeWeightings[i], 
@@ -236,13 +239,13 @@ public class GravesTuringMachine implements TuringMachine {
 		return result;
 	}
 
-	public static class TuringTimeStep{
+	public static class GravesTuringMachineTimeStep implements TuringTimeStep{
 		
 		List<HeadTimeStep> writeHeads = new ArrayList<HeadTimeStep>();
 		List<HeadTimeStep> readHeads = new ArrayList<HeadTimeStep>();
 		//TODO: Possible store a snapshot of the tape
 		
-		public TuringTimeStep(){}
+		public GravesTuringMachineTimeStep(){}
 
 		public List<HeadTimeStep> getWriteHeads() {
 			return writeHeads;
@@ -279,12 +282,12 @@ public class GravesTuringMachine implements TuringMachine {
 		}
 	}
 	
-	public TuringTimeStep getLastTimeStep(){
+	public GravesTuringMachineTimeStep getLastTimeStep(){
 		return currentStep;
 	}
 
-	public TuringTimeStep getInitialTimeStep(){
-		TuringTimeStep timeStep = new TuringTimeStep();
+	public GravesTuringMachineTimeStep getInitialTimeStep(){
+		GravesTuringMachineTimeStep timeStep = new GravesTuringMachineTimeStep();
 		
 		for (int i = 0; i < getWriteHeadCount(); i++){
 			timeStep.getWriteHeads().add(new HeadTimeStep(writeWeightings[i], new double[m], new double[m], 0, 1));
