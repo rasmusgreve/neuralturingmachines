@@ -69,6 +69,7 @@ public class StepReplayVisualizer extends AbstractReplayVisualizer {
 		double[] writeValue = null;
 		double[] readValue = null;
 		String writeInterp = "-";
+		String jumpInterp = "-";
 		if (turingStep instanceof GravesTuringMachineTimeStep){
 			GravesTuringMachineTimeStep gtmts = (GravesTuringMachineTimeStep)turingStep;
 			writeWeights = gtmts.getWriteHeads().get(0).weights;
@@ -83,6 +84,7 @@ public class StepReplayVisualizer extends AbstractReplayVisualizer {
 			writeValue = mtmts.key;
 			readValue = mtmts.read;
 			writeInterp = String.format("%.2f", mtmts.writeInterpolation);
+			jumpInterp = String.format("%.2f", mtmts.contentJump);
 		}
 
 		// Write focus
@@ -103,6 +105,8 @@ public class StepReplayVisualizer extends AbstractReplayVisualizer {
 		
 		//Write interp
 		g.drawString("W?: " + writeInterp, (N+1) * pixelSize + 15, (M+1) * pixelSize + 30);
+		//Jump interp
+		g.drawString("J?: " + jumpInterp, (N+1) * pixelSize + 15, (M+3) * pixelSize + 30);
 		
 	}
 	
