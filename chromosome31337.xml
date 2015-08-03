@@ -1,19 +1,20 @@
 <chromosome id="31337">
 <!-- This chromosome is handcrafted to solve CopyTask with a MinimalTuringMachine, m=2, shiftSize=3 -->
-	<neuron id="0" type="in" activation="linear"/>
-	<neuron id="1" type="in" activation="linear"/>
-	<neuron id="2" type="in" activation="linear"/>
-	<neuron id="3" type="in" activation="linear"/>
-	<neuron id="4" type="in" activation="linear"/>
-	<neuron id="5" type="in" activation="linear"/>
-<neuron id="6" type="out" activation="linear"/>
-<neuron id="13" type="out" activation="linear"/>
-<neuron id="20" type="out" activation="linear"/>
-<neuron id="27" type="out" activation="linear"/>
-<neuron id="34" type="out" activation="linear"/>
-<neuron id="41" type="out" activation="linear"/>
-<neuron id="48" type="out" activation="linear"/>
-<neuron id="55" type="out" activation="linear"/>
+	<neuron id="0" type="in" activation="linear"/> <!-- D -->
+	<neuron id="1" type="in" activation="linear"/> <!-- S -->
+	<neuron id="2" type="in" activation="linear"/> <!-- B -->
+	<neuron id="3" type="in" activation="linear"/> <!-- TMout1 -->
+	<neuron id="4" type="in" activation="linear"/> <!-- TMout2 -->
+	<neuron id="5" type="in" activation="linear"/> <!-- Bias -->
+	
+	<neuron id="6" type="out" activation="linear"/>    <!-- Sim In -->
+	<neuron id="13" type="out" activation="linear"/>   <!-- TMin1 -->
+	<neuron id="20" type="out" activation="linear"/>   <!-- TMin2 -->
+	<neuron id="27" type="out" activation="linear"/>   <!-- TMwrite -->
+	<neuron id="34" type="out" activation="linear"/>   <!-- TMjump -->
+	<neuron id="41" type="out" activation="linear"/>   <!-- TMleft -->
+	<neuron id="48" type="out" activation="linear"/>   <!-- TMstay -->
+	<neuron id="55" type="out" activation="linear"/>   <!-- TMright -->
 
 <!-- d -> tmIn1 -->
 <connection id="7"  src-id="0"	dest-id="13" weight="1.0"/>
