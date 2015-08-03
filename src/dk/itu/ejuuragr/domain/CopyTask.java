@@ -17,7 +17,7 @@ import dk.itu.ejuuragr.fitness.Utilities;
  */
 public class CopyTask extends BaseSimulator {
 	
-	private static final boolean DEBUG = false; // True if it should print all input and output
+	private static final boolean DEBUG = true; // True if it should print all input and output
 
 	private int elementLength; // The length of an element in the sequence (usually M - 1)
 	private int maxSeqLength; // The maximum length that the sequence can be (if random), else the actual sequence length.
@@ -39,7 +39,7 @@ public class CopyTask extends BaseSimulator {
 	
 	@Override
 	public void restart() {
-		if(DEBUG) System.out.print("Restart: [");
+		if(DEBUG) System.out.print("CT: Restart: [");
 		// Create the random sequence
 		int length = 1;
 		switch(lengthRule) {
@@ -93,6 +93,10 @@ public class CopyTask extends BaseSimulator {
 
 	@Override
 	public double[] performAction(double[] action) {
+		if(DEBUG) {
+			System.out.println("-------------------------- COPYTASK --------------------------");
+		}
+		
 		double[] result = getObservation(step);
 		
 		// Compare and score (if reading)
@@ -105,6 +109,8 @@ public class CopyTask extends BaseSimulator {
 			
 			if(DEBUG) System.out.println("\tReading: "+Utilities.toString(action)+" compared to "+Utilities.toString(sequence[index])+" = "+thisScore);
 		}
+		
+		if(DEBUG) System.out.println("--------------------------------------------------------------");
 
 		step++; // Increment step
 		return result;
