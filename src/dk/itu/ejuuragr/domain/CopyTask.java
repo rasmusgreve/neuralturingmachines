@@ -100,10 +100,10 @@ public class CopyTask extends BaseSimulator {
 		double[] result = getObservation(step);
 		
 		// Compare and score (if reading)
-		if (step >= sequence.length + 2) {
+		if (step >= sequence.length + 2 + 1) {
 			// The controllers "action" is the reading after 2 + |seq| steps
 			
-			int index = step - sequence.length - 2;
+			int index = step - sequence.length - 2 - 1;
 			double thisScore = calcSimilarity(sequence[index], action);
 			this.score += thisScore;
 			
@@ -128,7 +128,7 @@ public class CopyTask extends BaseSimulator {
 
 	@Override
 	public boolean isTerminated() {
-		return this.step >= 2 * sequence.length + 2;
+		return this.step >= 2 * sequence.length + 2 + 1;
 	}
 
 	// PRIVATE HELPER METHODS
