@@ -36,6 +36,7 @@ public class CopyTaskTest {
 				{0,0,0},
 				{0,0,0},
 				{0,0,0},
+				{0,0,0},
 				{0,0,0}
 		};
 		
@@ -46,6 +47,7 @@ public class CopyTaskTest {
 				{0,0,0}, //(seq4)
 				{0,0,0}, //(seq5)
 				{0,0,0}, //(delimiter)
+				{0,0,0}, //Not expecting anything yet
 				CToutSeq[1],
 				CToutSeq[2],
 				CToutSeq[3],
