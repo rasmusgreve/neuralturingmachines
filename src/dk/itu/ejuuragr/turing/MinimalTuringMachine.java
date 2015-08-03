@@ -12,7 +12,7 @@ import dk.itu.ejuuragr.turing.MinimalTuringMachine.MinimalTuringMachineTimeStep;
 
 public class MinimalTuringMachine implements TuringMachine, Replayable<MinimalTuringMachineTimeStep> {
 
-	private static final boolean DEBUG = false;
+	private static final boolean DEBUG = true;
 
 	private LinkedList<double[]> tape;
 	private int pointer;
@@ -51,7 +51,7 @@ public class MinimalTuringMachine implements TuringMachine, Replayable<MinimalTu
 	 *	read
 	 */
 	@Override
-	public double[][] processInput(double[] fromNN) {		
+	public double[][] processInput(double[] fromNN) {
 		Queue<Double> queue = new LinkedList<Double>();
 		for(double d : fromNN) queue.add(d);
 		
@@ -69,6 +69,7 @@ public class MinimalTuringMachine implements TuringMachine, Replayable<MinimalTu
 		
 		
 		if (DEBUG) {
+			System.out.println("-----------------------------------------------------");
 			System.out.println("Write="+Utilities.toString(writeKey)+" Interp="+interp);
 			System.out.println("Content?="+content+" Shift="+Utilities.toString(shift));
 			printState();
@@ -80,6 +81,10 @@ public class MinimalTuringMachine implements TuringMachine, Replayable<MinimalTu
 			int readPosition = pointer;
 			if (increasedSizeDown) writePosition++;
 			lastTimeStep = new MinimalTuringMachineTimeStep(writeKey, interp, content, shift, result, writePosition, readPosition);
+		}
+		
+		if (DEBUG) {
+			System.out.println("Sending to NN: "+Utilities.toString(result));
 		}
 		
 		return new double[][]{result};
