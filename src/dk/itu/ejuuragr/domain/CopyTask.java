@@ -22,7 +22,6 @@ public class CopyTask extends BaseSimulator {
 	private int elementLength; // The length of an element in the sequence (usually M - 1)
 	private int maxSeqLength; // The maximum length that the sequence can be (if random), else the actual sequence length.
 	private String lengthRule; // If the sequence length should be "fixed" or "random"ly determined.
-	private int leaveMemory; // How much of each memory element not to use for copytask
 
 	private double[][] sequence;
 	private int step;
@@ -30,11 +29,9 @@ public class CopyTask extends BaseSimulator {
 
 	public CopyTask(Properties props) {
 		super(props);
-		this.leaveMemory = props.getIntProperty("simulator.copytask.leave.memory", 0);
+		this.elementLength = props.getIntProperty("simulator.copytask.element.size", 1); // Less than m to allow for the network to store extra
 		this.maxSeqLength = props.getIntProperty("simulator.copytask.length.max", 10);
 		this.lengthRule = props.getProperty("simulator.copytask.length.rule", "fixed");
-		
-		this.elementLength = props.getIntProperty("tm.m") - this.leaveMemory; // To allow for the network to store extra
 	}
 	
 	@Override
