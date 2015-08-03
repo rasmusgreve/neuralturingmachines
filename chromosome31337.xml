@@ -6,41 +6,41 @@
 	<neuron id="3" type="in" activation="linear"/>
 	<neuron id="4" type="in" activation="linear"/>
 	<neuron id="5" type="in" activation="linear"/>
-<neuron id="6" type="out" activation="sigmoid"/>
-<neuron id="13" type="out" activation="sigmoid"/>
-<neuron id="20" type="out" activation="sigmoid"/>
-<neuron id="27" type="out" activation="sigmoid"/>
-<neuron id="34" type="out" activation="sigmoid"/>
-<neuron id="41" type="out" activation="sigmoid"/>
-<neuron id="48" type="out" activation="sigmoid"/>
-<neuron id="55" type="out" activation="sigmoid"/>
+<neuron id="6" type="out" activation="linear"/>
+<neuron id="13" type="out" activation="linear"/>
+<neuron id="20" type="out" activation="linear"/>
+<neuron id="27" type="out" activation="linear"/>
+<neuron id="34" type="out" activation="linear"/>
+<neuron id="41" type="out" activation="linear"/>
+<neuron id="48" type="out" activation="linear"/>
+<neuron id="55" type="out" activation="linear"/>
 
 <!-- d + tmOut1 -> tmIn1 -->
-<connection id="7"  src-id="0"	dest-id="13" weight="10.0"/>
-<connection id="9"  src-id="3"	dest-id="13" weight="10.0"/>
+<connection id="7"  src-id="0"	dest-id="13" weight="1.0"/>
+<connection id="9"  src-id="3"	dest-id="13" weight="1.0"/>
 
 <!-- tmOut1 -> simIn1 -->
-<connection id="10" src-id="3"	dest-id="6" weight="10.0"/>
+<connection id="10" src-id="3"	dest-id="6" weight="1.0"/>
 
 <!-- s+b+tmOut -> tmIn2 -->
-<connection id="11" src-id="1"	dest-id="20" weight="10.0"/>
-<connection id="12" src-id="2"	dest-id="20" weight="10.0"/>
-<connection id="14" src-id="4"	dest-id="20" weight="10.0"/>
+<connection id="11" src-id="1"	dest-id="20" weight="1.0"/>
+<connection id="12" src-id="2"	dest-id="20" weight="1.0"/>
+<connection id="14" src-id="4"	dest-id="20" weight="1.0"/>
 
 <!-- 1-b -> write -->
-<connection id="15" src-id="2"	dest-id="27" weight="-10.0"/>
-<connection id="16" src-id="5"	dest-id="27" weight="10.0"/>
+<connection id="15" src-id="2"	dest-id="27" weight="-1.0"/>
+<connection id="16" src-id="5"	dest-id="27" weight="1.0"/>
 
 <!-- b -> jump -->
-<connection id="16" src-id="2"	dest-id="34" weight="10.0"/>
+<connection id="22" src-id="2"	dest-id="34" weight="1.0"/>
 
 <!-- 0 -> left -->
 <connection id="17" src-id="5"	dest-id="41" weight="0.0"/>
 
 <!-- b -> stay -->
-<connection id="18" src-id="2"	dest-id="48" weight="10.0"/>
+<!--<connection id="18" src-id="2"	dest-id="48" weight="1.0"/>-->
 
 <!-- 1-b -> right -->
-<connection id="19" src-id="2"	dest-id="55" weight="-10.0"/>
-<connection id="21" src-id="5"	dest-id="55" weight="10.0"/>
+<!--<connection id="19" src-id="2"	dest-id="55" weight="-1.0"/>-->
+<connection id="21" src-id="5"	dest-id="55" weight="1.0"/>
 </chromosome>
