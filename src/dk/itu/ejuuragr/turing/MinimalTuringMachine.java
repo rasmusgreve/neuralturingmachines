@@ -12,7 +12,7 @@ import dk.itu.ejuuragr.turing.MinimalTuringMachine.MinimalTuringMachineTimeStep;
 
 public class MinimalTuringMachine implements TuringMachine, Replayable<MinimalTuringMachineTimeStep> {
 
-	private static final boolean DEBUG = true;
+	private static final boolean DEBUG = false;
 
 	private LinkedList<double[]> tape;
 	private int pointer;
