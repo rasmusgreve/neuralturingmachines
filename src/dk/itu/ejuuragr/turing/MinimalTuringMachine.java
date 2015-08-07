@@ -18,6 +18,7 @@ public class MinimalTuringMachine implements TuringMachine, Replayable<MinimalTu
 	private int pointer;
 	private int m;
 	private int shiftLength;
+	private String shiftMode;
 
 	private boolean recordTimeSteps = false;
 	private MinimalTuringMachineTimeStep lastTimeStep;
@@ -28,6 +29,7 @@ public class MinimalTuringMachine implements TuringMachine, Replayable<MinimalTu
 	public MinimalTuringMachine(Properties props) {
 		this.m = props.getIntProperty("tm.m");
 		this.shiftLength = props.getIntProperty("tm.shift.length");
+		this.shiftMode = props.getProperty("tm.shift.mode", "multiple");
 
 		tape = new LinkedList<double[]>();
 		
@@ -59,21 +61,19 @@ public class MinimalTuringMachine implements TuringMachine, Replayable<MinimalTu
 		double[] writeKey = take(queue,this.m);
 		double interp = queue.poll();
 		double content = queue.poll();
-		double[] shift = take(queue,this.shiftLength);
+		double[] shift = take(queue,getShiftInputs());
 		
 		int writePosition = pointer;
 		increasedSizeDown = false;
-		
-		write(writeKey, interp);
-		moveHead(content, writeKey, shift);
-		
 		
 		if (DEBUG) {
 			System.out.println("------------------- MINIMAL TURING MACHINE -------------------");
 			System.out.println("Write="+Utilities.toString(writeKey)+" Interp="+interp);
 			System.out.println("Content?="+content+" Shift="+Utilities.toString(shift));
-			printState();
 		}
+		
+		write(writeKey, interp);
+		moveHead(content, writeKey, shift);
 		
 		double[] result = getRead();
 		
@@ -84,6 +84,7 @@ public class MinimalTuringMachine implements TuringMachine, Replayable<MinimalTu
 		}
 		
 		if (DEBUG) {
+			printState();
 			System.out.println("Sending to NN: "+Utilities.toString(result));
 			System.out.println("--------------------------------------------------------------");
 		}
@@ -126,13 +127,6 @@ public class MinimalTuringMachine implements TuringMachine, Replayable<MinimalTu
 		}
 		
 	}
-	
-	private static double[] take(Queue<Double> coll, int amount) {
-		double[] result = new double[amount];
-		for(int i = 0; i < amount; i++)
-			result[i] = coll.poll();
-		return result;
-	}
 
 	@Override
 	public double[][] getDefaultRead() {
@@ -153,7 +147,7 @@ public class MinimalTuringMachine implements TuringMachine, Replayable<MinimalTu
 	@Override
 	public int getInputCount() {
 		// WriteKey, Interpolation, ToContentJump, Shift
-		return this.m + 2 + this.shiftLength;
+		return this.m + 2 + getShiftInputs();
 	}
 
 	@Override
@@ -177,6 +171,20 @@ public class MinimalTuringMachine implements TuringMachine, Replayable<MinimalTu
 	}
 
 	// PRIVATE HELPER METHODS
+	
+	private static double[] take(Queue<Double> coll, int amount) {
+		double[] result = new double[amount];
+		for(int i = 0; i < amount; i++)
+			result[i] = coll.poll();
+		return result;
+	}
+	
+	private int getShiftInputs() {
+		switch(shiftMode) {
+			case "single": return 1;
+			default: return this.shiftLength;
+		}
+	}
 
 	private void printState() {
 		System.out.println("TM: " + Utilities.toString(tape.toArray(new double[tape.size()][]))+" pointer="+pointer);
@@ -210,8 +218,16 @@ public class MinimalTuringMachine implements TuringMachine, Replayable<MinimalTu
 		}
 
 		// SHIFTING
-		int highest = Utilities.maxPos(shift);
-		int offset = highest - (shift.length / 2);
+		int highest;
+		switch(shiftMode){
+			case "single": highest = (int) (shift[0] * this.shiftLength); break; // single
+			default: highest = Utilities.maxPos(shift); break; // multiple
+		}
+		
+		int offset = highest - (this.shiftLength / 2);
+		
+//		System.out.println("Highest="+highest);
+//		System.out.println("Offset="+offset);
 
 		while (offset != 0) {
 			if (offset > 0) {
