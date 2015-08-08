@@ -21,7 +21,7 @@ public class FitnessEvaluator implements BulkFitnessFunction, Configurable {
 	private TuringController[] controllers;
 
 	private int generation;
-	private boolean toOffset = true;
+	private int newSeedAfter = -1;
 	private int cores;
 	private boolean threading;
 
@@ -35,8 +35,8 @@ public class FitnessEvaluator implements BulkFitnessFunction, Configurable {
 			final CountDownLatch latch = new CountDownLatch(cores);
 
 			for (int i = 0; i < cores; i++) {
-				if (toOffset)
-					controllers[i].getSimulator().setRandomOffset(generation);
+				if (newSeedAfter > 0)
+					controllers[i].getSimulator().setRandomOffset(generation / newSeedAfter);
 
 				final int finalI = i;
 				final int start = i * perThread;
@@ -92,8 +92,8 @@ public class FitnessEvaluator implements BulkFitnessFunction, Configurable {
 		// Load properties
 		activatorFactory = (ActivatorTranscriber) properties
 				.singletonObjectProperty(ActivatorTranscriber.class);
-		toOffset = !properties
-				.getBooleanProperty("simulate.generations.identical");
+		newSeedAfter = properties
+				.getIntProperty("simulate.generations.identical", -1);
 		threading = properties.getBooleanProperty("threading");
 
 		// Prepare for multi-threading
