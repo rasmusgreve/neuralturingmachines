@@ -16,12 +16,6 @@ import java.io.InputStreamReader;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 
-import org.jgap.Chromosome;
-
-import com.anji.integration.Activator;
-import com.anji.integration.ActivatorTranscriber;
-import com.anji.persistence.FilePersistence;
-import com.anji.util.DummyConfiguration;
 import com.anji.util.Properties;
 
 import dk.itu.ejuuragr.domain.TMaze;
@@ -34,17 +28,16 @@ public class TMazeVisualizer {
 	final MazeMap map;
 	final TMazeVisualizerComponent component;
 	
-	private final int blockSize = 25;
+	private final int blockSize = 250;
 	private final double rewardSize = 0.5;
 	private final double agentSize = 0.05;
 	private final Color highRewardColor = Color.red;
 	private final Color lowRewardColor = Color.gray;
 	private volatile boolean doProgress = false;
 	
-	public TMazeVisualizer(final TMaze maze){
+	public TMazeVisualizer(final TMaze maze, final boolean userControllable){
 		this.maze = maze;
 		this.map = maze.getMap();
-		
 		
 		JFrame frame = new JFrame();
 		frame.setSize(blockSize*(map.getWidth()+1), blockSize*(map.getHeight()+1));
@@ -68,18 +61,18 @@ public class TMazeVisualizer {
 			
 			@Override
 			public void keyPressed(KeyEvent e) {
-				if (e.getKeyCode() == KeyEvent.VK_UP)
-					maze.performAction(new double[]{.5});
-				if (e.getKeyCode() == KeyEvent.VK_LEFT)
-					maze.performAction(new double[]{1});
-				if (e.getKeyCode() == KeyEvent.VK_RIGHT)
-					maze.performAction(new double[]{0});
+				if (userControllable){
+					if (e.getKeyCode() == KeyEvent.VK_UP)
+						maze.performAction(new double[]{.5});
+					if (e.getKeyCode() == KeyEvent.VK_LEFT)
+						maze.performAction(new double[]{1});
+					if (e.getKeyCode() == KeyEvent.VK_RIGHT)
+						maze.performAction(new double[]{0});
+				}
 				if (e.getKeyCode() == KeyEvent.VK_SPACE) {
 					doProgress = true;
-					System.out.println("SPACE!");
 				}
 				component.repaint();
-				System.out.println(maze.getCurrentScore());
 			}
 		});
 		frame.add(component, BorderLayout.CENTER);
@@ -228,7 +221,7 @@ public class TMazeVisualizer {
 			
 			TMaze maze = new TMaze(props);
 			maze.reset();
-			TMazeVisualizer viz = new TMazeVisualizer(maze);
+			TMazeVisualizer viz = new TMazeVisualizer(maze, true);
 
 		}
 		catch (Exception e){

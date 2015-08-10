@@ -13,7 +13,7 @@ public abstract class AbstractReplayVisualizer {
 
 	public static int pixelSize = 25;
 	protected final JFrame frame;
-	protected final Recording<?> recording;
+	protected Recording<?> recording;
 	private RecordingComponent component;
 	
 	public AbstractReplayVisualizer(Recording<?> recording){

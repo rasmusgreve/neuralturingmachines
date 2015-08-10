@@ -19,6 +19,7 @@ import dk.itu.ejuuragr.fitness.Controller;
 import dk.itu.ejuuragr.fitness.Utilities;
 import dk.itu.ejuuragr.graph.StepReplayVisualizer;
 import dk.itu.ejuuragr.graph.StaticReplayVisualizer;
+import dk.itu.ejuuragr.graph.TMazeStepReplayVisualizer;
 import dk.itu.ejuuragr.graph.TMazeVisualizer;
 import dk.itu.ejuuragr.replay.StepSimulator.Stepper;
 import dk.itu.ejuuragr.turing.GravesTuringMachine.GravesTuringMachineTimeStep;
@@ -46,7 +47,8 @@ public class Replay {
 	
 		//Initiate simulator and controller from properties to test their types
 		Simulator simulator = (Simulator) Utilities.instantiateObject(props.getProperty("simulator.class"),new Object[]{props},null);
-		
+		simulator.reset();
+		simulator.restart();
 		StepSimulator stepSim = new StepSimulator(simulator);
 		
 		Controller controller = (Controller) Utilities.instantiateObject(props.getProperty("controller.class"),new Object[]{props,stepSim}, new Class<?>[]{Properties.class,Simulator.class});
@@ -59,13 +61,20 @@ public class Replay {
 		if (simulator instanceof TMaze)
 		{
 			final TMaze tmaze = (TMaze)simulator;
-			final TMazeVisualizer mazeViz = new TMazeVisualizer(tmaze);
-			
+			final TMazeVisualizer mazeViz = new TMazeVisualizer(tmaze, false);
+			final TMazeStepReplayVisualizer memViz = 
+					(controller instanceof TuringControllerRecorder) ? 
+							new TMazeStepReplayVisualizer(((TuringControllerRecorder)controller).getRecording())
+							:null;
+			memViz.show();
 			stepSim.setStepper(new Stepper(){
 
 				@Override
 				public void step() {
 					mazeViz.update();
+					if (memViz != null){
+						memViz.update();
+					}
 					while (true){
 						if (mazeViz.getDoProgressAndReset())
 							break;
@@ -79,7 +88,7 @@ public class Replay {
 
 		int fitness = controller.evaluate(activator);
 		System.out.println("FINAL FITNESS: "+fitness + " / " + controller.getMaxScore());
-		if (controller instanceof TuringControllerRecorder){
+		if (controller instanceof TuringControllerRecorder && !(simulator instanceof TMaze)){
 			//new ReplayVisualizer().show(((TuringControllerMemoryVizProxy)controller).getSteps());
 			
 			Recording<?> recording = ((TuringControllerRecorder)controller).getRecording();

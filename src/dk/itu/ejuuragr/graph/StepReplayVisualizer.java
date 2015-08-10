@@ -22,7 +22,7 @@ import dk.itu.ejuuragr.turing.MinimalTuringMachine.MinimalTuringMachineTimeStep;
 
 public class StepReplayVisualizer extends AbstractReplayVisualizer {
 
-	private int stepIndex = 0;
+	protected int stepIndex = 0;
 
 	public StepReplayVisualizer(final Recording<?> recording) {
 		super(recording);
