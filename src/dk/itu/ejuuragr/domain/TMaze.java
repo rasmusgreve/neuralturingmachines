@@ -87,7 +87,7 @@ public class TMaze extends BaseSimulator {
 
 	@Override
 	public int getOutputCount() {
-		return 3; // Distance sensor at 45, 90 and 135 degrees
+		return 3 + 1; // Distance sensor at 45, 90 and 135 degrees + 1*reward
 	}
 
 	@Override
@@ -108,6 +108,7 @@ public class TMaze extends BaseSimulator {
 		
 		double[] obs = getObservation();
 		printState(action[0], obs);
+		//System.out.println("is within goal: " + isWithinGoal() + " obs: " + obs[3]);
 		return obs;
 	}
 
@@ -293,9 +294,9 @@ public class TMaze extends BaseSimulator {
 	}
 	
 	private double[] getObservation() {
-		double[] result = new double[SENSOR_ANGLES.length];
+		double[] result = new double[SENSOR_ANGLES.length + 1];
 		
-		for(int i = 0; i < result.length; i++) {
+		for(int i = 0; i < SENSOR_ANGLES.length; i++) {
 			double sensorAngle = angle + SENSOR_ANGLES[i];
 			
 			// calculate intersection to each 
@@ -306,6 +307,7 @@ public class TMaze extends BaseSimulator {
 			
 			result[i] = Math.min(SENSOR_CUTOFF, closest) / SENSOR_CUTOFF;
 		}
+		result[result.length-1] = getReward() / (double)highReward;
 		
 		return result;
 	}
