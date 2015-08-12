@@ -15,6 +15,8 @@ import javax.imageio.ImageIO;
 
 import com.anji.util.Properties;
 
+import dk.itu.ejuuragr.fitness.Utilities;
+
 /**
  * The classical T-Maze of Machine Learning for challenging
  * agents to use memory to consistently find the high-reward
@@ -51,7 +53,7 @@ public class TMaze extends BaseSimulator {
 	// Live fields
 	private double[] location;
 	private double angle;
-	private int[] goal;
+	public int[] goal;
 	
 	private int stepCounter;
 	private int finished = -1;
@@ -73,6 +75,7 @@ public class TMaze extends BaseSimulator {
 		String mapFile = props.getProperty("simulator.tmaze.map", "tmaze.bmp");
 		loadMap(mapFile);
 		loadWalls();
+		moveGoal(true);
 	}
 	
 	@Override
@@ -400,7 +403,6 @@ public class TMaze extends BaseSimulator {
 	
 	private void moveGoal(boolean canBeSame) {
 		List<int[]> goals = map.getOfType(MAP_TYPE.goal);
-
 		if(canBeSame) {
 			goal = goals.get(getRandom().nextInt(goals.size()));
 		} else {

@@ -8,7 +8,8 @@ public class RoundsTMaze extends TMaze {
 	
 	private double swapFraction; // The center fraction of the stepLength
 	private int rounds = -1; // The number of rounds in the test
-	private int switchSpot; // The spot to switch goal at
+	private int[] switchSpots; // The spot to switch goal at
+	private int swapCount;
 	
 	private int curRound; // The current round number
 	private int totalScore; // The accumulated score over all rounds
@@ -17,6 +18,7 @@ public class RoundsTMaze extends TMaze {
 		super(props);
 		this.rounds = props.getIntProperty("simulator.tmaze.rounds", 10);
 		this.swapFraction = props.getDoubleProperty("simulator.tmaze.swap.fraction", 0.3);
+		this.swapCount = props.getIntProperty("simulator.tmaze.swap.swapcount",1);
 	}
 
 	@Override
@@ -26,26 +28,44 @@ public class RoundsTMaze extends TMaze {
 		super.swapGoal(true); // select new goal randomly
 		curRound = 0;
 		totalScore = 0;
-			
-		int swapArea = (int)(rounds * swapFraction); // The middle X rounds it can switch
-		this.switchSpot = (rounds - swapArea) / 2 + getRandom().nextInt(swapArea+1);
+		
+		switchSpots = new int[swapCount];
+		for (int i = 0; i < swapCount; i++){
+			int swapSize = (int)(rounds * swapFraction);
+			int rawPoint = (int)((rounds/(swapCount+1.0))*(i+1));
+			int fuzzedPoint = rawPoint + getRandom().nextInt(swapSize+1);
+			switchSpots[i] = fuzzedPoint;
+		}
+//		int swapArea = (int)(rounds * swapFraction); // The middle X rounds it can switch
+//		this.switchSpot = (rounds - swapArea) / 2 + getRandom().nextInt(swapArea+1);
 	}
+	
+	private boolean isResetting = false;
 
+	private boolean isSwapRound(int round){
+		for (int point : switchSpots) if (round == point) return true;
+		return false;
+	}
+	
 	@Override
 	public double[] performAction(double[] action) {
+		if (isResetting){
+			isResetting = false;
+			super.restart();
+			curRound++;
+			if(isSwapRound(curRound))
+				super.swapGoal(false); // switch goal to another of the options
+			return super.getInitialObservation();
+		}
 		double[] superResult = super.performAction(action);
 		
 		if(super.isTerminated()){ // Round over
 			if(DEBUG) {
-				System.out.printf("Round %d: %d (G%s) step=%02d %s",curRound,super.getCurrentScore(),super.getGoalId(super.getPositionTile()),getStep(),curRound == switchSpot ? "~" : "");
+				System.out.printf("Round %d: %d (G%s) step=%02d %s",curRound,super.getCurrentScore(),super.getGoalId(super.getPositionTile()),getStep(),isSwapRound(curRound) ? "~" : "");
 				System.out.println();
 			}
 			this.totalScore += super.getCurrentScore();
-			
-			super.restart();
-			curRound++;
-			if(curRound == switchSpot)
-				super.swapGoal(false); // switch goal to another of the options
+			isResetting = true;
 		}
 		
 		return superResult;
