@@ -214,6 +214,19 @@ public class Utilities {
 		return Math.sqrt(sqSum);
 	}
 	
+	public static double cosineSimilarity(double[] v1, double[] v2) {
+		double sum = 0;
+		double usum = 0;
+		double vsum = 0;
+		for(int i = 0; i < v1.length; i++) {
+			sum += v1[i] * v2[i];
+			usum += v1[i] * v1[i];
+			vsum += v2[i] * v2[i];
+		}
+//		System.out.println(sum+","+usum+","+vsum);
+		return sum / Math.sqrt(usum * vsum);
+	}
+
 	/**
 	 * Just testing some stuff
 	 * @param args
@@ -225,14 +238,14 @@ public class Utilities {
 		double[] v4 = new double[]{0,0.25,0.5,0.75,1};
 		double[] v5 = new double[]{1,0.75,0.5,0.25,0};
 		
-		System.out.println(Arrays.toString(v1)+" VS "+Arrays.toString(v2)+": "+emilarity(v1,v2));
-		System.out.println(Arrays.toString(v1)+" VS "+Arrays.toString(v3)+": "+emilarity(v1,v3));
-		System.out.println(Arrays.toString(v2)+" VS "+Arrays.toString(v3)+": "+emilarity(v2,v3));
-		System.out.println(Arrays.toString(v1)+" VS "+Arrays.toString(v1)+": "+emilarity(v1,v1));
-		System.out.println(Arrays.toString(v3)+" VS "+Arrays.toString(v3)+": "+emilarity(v3,v3));
-		System.out.println(Arrays.toString(v1)+" VS "+Arrays.toString(v4)+": "+emilarity(v1,v4));
-		System.out.println(Arrays.toString(v3)+" VS "+Arrays.toString(v4)+": "+emilarity(v1,v4));
-		System.out.println(Arrays.toString(v4)+" VS "+Arrays.toString(v5)+": "+emilarity(v4,v5));
-		System.out.println(Arrays.toString(v5)+" VS "+Arrays.toString(v4)+": "+emilarity(v5,v4));
+		System.out.println(Arrays.toString(v1)+" VS "+Arrays.toString(v2)+": "+cosineSimilarity(v1,v2));
+		System.out.println(Arrays.toString(v1)+" VS "+Arrays.toString(v3)+": "+cosineSimilarity(v1,v3));
+		System.out.println(Arrays.toString(v2)+" VS "+Arrays.toString(v3)+": "+cosineSimilarity(v2,v3));
+		System.out.println(Arrays.toString(v1)+" VS "+Arrays.toString(v1)+": "+cosineSimilarity(v1,v1));
+		System.out.println(Arrays.toString(v3)+" VS "+Arrays.toString(v3)+": "+cosineSimilarity(v3,v3));
+		System.out.println(Arrays.toString(v1)+" VS "+Arrays.toString(v4)+": "+cosineSimilarity(v1,v4));
+		System.out.println(Arrays.toString(v3)+" VS "+Arrays.toString(v4)+": "+cosineSimilarity(v1,v4));
+		System.out.println(Arrays.toString(v4)+" VS "+Arrays.toString(v5)+": "+cosineSimilarity(v4,v5));
+		System.out.println(Arrays.toString(v5)+" VS "+Arrays.toString(v4)+": "+cosineSimilarity(v5,v4));
 	}
 }
