@@ -72,6 +72,8 @@ public class TMazeVisualizerAsNN {
 					doProgress = true;
 				component.repaint();
 				System.out.println(maze.getCurrentScore());
+				if (maze.isTerminated())
+					System.out.println("THE END");
 			}
 		});
 		frame.add(component, BorderLayout.CENTER);
