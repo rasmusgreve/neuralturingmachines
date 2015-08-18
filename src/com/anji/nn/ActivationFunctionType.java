@@ -51,6 +51,11 @@ public final static ActivationFunctionType LINEAR = new ActivationFunctionType( 
 public final static ActivationFunctionType SIGMOID = new ActivationFunctionType( "sigmoid" );
 
 /**
+ * sigmoid
+ */
+public final static ActivationFunctionType SIGMOID_STEEP = new ActivationFunctionType( "sigmoid-steep" );
+
+/**
  * tanh
  */
 public final static ActivationFunctionType TANH = new ActivationFunctionType( "tanh" );
@@ -96,6 +101,7 @@ public static ActivationFunctionType valueOf( String name ) {
 				ActivationFunctionType.CLAMPED_LINEAR );
 		types.put( ActivationFunctionType.SIGNED_CLAMPED_LINEAR.toString(),
 				ActivationFunctionType.SIGNED_CLAMPED_LINEAR );
+		types.put(ActivationFunctionType.SIGMOID_STEEP.toString(), ActivationFunctionType.SIGMOID_STEEP);
 	}
 	return (ActivationFunctionType) types.get( name );
 }

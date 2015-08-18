@@ -1,5 +1,7 @@
 package dk.itu.ejuuragr.run;
 
+import java.util.Random;
+
 import com.anji.util.Properties;
 
 import dk.itu.ejuuragr.domain.Simulator;
@@ -19,6 +21,10 @@ public class Evolver {
 		
 		props.setProperty("stimulus.size", String.valueOf(tm.getOutputCount() + sim.getOutputCount() + 1)); //Plus a bias input that is always 1
 		props.setProperty("response.size", String.valueOf(tm.getInputCount() + sim.getInputCount()));
+		
+		if(props.getIntProperty("rand.seed",-1) == -1) {
+			props.setProperty("random.seed",String.valueOf(new Random().nextInt()));
+		}
 		
 		evolver.init(props);
 		evolver.run();
