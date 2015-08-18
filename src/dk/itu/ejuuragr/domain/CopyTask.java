@@ -191,4 +191,17 @@ public class CopyTask extends BaseSimulator {
 		
 		return result / target.length;
 	}
+	
+	/**
+	 * Assuming the targets are binary (e.g. either 0.0 or 1.0)
+	 */
+	private double closestBinary(double[] target, double[] actual) {
+		int result = 0;
+		for(int i = 0; i < target.length; i++) {
+			if(Math.abs(target[0] - actual[0]) < 0.5) {
+				result++;
+			}
+		}
+		return result;
+	}
 }

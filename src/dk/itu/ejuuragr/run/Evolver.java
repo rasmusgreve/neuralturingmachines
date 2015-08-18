@@ -22,7 +22,7 @@ public class Evolver {
 		props.setProperty("stimulus.size", String.valueOf(tm.getOutputCount() + sim.getOutputCount() + 1)); //Plus a bias input that is always 1
 		props.setProperty("response.size", String.valueOf(tm.getInputCount() + sim.getInputCount()));
 		
-		if(props.getIntProperty("rand.seed",-1) == -1) {
+		if(props.getIntProperty("random.seed",-1) == -1) {
 			props.setProperty("random.seed",String.valueOf(new Random().nextInt()));
 		}
 		
