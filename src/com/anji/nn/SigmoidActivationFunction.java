@@ -28,7 +28,7 @@ package com.anji.nn;
  */
 public class SigmoidActivationFunction implements ActivationFunction {
 
-	private final static double SLOPE = 4.924273d;
+	protected double SLOPE = 4.924273d;
 
 	/**
 	 * identifying string

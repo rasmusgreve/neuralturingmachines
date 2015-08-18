@@ -49,6 +49,7 @@ public class ActivationFunctionFactory {
 		activationFunctions.put( SignedStepActivationFunction.NAME, new SignedStepActivationFunction() );
 		activationFunctions.put( ClampedLinearActivationFunction.NAME, new ClampedLinearActivationFunction() );
 		activationFunctions.put( SignedClampedLinearActivationFunction.NAME, new SignedClampedLinearActivationFunction() );
+		activationFunctions.put( SigmoidSteepActivationFunction.NAME, new SigmoidSteepActivationFunction() );
 	}
 
 	/**

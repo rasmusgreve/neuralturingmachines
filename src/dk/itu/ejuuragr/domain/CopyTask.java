@@ -105,8 +105,8 @@ public class CopyTask extends BaseSimulator {
 			// The controllers "action" is the reading after 2 + |seq| steps
 			
 			int index = step - sequence.length - 2 - 1;
-			double[] correct = Utilities.copy(sequence[index], 0, elementSize);
-			double[] received = Utilities.copy(action, 0, elementSize);
+			double[] correct = elementSize < sequence[index].length ? Utilities.copy(sequence[index], 0, elementSize) : sequence[index];
+			double[] received = elementSize < sequence[index].length ? Utilities.copy(action, 0, elementSize) : action;
 			double thisScore = calcSimilarity(correct, received);
 			this.score += thisScore;
 			
