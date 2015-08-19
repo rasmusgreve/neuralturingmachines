@@ -17,7 +17,7 @@ import dk.itu.ejuuragr.fitness.Utilities;
  */
 public class CopyTask extends BaseSimulator {
 	
-	private static final boolean DEBUG = false; // True if it should print all input and output
+	private static final boolean DEBUG = true; // True if it should print all input and output
 
 	private int elementSize; // The length of an element in the sequence (usually M - 1)
 	private int preparedSize;
@@ -178,7 +178,9 @@ public class CopyTask extends BaseSimulator {
 	 */
 	private double calcSimilarity(double[] first, double[] second) {
 //		return Utilities.emilarity(first, second);
-		return strictCloseToTarget(first, second);
+//		return strictCloseToTarget(first, second);
+//		return closestBinary(first, second);
+		return completeMatchClosestBinary(first, second);
 	}
 	
 	private double strictCloseToTarget(double[] target, double[] actual) {
@@ -198,10 +200,20 @@ public class CopyTask extends BaseSimulator {
 	private double closestBinary(double[] target, double[] actual) {
 		int result = 0;
 		for(int i = 0; i < target.length; i++) {
-			if(Math.abs(target[0] - actual[0]) < 0.5) {
+			if(Math.abs(target[i] - actual[i]) < 0.5) {
 				result++;
 			}
 		}
-		return result;
+		return result / target.length;
+	}
+	
+	private double completeMatchClosestBinary(double[] target, double[] actual){
+		int matches = 0;
+		for(int i = 0; i < target.length; i++) {
+			if(Math.abs(target[i] - actual[i]) < 0.5) {
+				matches++;
+			}
+		}
+		return matches == target.length ? 1 : 0;
 	}
 }
