@@ -122,6 +122,18 @@ public class Utilities {
 	public static String toString(double[] array) {
 		return Utilities.toString(array,"%.2f");
 	}
+	
+	public static String toString(double[][] array, String format) {
+		StringBuilder b = new StringBuilder();
+		b.append('[');
+		for(int i = 0; i < array.length; i++) {
+			b.append(Utilities.toString(array[i],format));
+			if(i < array.length - 1)
+				b.append(", ");
+		}
+		b.append(']');
+		return b.toString();
+	}
 
 	/**
 	 * Makes a pretty String from a 2D double array
@@ -129,15 +141,7 @@ public class Utilities {
 	 * @return
 	 */
 	public static String toString(double[][] array) {
-		StringBuilder b = new StringBuilder();
-		b.append('[');
-		for(int i = 0; i < array.length; i++) {
-			b.append(Utilities.toString(array[i]));
-			if(i < array.length - 1)
-				b.append(", ");
-		}
-		b.append(']');
-		return b.toString();
+		return Utilities.toString(array, "%.2f");
 	}
 	
 	/**
