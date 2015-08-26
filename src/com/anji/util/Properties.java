@@ -70,6 +70,9 @@ public Properties() {
 public Properties( java.util.Properties values ) {
 	super();
 	putAll( values );
+	java.util.Properties log4jProps = new java.util.Properties();
+	log4jProps.putAll( this );
+	PropertyConfigurator.configure( log4jProps );
 }
 
 /**

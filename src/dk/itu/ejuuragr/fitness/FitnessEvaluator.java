@@ -57,6 +57,9 @@ public class FitnessEvaluator implements BulkFitnessFunction, Configurable {
 				latch.await(); // Wait for countdown
 			} catch (InterruptedException e) {
 				e.printStackTrace();
+			} catch (ArrayIndexOutOfBoundsException e){
+				e.printStackTrace();
+				throw e;
 			}
 		}else {
 			handleSubset(list, 0, list.size(), 0);
@@ -76,6 +79,9 @@ public class FitnessEvaluator implements BulkFitnessFunction, Configurable {
 
 			} catch (TranscriberException e) {
 				e.printStackTrace();
+			} catch (ArrayIndexOutOfBoundsException e){
+				e.printStackTrace();
+				throw e;
 			}
 		}
 	}

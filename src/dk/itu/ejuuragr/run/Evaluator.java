@@ -46,6 +46,7 @@ public class Evaluator {
 		double fitnessSum = 0;
 		
 		for (int run = 0; run < NUMBER_OF_TESTS; run++){
+			controller.getSimulator().setRandomOffset(run);
 			fitnessSum += controller.evaluate(activator);
 			if (run % (NUMBER_OF_TESTS / 100) == 0)
 				System.out.println(run*1.0/NUMBER_OF_TESTS*100 + "%");
