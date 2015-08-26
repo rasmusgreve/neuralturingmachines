@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import org.apache.commons.math3.stat.descriptive.SummaryStatistics;
 import org.jgap.Chromosome;
 
 import com.anji.integration.Activator;
@@ -18,7 +19,7 @@ import dk.itu.ejuuragr.fitness.Utilities;
 
 public class Evaluator {
 
-	public static final int NUMBER_OF_TESTS = 100000;
+	public static final int NUMBER_OF_TESTS = 1_000_000;
 	
 	public static void main(String[] args) throws Exception {
 		if (args.length == 0){
@@ -43,18 +44,18 @@ public class Evaluator {
 		Simulator simulator = (Simulator) Utilities.instantiateObject(props.getProperty("simulator.class"),new Object[]{props},null);
 		Controller controller = (Controller) Utilities.instantiateObject(props.getProperty("controller.class"),new Object[]{props,simulator}, new Class<?>[]{Properties.class,Simulator.class});
 	
-		double fitnessSum = 0;
+		SummaryStatistics stats = new SummaryStatistics();
 		
 		for (int run = 0; run < NUMBER_OF_TESTS; run++){
 			controller.getSimulator().setRandomOffset(run);
-			fitnessSum += controller.evaluate(activator);
+			stats.addValue(controller.evaluate(activator));
 			if (run % (NUMBER_OF_TESTS / 100) == 0)
 				System.out.println(run*1.0/NUMBER_OF_TESTS*100 + "%");
 		}
 		
-		double avg = fitnessSum / NUMBER_OF_TESTS;
+		System.out.println("All done, " + NUMBER_OF_TESTS + " runs! Results:");
+		System.out.printf("[%.1f - %.1f] mean: %.2f ± %.3f\n", stats.getMin(), stats.getMax(), stats.getMean(), stats.getStandardDeviation());
 		
-		System.out.println("Average fitness over " + NUMBER_OF_TESTS + " runs : "+avg + " / " + controller.getMaxScore() + " = " + (avg/controller.getMaxScore()));
 	}
 	
 	
