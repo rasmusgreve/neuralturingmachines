@@ -50,6 +50,8 @@ public final static ActivationFunctionType LINEAR = new ActivationFunctionType( 
  */
 public final static ActivationFunctionType SIGMOID = new ActivationFunctionType( "sigmoid" );
 
+public final static ActivationFunctionType EVSAIL_SIGMOID = new ActivationFunctionType( "evsail-sigmoid" );
+
 /**
  * sigmoid
  */
@@ -95,6 +97,7 @@ public static ActivationFunctionType valueOf( String name ) {
 		types = new HashMap();
 		types.put( ActivationFunctionType.LINEAR.toString(), ActivationFunctionType.LINEAR );
 		types.put( ActivationFunctionType.SIGMOID.toString(), ActivationFunctionType.SIGMOID );
+		types.put( ActivationFunctionType.EVSAIL_SIGMOID.toString(), ActivationFunctionType.EVSAIL_SIGMOID );
 		types.put( ActivationFunctionType.TANH.toString(), ActivationFunctionType.TANH );
 		types.put( ActivationFunctionType.TANH_CUBIC.toString(), ActivationFunctionType.TANH_CUBIC );
 		types.put( ActivationFunctionType.CLAMPED_LINEAR.toString(),
