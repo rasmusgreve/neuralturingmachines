@@ -17,7 +17,7 @@ import dk.itu.ejuuragr.fitness.Utilities;
  */
 public class CopyTask extends BaseSimulator {
 	
-	private static final boolean DEBUG = true; // True if it should print all input and output
+	private static final boolean DEBUG = false; // True if it should print all input and output
 
 	private int elementSize; // The length of an element in the sequence (usually M - 1)
 	private int preparedSize;
@@ -178,9 +178,9 @@ public class CopyTask extends BaseSimulator {
 	 */
 	private double calcSimilarity(double[] first, double[] second) {
 //		return Utilities.emilarity(first, second);
-//		return strictCloseToTarget(first, second);
+		return strictCloseToTarget(first, second);
 //		return closestBinary(first, second);
-		return completeMatchClosestBinary(first, second);
+//		return completeMatchClosestBinary(first, second);
 	}
 	
 	private double strictCloseToTarget(double[] target, double[] actual) {
@@ -197,13 +197,21 @@ public class CopyTask extends BaseSimulator {
 	/**
 	 * Assuming the targets are binary (e.g. either 0.0 or 1.0)
 	 */
+	double[] rights = new double[9];
+	int c;
 	private double closestBinary(double[] target, double[] actual) {
-		int result = 0;
+		double result = 0;
 		for(int i = 0; i < target.length; i++) {
 			if(Math.abs(target[i] - actual[i]) < 0.5) {
 				result++;
 			}
 		}
+		rights[(int)result]++;
+		c++;
+		for (double d : rights){
+			System.out.print(d/c + " , ");
+		}
+		System.out.println();
 		return result / target.length;
 	}
 	
@@ -213,7 +221,7 @@ public class CopyTask extends BaseSimulator {
 			if(Math.abs(target[i] - actual[i]) < 0.5) {
 				matches++;
 			}
-		}
+		}//649537
 		return matches == target.length ? 1 : 0;
 	}
 }
