@@ -1,7 +1,5 @@
 package dk.itu.ejuuragr.domain;
 
-import java.util.Arrays;
-
 import com.anji.util.Properties;
 
 import dk.itu.ejuuragr.fitness.Utilities;
@@ -40,7 +38,7 @@ public class CopyTask extends BaseSimulator {
 	
 	@Override
 	public void restart() {
-		if(DEBUG) System.out.print("CT: Restart: [");
+		
 		// Create the random sequence
 		int length = 1;
 		switch(lengthRule) {
@@ -59,9 +57,9 @@ public class CopyTask extends BaseSimulator {
 			for (int j = 0; j < elementSize; j++) {
 				sequence[i][j] = getRandom().nextInt(2);
 			}
-			if(DEBUG) System.out.print(Arrays.toString(sequence[i])+",");
 		}
-		if(DEBUG) System.out.println("]");
+		
+		if(DEBUG) System.out.print("CT: Restart: "+Utilities.toString(sequence, "%1.0f"));
 
 		// reset variables
 		this.step = 1;
@@ -105,8 +103,8 @@ public class CopyTask extends BaseSimulator {
 			// The controllers "action" is the reading after 2 + |seq| steps
 			
 			int index = step - sequence.length - 2 - 1;
-			double[] correct = elementSize < sequence[index].length ? Utilities.copy(sequence[index], 0, elementSize) : sequence[index];
-			double[] received = elementSize < sequence[index].length ? Utilities.copy(action, 0, elementSize) : action;
+			double[] correct = elementSize < preparedSize ? Utilities.copy(sequence[index], 0, elementSize) : sequence[index];
+			double[] received = elementSize < preparedSize ? Utilities.copy(action, 0, elementSize) : action;
 			double thisScore = calcSimilarity(correct, received);
 			this.score += thisScore;
 			
@@ -132,6 +130,11 @@ public class CopyTask extends BaseSimulator {
 	@Override
 	public boolean isTerminated() {
 		return this.step >= 2 * sequence.length + 2 + 1;
+	}
+	
+	@Override
+	public String toString() {
+		return Utilities.toString(sequence, "%1.0f");
 	}
 
 	// PRIVATE HELPER METHODS
@@ -197,8 +200,8 @@ public class CopyTask extends BaseSimulator {
 	/**
 	 * Assuming the targets are binary (e.g. either 0.0 or 1.0)
 	 */
-	double[] rights = new double[9];
-	int c;
+//	double[] rights = new double[9];
+//	int c;
 	private double closestBinary(double[] target, double[] actual) {
 		double result = 0;
 		for(int i = 0; i < target.length; i++) {
@@ -206,12 +209,12 @@ public class CopyTask extends BaseSimulator {
 				result++;
 			}
 		}
-		rights[(int)result]++;
-		c++;
-		for (double d : rights){
-			System.out.print(d/c + " , ");
-		}
-		System.out.println();
+//		rights[(int)result]++;
+//		c++;
+//		for (double d : rights){
+//			System.out.print(d/c + " , ");
+//		}
+//		System.out.println();
 		return result / target.length;
 	}
 	
@@ -223,5 +226,6 @@ public class CopyTask extends BaseSimulator {
 			}
 		}//649537
 		return matches == target.length ? 1 : 0;
+
 	}
 }
