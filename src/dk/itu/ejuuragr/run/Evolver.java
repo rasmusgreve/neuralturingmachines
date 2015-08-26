@@ -16,7 +16,7 @@ public class Evolver {
 
 	public static void main(String[] args) throws Throwable {
 		java.util.Properties p1 = new java.util.Properties();
-		p1.load(new FileInputStream("../properties/" + args[0]));
+		p1.load(ClassLoader.getSystemResourceAsStream( args[0] ));
 		
 		if (!p1.containsKey("random.seed")){
 			System.out.println("Properties contain no random seed!");
