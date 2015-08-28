@@ -19,7 +19,7 @@ import dk.itu.ejuuragr.fitness.Utilities;
 
 public class Evaluator {
 
-	public static final int NUMBER_OF_TESTS = 1_000_000;
+	public static final int NUMBER_OF_TESTS = 100_000;
 	
 	public static void main(String[] args) throws Exception {
 		if (args.length == 0){
@@ -48,13 +48,13 @@ public class Evaluator {
 		
 		for (int run = 0; run < NUMBER_OF_TESTS; run++){
 			controller.getSimulator().setRandomOffset(run);
-			stats.addValue(controller.evaluate(activator));
+			stats.addValue(controller.evaluate(activator) / (1.0 * controller.getMaxScore()));
 			if (run % (NUMBER_OF_TESTS / 100) == 0)
 				System.out.println(run*1.0/NUMBER_OF_TESTS*100 + "%");
 		}
 		
 		System.out.println("All done, " + NUMBER_OF_TESTS + " runs! Results:");
-		System.out.printf("[%.1f - %.1f] mean: %.2f Â± %.3f\n", stats.getMin(), stats.getMax(), stats.getMean(), stats.getStandardDeviation());
+		System.out.printf("[%f - %f] mean: %f ± %.3f\n", stats.getMin(), stats.getMax(), stats.getMean(), stats.getStandardDeviation());
 		
 	}
 	
