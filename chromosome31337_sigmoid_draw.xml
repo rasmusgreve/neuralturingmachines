@@ -1,0 +1,68 @@
+<chromosome id="31337">
+<!-- This chromosome is handcrafted to solve CopyTask with a MinimalTuringMachine, m=2, shiftSize=3 -->
+	<neuron id="Start" type="in" activation="linear"/> <!-- "Start" -->
+	<neuron id="Boundary" type="in" activation="linear"/> <!-- Boundary -->
+	<neuron id="E1" type="in" activation="linear"/> <!-- E1 -->
+	
+	<neuron id="M1" type="in" activation="linear"/> <!-- M1 -->
+	<neuron id="M9" type="in" activation="linear"/> <!-- M9 -->
+	<neuron id="M10" type="in" activation="linear"/> <!-- M10 -->
+	<neuron id="Bias" type="in" activation="linear"/> <!-- Bias -->
+	
+	<neuron id="Eo1" type="out" activation="sigmoid"/>    <!-- E1 -->
+	
+	<neuron id="Mo1" type="out" activation="sigmoid"/>    <!-- M1 -->
+	
+	<neuron id="Mo9" type="out" activation="sigmoid"/>    <!-- M9 -->
+	<neuron id="Mo10" type="out" activation="sigmoid"/>    <!-- M10 -->
+	<neuron id="Write" type="out" activation="sigmoid"/>    <!-- Write -->
+	<neuron id="Jump" type="out" activation="sigmoid"/>    <!-- Jump -->
+	<neuron id="Left" type="out" activation="sigmoid"/>    <!-- Shift left -->
+	<neuron id="Stay" type="out" activation="sigmoid"/>    <!-- Shift stay -->
+	<neuron id="Right" type="out" activation="sigmoid"/>    <!-- Shift right -->
+
+	
+	
+	<!-- E1-8 - M1-8 +10 -->
+	<connection id="44"  src-id="E1"	dest-id="Mo1" weight="10.0"/>
+	
+	<!-- S - M9 +10 -->
+	<connection id="52"  src-id="Start"	dest-id="Mo9" weight="10.0"/>
+	
+	<!-- B - M9 +10 -->
+	<connection id="53"  src-id="Boundary"	dest-id="Mo9" weight="10.0"/>
+	
+	<!-- B - J +10 -->
+	<connection id="54"  src-id="Boundary"	dest-id="Jump" weight="10.0"/>
+	
+	<!-- B - W -10 (måske)-->
+	<connection id="55"  src-id="Boundary"	dest-id="Write" weight="-10.0"/>
+	
+	<!-- M1-8 - E1-8 +10 -->
+	<connection id="56"  src-id="M1"	dest-id="Eo1" weight="10.0"/>
+	
+	<!-- Bias - E1-8 -5 -->
+	<connection id="64"  src-id="Bias"	dest-id="Eo1" weight="-5.0"/>
+	
+	<!-- Bias - M1-8 -5 -->
+	<connection id="72"  src-id="Bias"	dest-id="Mo1" weight="-5.0"/>
+	
+	<!-- Bias - W +5 -->
+	<connection id="80"  src-id="Bias"	dest-id="Write" weight="5.0"/>
+	
+	<!-- Bias - M9 -5 -->
+	<connection id="81"  src-id="Bias"	dest-id="Mo9" weight="-5.0"/>
+	
+	<!-- Bias - left -10 -->
+	<connection id="82"  src-id="Bias"	dest-id="Left" weight="-10.0"/>
+	
+	<!-- Bias - stay -10 -->
+	<connection id="83"  src-id="Bias"	dest-id="Stay" weight="-10.0"/>
+	
+	<!-- Bias - right +10 -->
+	<connection id="84"  src-id="Bias"	dest-id="Right" weight="10.0"/>
+	
+	<!-- Bias - right +10 -->
+	<connection id="85"  src-id="Bias"	dest-id="Jump" weight="-5.0"/>
+	
+</chromosome>

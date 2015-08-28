@@ -70,8 +70,6 @@
 	<!-- B - J +10 -->
 	<connection id="54"  src-id="-1"	dest-id="40" weight="10.0"/>
 	
-	<!-- B - W -10 (måske)-->
-	<connection id="55"  src-id="-1"	dest-id="39" weight="-10.0"/>
 	
 	<!-- M1-8 - E1-8 +10 -->
 	<connection id="56"  src-id="10"	dest-id="21" weight="10.0"/>
