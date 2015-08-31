@@ -3,6 +3,7 @@ package dk.itu.ejuuragr.graph;
 import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -96,6 +97,7 @@ public class TMazeVisualizer {
 	private class TMazeVisualizerComponent extends JComponent{
 		
 		private static final long serialVersionUID = 1L;
+		final Font rewardFont = new Font("Verdana", Font.PLAIN, 20);
 
 		@Override
 		public void paint(Graphics arg0) {
@@ -115,7 +117,8 @@ public class TMazeVisualizer {
 			
 			g.setColor(Color.green);
 			g.setTransform(new AffineTransform());
-			g.drawString("Reward: " + maze.getCurrentScore(), 10, 10);
+			g.setFont(rewardFont);
+			g.drawString("Reward: " + maze.getCurrentScore(), 5, 25);
 			
 		}
 	}
