@@ -16,7 +16,7 @@ public interface Controller {
 	 * fitness score of the test.
 	 * @param An activator for the neural network to evaluate
 	 */
-	int evaluate(Activator nn);
+	double evaluate(Activator nn);
 	
 	/**
 	 * Reset the controller to some initial state

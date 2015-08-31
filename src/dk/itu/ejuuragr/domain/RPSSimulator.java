@@ -71,7 +71,7 @@ public class RPSSimulator extends BaseSimulator {
 	}
 
 	@Override
-	public int getCurrentScore() {
+	public double getCurrentScore() {
 		return score;
 	}
 

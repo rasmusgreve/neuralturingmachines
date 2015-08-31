@@ -29,8 +29,8 @@ public abstract class BaseController implements Controller {
 	}
 
 	@Override
-	public int evaluate(Activator nn) {
-		int totalScore = 0;
+	public double evaluate(Activator nn) {
+		double totalScore = 0;
 		sim.reset();
 		
 		// For each iteration
@@ -51,7 +51,7 @@ public abstract class BaseController implements Controller {
 			totalScore += sim.getCurrentScore();
 		}
 		
-		int result = Math.max(0, totalScore);
+		double result = Math.max(0.0, totalScore);
 		return result;
 	}
 	

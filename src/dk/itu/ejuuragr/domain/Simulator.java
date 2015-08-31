@@ -48,7 +48,7 @@ public interface Simulator {
 	 * Get the current score that has been collected since the last call to {@link #reset()}
 	 * @return
 	 */
-	int getCurrentScore();
+	double getCurrentScore();
 	
 	/**
 	 * @return The highest possibly obtainable score

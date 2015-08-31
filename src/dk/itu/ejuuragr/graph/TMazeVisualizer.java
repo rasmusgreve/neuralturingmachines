@@ -113,6 +113,10 @@ public class TMazeVisualizer {
 			drawMap(g);
 			drawAgent(g);
 			
+			g.setColor(Color.green);
+			g.setTransform(new AffineTransform());
+			g.drawString("Reward: " + maze.getCurrentScore(), 10, 10);
+			
 		}
 	}
 	
@@ -221,6 +225,7 @@ public class TMazeVisualizer {
 			
 			TMaze maze = new TMaze(props);
 			maze.reset();
+			maze.restart();
 			TMazeVisualizer viz = new TMazeVisualizer(maze, true);
 
 		}

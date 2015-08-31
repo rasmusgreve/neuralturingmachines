@@ -54,7 +54,7 @@ public class Evaluator {
 		}
 		
 		System.out.println("All done, " + NUMBER_OF_TESTS + " runs! Results:");
-		System.out.printf("[%f - %f] mean: %f ± %.3f\n", stats.getMin(), stats.getMax(), stats.getMean(), stats.getStandardDeviation());
+		System.out.printf("[%f - %f] mean: %f +- %f\n", stats.getMin(), stats.getMax(), stats.getMean(), stats.getStandardDeviation());
 		
 	}
 	

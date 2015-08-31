@@ -116,7 +116,7 @@ public class TMaze extends BaseSimulator {
 	}
 
 	@Override
-	public int getCurrentScore() {
+	public double getCurrentScore() {
 		return getReward();
 	}
 
@@ -394,7 +394,7 @@ public class TMaze extends BaseSimulator {
 		return map.getType(location[0], location[1]) == MAP_TYPE.wall;
 	}
 	
-	private int getReward() {
+	private double getReward() {
 		if(map.getType(location[0], location[1]) == MAP_TYPE.goal) {
 			return Arrays.equals(getTile(location), goal) ? highReward : lowReward;
 		}

@@ -35,9 +35,6 @@
 	<!-- B - J +10 -->
 	<connection id="54"  src-id="Boundary"	dest-id="Jump" weight="10.0"/>
 	
-	<!-- B - W -10 (måske)-->
-	<connection id="55"  src-id="Boundary"	dest-id="Write" weight="-10.0"/>
-	
 	<!-- M1-8 - E1-8 +10 -->
 	<connection id="56"  src-id="M1"	dest-id="Eo1" weight="10.0"/>
 	
@@ -53,16 +50,9 @@
 	<!-- Bias - M9 -5 -->
 	<connection id="81"  src-id="Bias"	dest-id="Mo9" weight="-5.0"/>
 	
-	<!-- Bias - left -10 -->
-	<connection id="82"  src-id="Bias"	dest-id="Left" weight="-10.0"/>
-	
-	<!-- Bias - stay -10 -->
-	<connection id="83"  src-id="Bias"	dest-id="Stay" weight="-10.0"/>
-	
 	<!-- Bias - right +10 -->
 	<connection id="84"  src-id="Bias"	dest-id="Right" weight="10.0"/>
 	
-	<!-- Bias - right +10 -->
 	<connection id="85"  src-id="Bias"	dest-id="Jump" weight="-5.0"/>
 	
 </chromosome>

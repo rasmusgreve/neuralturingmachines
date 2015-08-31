@@ -107,12 +107,6 @@
 	<!-- Bias - M9 -5 -->
 	<connection id="81"  src-id="20"	dest-id="37" weight="-5.0"/>
 	
-	<!-- Bias - left -10 -->
-	<connection id="82"  src-id="20"	dest-id="41" weight="-10.0"/>
-	
-	<!-- Bias - stay -10 -->
-	<connection id="83"  src-id="20"	dest-id="42" weight="-10.0"/>
-	
 	<!-- Bias - right +10 -->
 	<connection id="84"  src-id="20"	dest-id="43" weight="10.0"/>
 	

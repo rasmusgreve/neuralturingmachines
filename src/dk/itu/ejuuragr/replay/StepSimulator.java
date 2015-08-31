@@ -44,7 +44,7 @@ public class StepSimulator implements Simulator {
 	}
 
 	@Override
-	public int getCurrentScore() {
+	public double getCurrentScore() {
 		return simulator.getCurrentScore();
 	}
 

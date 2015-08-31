@@ -86,7 +86,7 @@ public class Replay {
 		
 		//Simulator and controller
 
-		int fitness = controller.evaluate(activator);
+		double fitness = controller.evaluate(activator);
 		System.out.println("FINAL FITNESS: "+fitness + " / " + controller.getMaxScore());
 		if (controller instanceof TuringControllerRecorder && !(simulator instanceof TMaze)){
 			//new ReplayVisualizer().show(((TuringControllerMemoryVizProxy)controller).getSteps());

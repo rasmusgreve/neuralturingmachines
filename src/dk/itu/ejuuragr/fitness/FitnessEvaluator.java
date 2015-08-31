@@ -72,9 +72,9 @@ public class FitnessEvaluator implements BulkFitnessFunction, Configurable {
 			int myNumber) {
 		for (int j = start; j < end; j++) {
 			try {
-				int score = controllers[myNumber].evaluate(activatorFactory
+				double score = controllers[myNumber].evaluate(activatorFactory
 						.newActivator(list.get(j)));
-				list.get(j).setFitnessValue(score);
+				list.get(j).setFitnessValue((int)score);
 				// System.out.printf("Thread %d: Finished Chromosome %d\n",finalI,j);
 
 			} catch (TranscriberException e) {

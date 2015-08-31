@@ -79,7 +79,7 @@ public class RoundsTMaze extends TMaze {
 	}
 
 	@Override
-	public int getCurrentScore() {
+	public double getCurrentScore() {
 //		System.out.println(totalScore+" of "+getMaxScore());
 		return totalScore;
 	}

@@ -118,8 +118,8 @@ public class CopyTask extends BaseSimulator {
 	}
 
 	@Override
-	public int getCurrentScore() {
-		return (int) (score * 10.0 * (maxSeqLength / (1.0 * sequence.length)));
+	public double getCurrentScore() {
+		return score * 10.0 * (maxSeqLength / (1.0 * sequence.length));
 	}
 
 	@Override
