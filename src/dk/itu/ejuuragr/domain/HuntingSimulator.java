@@ -29,6 +29,7 @@ public class HuntingSimulator extends BaseSimulator {
 	
 	private final int mapSize = 5;
 	private final int numberOfFeatures;
+	private final double featureBlur;
 	private final int numberOfSpecies;
 	private final double startHealth;
 	private final double steerAmount;
@@ -48,13 +49,12 @@ public class HuntingSimulator extends BaseSimulator {
 	private double[] initialObservation;
 	private double maxScore;
 
-
-
 	public HuntingSimulator(Properties props) {
 		super(props);
 		this.numberOfSpecies = props.getIntProperty("simulator.hunting.species", 5);
 		this.startHealth = props.getDoubleProperty("simulator.hunting.health", 10);
 		this.numberOfFeatures = props.getIntProperty("simulator.hunting.features", 1);
+		this.featureBlur = props.getDoubleProperty("simulator.hunting.features.blur", 0.0);
 		this.steerAmount = (props.getIntProperty("simulator.hunting.steer.max", 45) / 180.0) * Math.PI;
 		this.SPEED = props.getDoubleProperty("simulator.hunting.speed", 0.1);
 		this.decayRate = props.getDoubleProperty("simulator.hunting.decay", 0.05);
@@ -239,7 +239,7 @@ public class HuntingSimulator extends BaseSimulator {
 			}
 			
 			// closest animal's features
-			Utilities.copy(closest.getSpecies().getFeatures(), result, 2);
+			Utilities.copy(closest.getFeatures(), result, 2);
 			
 			// Are we within range to eat?
 			double distance = Utilities.euclideanDistance(new double[2], closest.getPosition());
@@ -300,11 +300,16 @@ public class HuntingSimulator extends BaseSimulator {
 		
 		private double[] pos;
 		private double direction;
-		private Species species;
+		private Species mySpecies;
+		private double[] features;
 		
 		public Animal(double x, double y, Species origin) {
-			this.species = origin;
+			this.mySpecies = origin;
 			this.pos = new double[]{x,y};
+			this.features = new double[origin.getFeatures().length];
+			for(int i = 0; i < features.length; i++) {
+				features[i] = origin.getFeatures()[i] + getRandom().nextGaussian() * featureBlur;
+			}
 		}
 		
 		public void move(double dx, double dy) {
@@ -331,13 +336,17 @@ public class HuntingSimulator extends BaseSimulator {
 		public void setY(double y) {
 			pos[1] = y;
 		}
+		
+		public double[] getFeatures() {
+			return features;
+		}
 
 		public double getDirection() {
 			return direction;
 		}
 
 		public Species getSpecies() {
-			return species;
+			return mySpecies;
 		}
 
 		public void act() {
@@ -347,8 +356,10 @@ public class HuntingSimulator extends BaseSimulator {
 		@Override
 		public String toString() {
 			return "Animal [pos=" + Arrays.toString(pos) + ", direction="
-					+ direction + ", species=" + species.hashCode() + "]";
+					+ direction + ", species_idx=" + species.indexOf(mySpecies) + ", features="
+					+ Arrays.toString(features) + "]";
 		}
+
 	}
 
 	private class Species {
