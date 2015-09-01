@@ -189,9 +189,19 @@ public class HuntingSimulator extends BaseSimulator {
 		return (int)(maxScore * 100);
 	}
 
+	@SuppressWarnings("unused")
 	@Override
 	public boolean isTerminated() {
-		return health <= 0.0 || animals.size() == 0;
+		boolean result = health <= 0.0 || animals.size() == 0;
+		
+		if(result && DEBUG) {
+			if(health <= 0.0) {
+				System.out.printf("DEATH! - Eaten=%.2f\n", nutritionSum);
+			}else {
+				System.out.printf("WIN! - Health left=%.2f Eaten=%.2f\n", health, nutritionSum);
+			}
+		}
+		return result;
 	}
 	
 	// PRIVATE HELPER METHODS
