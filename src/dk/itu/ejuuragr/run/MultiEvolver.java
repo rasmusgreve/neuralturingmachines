@@ -1,6 +1,8 @@
 package dk.itu.ejuuragr.run;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.io.InputStreamReader;
 import java.util.Random;
 
@@ -15,8 +17,11 @@ public class MultiEvolver {
 
 	public static void main(String[] args) throws Throwable {
 		final java.util.Properties props = new java.util.Properties();
-		props.load(ClassLoader.getSystemResourceAsStream(args[0]));
-
+		File file = new File(args[0]);
+		if (!file.exists())
+			props.load(ClassLoader.getSystemResourceAsStream(args[0]));
+		else
+			props.load(new FileReader(file));
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		
 		System.out.println("Enter elemsize:");
