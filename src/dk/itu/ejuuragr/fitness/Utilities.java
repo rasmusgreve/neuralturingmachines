@@ -218,6 +218,14 @@ public class Utilities {
 		return Math.sqrt(sqSum);
 	}
 	
+	public static double clamp(double value, double min, double max) {
+		if(value < min)
+			return min;
+		if(value > max)
+			return max;
+		return value;
+	}
+	
 	public static double cosineSimilarity(double[] v1, double[] v2) {
 		double sum = 0;
 		double usum = 0;

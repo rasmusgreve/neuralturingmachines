@@ -7,15 +7,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 
 import static dk.itu.ejuuragr.domain.TMaze.MAP_TYPE.*;
 
 import javax.imageio.ImageIO;
 
 import com.anji.util.Properties;
-
-import dk.itu.ejuuragr.fitness.Utilities;
 
 /**
  * The classical T-Maze of Machine Learning for challenging
