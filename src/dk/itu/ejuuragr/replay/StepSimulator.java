@@ -3,6 +3,7 @@ package dk.itu.ejuuragr.replay;
 import java.util.Random;
 
 import dk.itu.ejuuragr.domain.Simulator;
+import dk.itu.ejuuragr.fitness.Controller;
 
 public class StepSimulator implements Simulator {
 
@@ -76,5 +77,15 @@ public class StepSimulator implements Simulator {
 	@Override
 	public void setRandomOffset(int offset) {
 		simulator.setRandomOffset(offset);
+	}
+
+	@Override
+	public void setController(Controller controller) {
+		simulator.setController(controller);
+	}
+
+	@Override
+	public Controller getController() {
+		return simulator.getController();
 	}
 }
