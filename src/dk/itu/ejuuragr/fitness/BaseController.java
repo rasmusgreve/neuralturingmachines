@@ -38,14 +38,15 @@ public abstract class BaseController implements Controller {
 			this.reset();
 			sim.restart();
 			
-			double[] simOutput = sim.getInitialObservation();
 			double[] controllerOutput = this.getInitialInput();
+			double[] simOutput = sim.getInitialObservation();
 			
 			while(!sim.isTerminated()){
 				double[] nnOutput = this.activateNeuralNetwork(nn, simOutput, controllerOutput);
 				
-				simOutput = this.getSimulationResponse(Arrays.copyOfRange(nnOutput, 0, sim.getInputCount()));
+				// CopyTask can rely on the TM acting first
 				controllerOutput = this.getControllerResponse(Arrays.copyOfRange(nnOutput, sim.getInputCount(), nnOutput.length));
+				simOutput = this.getSimulationResponse(Arrays.copyOfRange(nnOutput, 0, sim.getInputCount()));
 			}
 
 			totalScore += sim.getCurrentScore();

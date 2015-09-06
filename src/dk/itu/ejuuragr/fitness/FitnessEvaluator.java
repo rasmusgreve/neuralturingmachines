@@ -119,6 +119,7 @@ public class FitnessEvaluator implements BulkFitnessFunction, Configurable {
 				props.getProperty("simulator.class"),
 				new Object[] { props }, null);
 		TuringController result = new TuringController(props,simulator);
+		simulator.setController(result);
 		simulator.reset();
 		simulator.restart();
 		result.reset();
