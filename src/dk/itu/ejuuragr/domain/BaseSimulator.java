@@ -4,6 +4,8 @@ import java.util.Random;
 
 import com.anji.util.Properties;
 
+import dk.itu.ejuuragr.fitness.Controller;
+
 /**
  * This abstract helper level is responsible for managing the random object
  * for inheriting Simulators with it being re-seeded upon reset() and allowing
@@ -19,11 +21,22 @@ public abstract class BaseSimulator implements Simulator {
 	private int randomSeed;
 	private Random rand;
 	private int offset;
+	private Controller controller = null;
 
 	public BaseSimulator(Properties props) {
 		this.randomSeed = props.getIntProperty("random.seed");
 		this.offset = 0;
 		resetRandom();
+	}
+	
+	@Override
+	public void setController(Controller controller) {
+		this.controller = controller;
+	}
+	
+	@Override
+	public Controller getController() {
+		return controller;
 	}
 
 	@Override

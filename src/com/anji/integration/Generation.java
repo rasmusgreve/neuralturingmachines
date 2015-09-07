@@ -85,6 +85,11 @@ public String toXml() {
 }
 
 private void cacheXml() {
+	
+	cachedXml = "";
+	if (true)
+	return; //hot fix
+	
 	int maxFitness = Integer.MIN_VALUE;
 	int minFitness = Integer.MAX_VALUE;
 	int maxComplexity = Integer.MIN_VALUE;

@@ -3,6 +3,7 @@ package dk.itu.ejuuragr.graph;
 import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -96,6 +97,7 @@ public class TMazeVisualizer {
 	private class TMazeVisualizerComponent extends JComponent{
 		
 		private static final long serialVersionUID = 1L;
+		final Font rewardFont = new Font("Verdana", Font.PLAIN, 20);
 
 		@Override
 		public void paint(Graphics arg0) {
@@ -115,7 +117,8 @@ public class TMazeVisualizer {
 			
 			g.setColor(Color.green);
 			g.setTransform(new AffineTransform());
-			g.drawString("Reward: " + maze.getCurrentScore(), 10, 10);
+			g.setFont(rewardFont);
+			g.drawString("Reward: " + maze.getCurrentScore(), 5, 25);
 			
 		}
 	}
@@ -201,38 +204,38 @@ public class TMazeVisualizer {
 		double ny = (y + (0.5 - size)) * blockSize;
 		drawCircle(g, nx, ny, size);
 	}
-	
-	//Quick and dirty test main
-	public static void main(String[] args) throws Exception {
-		String chromosomeId, propertiesFile;
-		if (args.length == 0){
-			BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-			System.out.println("Properties filename: ");
-			propertiesFile = br.readLine();
-			System.out.println("Chromosome ID: ");
-			chromosomeId = br.readLine();
-		}
-		else
-		{
-			propertiesFile = args[0];
-			chromosomeId = args[1];
-		}
-		
-		try{
-			//Setup
-			Properties props = new Properties(propertiesFile); // "turingmachine.properties"
-			props.setProperty("base.dir", "./db");
-			
-			TMaze maze = new TMaze(props);
-			maze.reset();
-			maze.restart();
-			TMazeVisualizer viz = new TMazeVisualizer(maze, true);
-
-		}
-		catch (Exception e){
-			System.out.println("!!! Warning!");
-			System.out.println("Chromosome load failed!");
-		}
-	}
+//	
+//	//Quick and dirty test main
+//	public static void main(String[] args) throws Exception {
+//		String chromosomeId, propertiesFile;
+//		if (args.length == 0){
+//			BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+//			System.out.println("Properties filename: ");
+//			propertiesFile = br.readLine();
+//			System.out.println("Chromosome ID: ");
+//			chromosomeId = br.readLine();
+//		}
+//		else
+//		{
+//			propertiesFile = args[0];
+//			chromosomeId = args[1];
+//		}
+//		
+//		try{
+//			//Setup
+//			Properties props = new Properties(propertiesFile); // "turingmachine.properties"
+//			props.setProperty("base.dir", "./db");
+//			
+//			TMaze maze = new TMaze(props);
+//			maze.reset();
+//			maze.restart();
+//			TMazeVisualizer viz = new TMazeVisualizer(maze, true);
+//
+//		}
+//		catch (Exception e){
+//			System.out.println("!!! Warning!");
+//			System.out.println("Chromosome load failed!");
+//		}
+//	}
 	
 }

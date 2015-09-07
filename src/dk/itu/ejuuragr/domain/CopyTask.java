@@ -3,6 +3,9 @@ package dk.itu.ejuuragr.domain;
 import com.anji.util.Properties;
 
 import dk.itu.ejuuragr.fitness.Utilities;
+import dk.itu.ejuuragr.turing.MinimalTuringMachine;
+import dk.itu.ejuuragr.turing.TuringController;
+import dk.itu.ejuuragr.turing.TuringMachine;
 
 /**
  * This is the Copy Task as described by Graves et.al. in
@@ -26,7 +29,9 @@ public class CopyTask extends BaseSimulator {
 	private int step;
 	private double score;
 
+	private String fitnessFunction;
 
+	private MinimalTuringMachine mtm = null;
 
 	public CopyTask(Properties props) {
 		super(props);
@@ -34,6 +39,7 @@ public class CopyTask extends BaseSimulator {
 		this.preparedSize = props.getIntProperty("simulator.copytask.element.prepared", elementSize); // To prepare for extra elements in the future		
 		this.maxSeqLength = props.getIntProperty("simulator.copytask.length.max", 10);
 		this.lengthRule = props.getProperty("simulator.copytask.length.rule", "fixed");
+		this.fitnessFunction = props.getProperty("simulator.fitness.function", "strict-close");
 	}
 	
 	@Override
@@ -82,6 +88,14 @@ public class CopyTask extends BaseSimulator {
 	@Override
 	public void reset() {
 		super.reset();
+		
+		if(getController() instanceof TuringController && fitnessFunction.equals("partial-score")) {
+			TuringMachine tm = ((TuringController)getController()).getTuringMachine();
+			if(tm instanceof MinimalTuringMachine) {
+				((MinimalTuringMachine)tm).setRecordTimeSteps(true);
+			}
+		}
+		
 		if(DEBUG) System.out.println("---------- RESET ----------");
 	}
 
@@ -180,10 +194,35 @@ public class CopyTask extends BaseSimulator {
 	 *         identical, or somewhere in between.
 	 */
 	private double calcSimilarity(double[] first, double[] second) {
-//		return Utilities.emilarity(first, second);
-		return strictCloseToTarget(first, second);
-//		return closestBinary(first, second);
-//		return completeMatchClosestBinary(first, second);
+		switch(fitnessFunction){
+		case "partial-score": return partialScore(first, second);
+		case "emilarity": return Utilities.emilarity(first, second);
+		case "closest-binary": return closestBinary(first, second);
+		case "complete-binary": return completeMatchClosestBinary(first, second);
+		default: return strictCloseToTarget(first, second); // "strict-close"
+		}
+	}
+	
+	// FITNESS FUNCTIONS
+	
+	private double partialScore(double[] target, double[] actual) {
+		// prep
+		if(mtm != null || (getController() instanceof TuringController && ((TuringController)getController()).getTuringMachine() instanceof MinimalTuringMachine)) {
+			mtm = (MinimalTuringMachine)((TuringController) getController()).getTuringMachine();
+			
+			// Get half the score for storing correctly
+			// comparing the target with the first E elements written to memory that round
+			double[] written = Utilities.copy(mtm.getLastTimeStep().key, 0, target.length);
+			
+			double tmResult = strictCloseToTarget(target, written);
+			double baseResult = strictCloseToTarget(target, actual);
+			
+			if(DEBUG) System.out.printf("Target=%s Actual=%s Written=%s | TM Score=%.2f Output Score=%.2f\n",Utilities.toString(target),Utilities.toString(actual),Utilities.toString(written),tmResult,baseResult);
+			
+			return 0.5 * tmResult + 0.5 * baseResult;
+		}else {
+			throw new UnsupportedOperationException("Can not use partialScore without the Controller being of type TuringController and its TM being MinimalTuringMachine");
+		}
 	}
 	
 	private double strictCloseToTarget(double[] target, double[] actual) {

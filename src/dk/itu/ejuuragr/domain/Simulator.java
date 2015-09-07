@@ -2,6 +2,8 @@ package dk.itu.ejuuragr.domain;
 
 import java.util.Random;
 
+import dk.itu.ejuuragr.fitness.Controller;
+
 /**
  * A Simulator should have a constructor taking a single Properties object.
  * This way it can be used by simply referencing it in the properties file.
@@ -9,6 +11,17 @@ import java.util.Random;
  *
  */
 public interface Simulator {
+	
+	/**
+	 * @param controller The Controller that wants to register itself.
+	 */
+	void setController(Controller controller);
+	
+	/**
+	 * @return Returns the Controller supervising this Simulator if
+	 * it has registered itself.
+	 */
+	Controller getController();
 	
 	/**
 	 * @return Number of inputs that the simulator expects
