@@ -25,6 +25,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
@@ -54,9 +55,9 @@ private static Logger logger = Logger.getLogger( NeatChromosomeUtility.class );
  * @return ChromosomeMaterial
  */
 public static ChromosomeMaterial newSampleChromosomeMaterial( short newNumInputs,
-		short newNumHidden, short newNumOutputs, NeatConfiguration config, boolean fullyConnected ) {
+		short newNumHidden, short newNumOutputs, NeatConfiguration config, boolean fullyConnected, double connectedPercentage ) {
 	return new ChromosomeMaterial( initAlleles( newNumInputs, newNumHidden, newNumOutputs,
-			config, fullyConnected ) );
+			config, fullyConnected, connectedPercentage ) );
 }
 
 /**
@@ -113,7 +114,7 @@ public static Collection extractConnectionAllelesForSrcNeurons( Collection connA
  * @return List contains Allele objects
  */
 private static List initAlleles( short numInputs, short numHidden, short numOutputs,
-		NeatConfiguration config, boolean fullyConnected ) {
+		NeatConfiguration config, boolean fullyConnected, double connectedPercentage ) {
 	List inNeurons = new ArrayList( numInputs );
 	List outNeurons = new ArrayList( numOutputs );
 	List hidNeurons = new ArrayList( numHidden );
@@ -128,7 +129,20 @@ private static List initAlleles( short numInputs, short numHidden, short numOutp
 		NeuronAllele outNeuron = config.newNeuronAllele( NeuronType.OUTPUT );
 		outNeurons.add( outNeuron );
 
-		if ( fullyConnected && ( numHidden == 0 ) ) {
+		if(connectedPercentage > 0.0) {
+			// Random chance to add connections between in->out
+			Random rand = config.getRandomGenerator();
+			for(int e1 = 0; e1 < numInputs; e1++) {
+				if(rand.nextDouble() < connectedPercentage) {
+					NeuronAllele srcNeuronAllele = (NeuronAllele) inNeurons.get( e1 );
+					ConnectionAllele c = config.newConnectionAllele( srcNeuronAllele.getInnovationId(),
+							outNeuron.getInnovationId() );
+					c.setToRandomValue( config.getRandomGenerator() );
+					conns.add( c );
+				}
+			}
+		}
+		else if ( fullyConnected && ( numHidden == 0 ) ) {
 			// in->out connections
 			for ( int i = 0; i < numInputs; ++i ) {
 				NeuronAllele srcNeuronAllele = (NeuronAllele) inNeurons.get( i );
