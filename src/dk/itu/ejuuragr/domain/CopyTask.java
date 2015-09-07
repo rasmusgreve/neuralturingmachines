@@ -39,7 +39,7 @@ public class CopyTask extends BaseSimulator {
 		this.preparedSize = props.getIntProperty("simulator.copytask.element.prepared", elementSize); // To prepare for extra elements in the future		
 		this.maxSeqLength = props.getIntProperty("simulator.copytask.length.max", 10);
 		this.lengthRule = props.getProperty("simulator.copytask.length.rule", "fixed");
-		this.fitnessFunction = props.getProperty("simulator.fitness.function", "strictClose");
+		this.fitnessFunction = props.getProperty("simulator.fitness.function", "strict-close");
 	}
 	
 	@Override
