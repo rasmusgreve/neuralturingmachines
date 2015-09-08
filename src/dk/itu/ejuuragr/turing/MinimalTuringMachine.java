@@ -228,6 +228,7 @@ public class MinimalTuringMachine implements TuringMachine, Replayable<MinimalTu
 			this.pointer = bestPos;
 			if(bestPos == tape.size()) {
 				tape.addLast(new double[this.m]);
+//				System.out.println("Content Jump to new address");
 			}
 		}
 
