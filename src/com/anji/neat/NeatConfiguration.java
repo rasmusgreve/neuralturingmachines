@@ -143,6 +143,8 @@ public final static String WEIGHTED_SELECTOR_KEY = "selector.roulette";
  */
 public final static String INITIAL_TOPOLOGY_FULLY_CONNECTED_KEY = "initial.topology.fully.connected";
 
+public final static String INITIAL_TOPOLOGY_CONNECTED_PERCENTAGE = "initial.topology.connected.percentage";
+
 /**
  * properties key, number of hidden neurons in initial topology
  */
@@ -301,7 +303,8 @@ private void init( Properties newProps ) throws InvalidConfigurationException {
 			.getShortProperty( STIMULUS_SIZE_KEY, DEFAULT_STIMULUS_SIZE ), props.getShortProperty(
 			INITIAL_TOPOLOGY_NUM_HIDDEN_NEURONS_KEY, DEFAULT_INITIAL_HIDDEN_SIZE ), props
 			.getShortProperty( RESPONSE_SIZE_KEY, DEFAULT_RESPONSE_SIZE ), this, props
-			.getBooleanProperty( INITIAL_TOPOLOGY_FULLY_CONNECTED_KEY, true ) );
+			.getBooleanProperty( INITIAL_TOPOLOGY_FULLY_CONNECTED_KEY, true ), props
+			.getDoubleProperty( INITIAL_TOPOLOGY_CONNECTED_PERCENTAGE, -1.0) );
 	setSampleChromosomeMaterial( sample );
 	store();
 

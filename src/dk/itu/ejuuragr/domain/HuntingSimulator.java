@@ -2,6 +2,7 @@ package dk.itu.ejuuragr.domain;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -204,6 +205,20 @@ public class HuntingSimulator extends BaseSimulator {
 		return result;
 	}
 	
+	// PUBLIC GETTERS
+	
+	public List<Animal> getAnimals() {
+		return Collections.unmodifiableList(animals);
+	}
+	
+	public double getAngle() {
+		return this.angle;
+	}
+	
+	public double getHealth() {
+		return this.health;
+	}
+ 	
 	// PRIVATE HELPER METHODS
 	
 	private void moveAgent() {
