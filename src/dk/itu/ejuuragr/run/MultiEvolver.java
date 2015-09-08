@@ -3,6 +3,7 @@ package dk.itu.ejuuragr.run;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Random;
 
@@ -24,20 +25,21 @@ public class MultiEvolver {
 			props.load(new FileReader(file));
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		
-		System.out.println("Enter elemsize:");
-		int elem = Integer.parseInt(br.readLine());
-		int m = elem + 2;
-		props.setProperty("simulator.copytask.element.size", ""+elem);
-		props.setProperty("tm.m", ""+m);
-		
-		
-		System.out.println("Enter seed:");
-		String seed = br.readLine();
-		props.setProperty("random.seed", seed);
-		
-		System.out.println("Starting evolution of elem="+elem + ", m="+m+" seed="+seed);
+		ask(props,br,"simulator.copytask.element.size");
+		ask(props,br,"tm.m");
+		ask(props,br,"popul.size");
+		ask(props,br,"controller.iterations");
+		ask(props,br,"weight.mutation.std.dev");
+		ask(props,br,"random.seed");
 		
 		runEvolution(new Properties(props));
+	}
+	
+	public static void ask(java.util.Properties props, BufferedReader br, String key) throws IOException{
+		if (!props.containsKey(key)){
+			System.out.println("Enter " + key);
+			props.setProperty(key, br.readLine());
+		}
 	}
 
 	public static void runEvolution(Properties props) throws Exception {
