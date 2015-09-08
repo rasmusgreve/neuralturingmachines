@@ -221,7 +221,7 @@ public class CopyTask extends BaseSimulator {
 			
 			return 0.5 * tmResult + 0.5 * baseResult;
 		}else {
-			throw new UnsupportedOperationException("Can not use partialScore without the Controller being of type TuringController and its TM being MinimalTuringMachine");
+			throw new UnsupportedOperationException("Can not use partial-score without the Controller being of type TuringController and its TM being MinimalTuringMachine");
 		}
 	}
 	
