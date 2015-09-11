@@ -20,6 +20,7 @@ public class MinimalTuringMachine implements TuringMachine, Replayable<MinimalTu
 	private int shiftLength;
 	private String shiftMode;
 	private int contentKeySize;
+	private boolean enabled;
 
 	private boolean recordTimeSteps = false;
 	private MinimalTuringMachineTimeStep lastTimeStep;
@@ -27,11 +28,14 @@ public class MinimalTuringMachine implements TuringMachine, Replayable<MinimalTu
 
 	private double[][] initialRead;
 
+
+
 	public MinimalTuringMachine(Properties props) {
 		this.m = props.getIntProperty("tm.m");
 		this.shiftLength = props.getIntProperty("tm.shift.length");
 		this.shiftMode = props.getProperty("tm.shift.mode", "multiple");
 		this.contentKeySize = props.getIntProperty("tm.content.key.length", this.m);
+		this.enabled = props.getBooleanProperty("tm.enabled", true);
 
 		tape = new LinkedList<double[]>();
 		
@@ -56,6 +60,9 @@ public class MinimalTuringMachine implements TuringMachine, Replayable<MinimalTu
 	 */
 	@Override
 	public double[][] processInput(double[] fromNN) {
+		if(!enabled)
+			return initialRead;
+		
 		Queue<Double> queue = new LinkedList<Double>();
 		for(double d : fromNN) queue.add(d);
 		
@@ -211,12 +218,7 @@ public class MinimalTuringMachine implements TuringMachine, Replayable<MinimalTu
 			double similarity = -1d;
 			for(int i = 0; i < tape.size() + 1; i++) {
 				double[] keySection = this.contentKeySize < this.m ? Utilities.copy(key, 0, this.contentKeySize) : key;
-				double[] tapeSection;
-				if(i < tape.size()) {
-					tapeSection = this.contentKeySize < this.m ? Utilities.copy(tape.get(i), 0, this.contentKeySize) : tape.get(i);
-				} else {
-					tapeSection = new double[this.contentKeySize];
-				}
+				double[] tapeSection = this.contentKeySize < this.m ? Utilities.copy(tape.get(i), 0, this.contentKeySize) : tape.get(i);
 				
 				double curSim = Utilities.emilarity(keySection, tapeSection);
 				if(curSim > similarity) {
@@ -226,10 +228,6 @@ public class MinimalTuringMachine implements TuringMachine, Replayable<MinimalTu
 			}
 			
 			this.pointer = bestPos;
-			if(bestPos == tape.size()) {
-				tape.addLast(new double[this.m]);
-//				System.out.println("Content Jump to new address");
-			}
 		}
 
 		// SHIFTING
