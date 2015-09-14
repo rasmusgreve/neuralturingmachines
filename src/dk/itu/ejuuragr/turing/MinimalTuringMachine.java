@@ -216,7 +216,7 @@ public class MinimalTuringMachine implements TuringMachine, Replayable<MinimalTu
 			// JUMPING POINTER TO BEST MATCH
 			int bestPos = 0;
 			double similarity = -1d;
-			for(int i = 0; i < tape.size() + 1; i++) {
+			for(int i = 0; i < tape.size(); i++) {
 				double[] keySection = this.contentKeySize < this.m ? Utilities.copy(key, 0, this.contentKeySize) : key;
 				double[] tapeSection = this.contentKeySize < this.m ? Utilities.copy(tape.get(i), 0, this.contentKeySize) : tape.get(i);
 				
