@@ -19,7 +19,6 @@ public class MinimalTuringMachine implements TuringMachine, Replayable<MinimalTu
 	private int m;
 	private int shiftLength;
 	private String shiftMode;
-	private int contentKeySize;
 	private boolean enabled;
 
 	private boolean recordTimeSteps = false;
@@ -34,7 +33,6 @@ public class MinimalTuringMachine implements TuringMachine, Replayable<MinimalTu
 		this.m = props.getIntProperty("tm.m");
 		this.shiftLength = props.getIntProperty("tm.shift.length");
 		this.shiftMode = props.getProperty("tm.shift.mode", "multiple");
-		this.contentKeySize = props.getIntProperty("tm.content.key.length", this.m);
 		this.enabled = props.getBooleanProperty("tm.enabled", true);
 
 		tape = new LinkedList<double[]>();
@@ -216,18 +214,19 @@ public class MinimalTuringMachine implements TuringMachine, Replayable<MinimalTu
 			// JUMPING POINTER TO BEST MATCH
 			int bestPos = 0;
 			double similarity = -1d;
-			for(int i = 0; i < tape.size(); i++) {
-				double[] keySection = this.contentKeySize < this.m ? Utilities.copy(key, 0, this.contentKeySize) : key;
-				double[] tapeSection = this.contentKeySize < this.m ? Utilities.copy(tape.get(i), 0, this.contentKeySize) : tape.get(i);
-				
-				double curSim = Utilities.emilarity(keySection, tapeSection);
+			for(int i = 0; i < tape.size(); i++) {				
+				double curSim = Utilities.emilarity(key, tape.get(i));
+				if(DEBUG) System.out.println("Pos "+i+": sim ="+curSim+(curSim > similarity ? " better" : ""));
 				if(curSim > similarity) {
 					similarity = curSim;
 					bestPos = i;
 				}
 			}
 			
+			if(DEBUG) System.out.println("PERFORMING CONTENT JUMP! from "+this.pointer+" to "+bestPos);
+			
 			this.pointer = bestPos;
+			
 		}
 
 		// SHIFTING
