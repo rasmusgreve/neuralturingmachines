@@ -1,6 +1,9 @@
 package dk.itu.ejuuragr.run;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
@@ -19,8 +22,6 @@ import dk.itu.ejuuragr.fitness.Utilities;
 
 public class Evaluator {
 
-	public static final int NUMBER_OF_TESTS = 100_000;
-	
 	public static void main(String[] args) throws Exception {
 		if (args.length == 0){
 			args = getArgsFromStdIn();
@@ -30,10 +31,27 @@ public class Evaluator {
 		String propsFilename = args.length > 0 ? args[0] : prompt("Properties filename: ");
 		if(!propsFilename.endsWith(".properties"))
 			propsFilename += ".properties";
-		Properties props = new Properties(propsFilename);
+		
+		final Properties props = new Properties();
+		File file = new File(propsFilename);
+		if (!file.exists())
+			props.load(ClassLoader.getSystemResourceAsStream(propsFilename));
+		else
+			props.load(new FileReader(propsFilename));
+		
+		
 		props.setProperty("base.dir", "./db");
 		props.setProperty("controller.iterations", "1");
 		Chromosome chrom = loadChromosome(args.length > 1 ? args[1] : prompt("Chromosome ID: "), props);
+		
+
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		
+		
+		ask(props,br,"simulator.copytask.element.size");
+		ask(props,br,"tm.m");
+		ask(props,br,"simulator.copytask.length.max");
+		ask(props,br,"evaluator.num.tests");
 		
 		
 		//Setup activator
@@ -44,18 +62,40 @@ public class Evaluator {
 		Simulator simulator = (Simulator) Utilities.instantiateObject(props.getProperty("simulator.class"),new Object[]{props},null);
 		Controller controller = (Controller) Utilities.instantiateObject(props.getProperty("controller.class"),new Object[]{props,simulator}, new Class<?>[]{Properties.class,Simulator.class});
 	
+		
+		
+		int numberOfTests = props.getIntProperty("evaluator.num.tests", 500_000);
+		
 		SummaryStatistics stats = new SummaryStatistics();
 		
-		for (int run = 0; run < NUMBER_OF_TESTS; run++){
+		for (int run = 0; run < numberOfTests; run++){
 			controller.getSimulator().setRandomOffset(run);
 			stats.addValue(controller.evaluate(activator) / (1.0 * controller.getMaxScore()));
-			if (run % (NUMBER_OF_TESTS / 100) == 0)
-				System.out.println(run*1.0/NUMBER_OF_TESTS*100 + "%");
+			if (run % (numberOfTests / 100) == 0)
+				System.out.println(run*1.0/numberOfTests*100 + "%");
 		}
 		
-		System.out.println("All done, " + NUMBER_OF_TESTS + " runs! Results:");
+		System.out.println("All done, " + numberOfTests + " runs! Results:");
 		System.out.printf("[%f - %f] mean: %f +- %f\n", stats.getMin(), stats.getMax(), stats.getMean(), stats.getStandardDeviation());
-		
+		FileWriter fw = new FileWriter(new File("evaluator_results.txt"));
+		fw.write("Evaluator results");
+		for (Object key : props.keySet()){
+			fw.write(key.toString());
+			fw.write(" : ");
+			fw.write(props.get(key).toString());
+			fw.write("\r\n");
+		}
+		fw.write("--------------------------------------------------\r\n");
+		fw.write(String.format("[%f - %f] mean: %f +- %f\n", stats.getMin(), stats.getMax(), stats.getMean(), stats.getStandardDeviation()));
+		fw.flush();
+		fw.close();
+	}
+	
+	public static void ask(java.util.Properties props, BufferedReader br, String key) throws IOException{
+		if (!props.containsKey(key)){
+			System.out.println("Enter " + key);
+			props.setProperty(key, br.readLine());
+		}
 	}
 	
 	

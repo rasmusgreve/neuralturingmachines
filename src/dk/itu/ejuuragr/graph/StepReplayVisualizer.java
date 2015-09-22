@@ -2,22 +2,14 @@ package dk.itu.ejuuragr.graph;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.RenderingHints;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.List;
 
-import javax.swing.JComponent;
-import javax.swing.JFrame;
-
-import dk.itu.ejuuragr.fitness.Utilities;
 import dk.itu.ejuuragr.replay.Recording;
 import dk.itu.ejuuragr.replay.TimeStep;
 import dk.itu.ejuuragr.replay.TuringTimeStep;
 import dk.itu.ejuuragr.turing.GravesTuringMachine.GravesTuringMachineTimeStep;
-import dk.itu.ejuuragr.turing.GravesTuringMachine.HeadTimeStep;
 import dk.itu.ejuuragr.turing.MinimalTuringMachine.MinimalTuringMachineTimeStep;
 
 public class StepReplayVisualizer extends AbstractReplayVisualizer {

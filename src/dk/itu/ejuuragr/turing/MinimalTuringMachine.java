@@ -24,6 +24,7 @@ public class MinimalTuringMachine implements TuringMachine, Replayable<MinimalTu
 	private boolean recordTimeSteps = false;
 	private MinimalTuringMachineTimeStep lastTimeStep;
 	private boolean increasedSizeDown = false;
+	private int zeroPosition = 0;
 
 	private double[][] initialRead;
 
@@ -81,8 +82,14 @@ public class MinimalTuringMachine implements TuringMachine, Replayable<MinimalTu
 		
 		if (recordTimeSteps){
 			int readPosition = pointer;
-			if (increasedSizeDown) writePosition++;
-			lastTimeStep = new MinimalTuringMachineTimeStep(writeKey, interp, content, shift, result, writePosition, readPosition);
+			int correctedWritePosition = writePosition - zeroPosition;
+			
+			if (increasedSizeDown) {
+				writePosition++;
+				zeroPosition++;
+			}
+			int correctedReadPosition = readPosition - zeroPosition;
+			lastTimeStep = new MinimalTuringMachineTimeStep(writeKey, interp, content, shift, result, writePosition, readPosition, zeroPosition, correctedWritePosition, correctedReadPosition);
 		}
 		
 		if (DEBUG) {
@@ -90,7 +97,7 @@ public class MinimalTuringMachine implements TuringMachine, Replayable<MinimalTu
 			System.out.println("Sending to NN: "+Utilities.toString(result));
 			System.out.println("--------------------------------------------------------------");
 		}
-		
+//		return new double[1][result.length];
 		return new double[][]{result};
 	}
 	
@@ -106,7 +113,7 @@ public class MinimalTuringMachine implements TuringMachine, Replayable<MinimalTu
 
 	@Override
 	public MinimalTuringMachineTimeStep getInitialTimeStep() {
-		return new MinimalTuringMachineTimeStep(new double[m], 0, 0, new double[shiftLength], new double[m],0,0);
+		return new MinimalTuringMachineTimeStep(new double[m], 0, 0, new double[shiftLength], new double[m],0,0,0,0,0);
 	}
 
 	
@@ -117,8 +124,10 @@ public class MinimalTuringMachine implements TuringMachine, Replayable<MinimalTu
 		public final double[] read;
 		public final int writePosition;
 		public final int readPosition;
-		
-		public MinimalTuringMachineTimeStep(double[] key, double write, double jump, double[] shift, double[] read, int writePosition, int readPosition){
+		public final int zeroPosition;
+		public final int correctedWritePosition;
+		public final int correctedReadPosition;
+		public MinimalTuringMachineTimeStep(double[] key, double write, double jump, double[] shift, double[] read, int writePosition, int readPosition, int zeroPosition, int correctedWritePosition, int correctedReadPosition){
 			this.key = key;
 			writeInterpolation = write;
 			contentJump = jump;
@@ -126,6 +135,9 @@ public class MinimalTuringMachine implements TuringMachine, Replayable<MinimalTu
 			this.read = read;
 			this.writePosition = writePosition;
 			this.readPosition = readPosition;
+			this.zeroPosition = zeroPosition;
+			this.correctedWritePosition = correctedWritePosition;
+			this.correctedReadPosition = correctedReadPosition;
 		}
 		
 	}
@@ -209,7 +221,7 @@ public class MinimalTuringMachine implements TuringMachine, Replayable<MinimalTu
 			// JUMPING POINTER TO BEST MATCH
 			int bestPos = 0;
 			double similarity = -1d;
-			for(int i = 0; i < tape.size() + 1; i++) {
+			for(int i = 0; i < tape.size(); i++) {
 				double[] keySection = this.contentKeySize < this.m ? Utilities.copy(key, 0, this.contentKeySize) : key;
 				double[] tapeSection;
 				if(i < tape.size()) {

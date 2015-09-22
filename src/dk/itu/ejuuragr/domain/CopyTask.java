@@ -25,7 +25,7 @@ public class CopyTask extends BaseSimulator {
 	private int maxSeqLength; // The maximum length that the sequence can be (if random), else the actual sequence length.
 	private String lengthRule; // If the sequence length should be "fixed" or "random"ly determined.
 
-	private double[][] sequence;
+	protected double[][] sequence;
 	private int step;
 	private double score;
 
@@ -119,7 +119,7 @@ public class CopyTask extends BaseSimulator {
 			int index = step - sequence.length - 2 - 1;
 			double[] correct = elementSize < preparedSize ? Utilities.copy(sequence[index], 0, elementSize) : sequence[index];
 			double[] received = elementSize < preparedSize ? Utilities.copy(action, 0, elementSize) : action;
-			double thisScore = calcSimilarity(correct, received);
+			double thisScore = evaluate(correct, received);
 			this.score += thisScore;
 			
 			if(DEBUG) System.out.println("\tReading: "+Utilities.toString(received)+" compared to "+Utilities.toString(correct)+" = "+thisScore);
@@ -131,6 +131,11 @@ public class CopyTask extends BaseSimulator {
 		return result;
 	}
 
+	protected double evaluate(double[] correct, double[] received){
+		return calcSimilarity(correct, received);
+	}
+	
+	
 	@Override
 	public double getCurrentScore() {
 		return score * 10.0 * (maxSeqLength / (1.0 * sequence.length));

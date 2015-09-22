@@ -1,5 +1,7 @@
 package dk.itu.ejuuragr.replay;
 
+import java.util.Arrays;
+
 import com.anji.integration.Activator;
 import com.anji.util.Properties;
 
@@ -24,11 +26,7 @@ public class TuringControllerRecorder extends TuringController{
 			TimeStep<?> first = new TimeStep<>(((Replayable<?>)tm).getInitialTimeStep());
 			first.setDomainInput(sim.getInitialObservation());
 			first.setTuringMachineContent(tm.getTapeValues());
-			recording.add(first);
-		}
-		else if (tm instanceof MinimalTuringMachine){
-			MinimalTuringMachine mtm = (MinimalTuringMachine)tm;
-			
+//			recording.add(first);
 		}
 	}
 	
@@ -58,6 +56,7 @@ public class TuringControllerRecorder extends TuringController{
 		double[] neuralNetworkOutput = super.activateNeuralNetwork(nn, domainInput, controllerInput);
 		
 		currentTimeStep.setDomainInput(domainInput); //Catch domain input
+		currentTimeStep.setDomainOutput(Arrays.copyOfRange(neuralNetworkOutput, 0, sim.getInputCount()));
 		
 		return neuralNetworkOutput;
 	};

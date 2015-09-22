@@ -3,7 +3,13 @@ package dk.itu.ejuuragr.graph;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 
@@ -20,6 +26,35 @@ public abstract class AbstractReplayVisualizer {
 		frame = new JFrame();
 		frame.setSize(800, 800);
 		this.recording = recording;
+		frame.addKeyListener(new KeyListener() {
+			
+			@Override
+			public void keyTyped(KeyEvent e) {
+				
+			}
+			
+			@Override
+			public void keyReleased(KeyEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_S){
+					BufferedImage bi = new BufferedImage(3800, 2000, BufferedImage.TYPE_INT_RGB);
+					Graphics2D g2 = bi.createGraphics();
+					component.paint(g2);
+					try {
+						ImageIO.write(bi, "png", new File("render.png"));
+						System.out.println("Written to render.png");
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				}
+			}
+		});
 	}
 
 	public static Color weightToColor(double weight){

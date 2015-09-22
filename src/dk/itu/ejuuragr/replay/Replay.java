@@ -3,7 +3,6 @@ package dk.itu.ejuuragr.replay;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.List;
 
 import org.jgap.Chromosome;
 
@@ -17,12 +16,10 @@ import dk.itu.ejuuragr.domain.Simulator;
 import dk.itu.ejuuragr.domain.TMaze;
 import dk.itu.ejuuragr.fitness.Controller;
 import dk.itu.ejuuragr.fitness.Utilities;
-import dk.itu.ejuuragr.graph.StepReplayVisualizer;
-import dk.itu.ejuuragr.graph.StaticReplayVisualizer;
+import dk.itu.ejuuragr.graph.StaticMemoryFocusVisualizer;
 import dk.itu.ejuuragr.graph.TMazeStepReplayVisualizer;
 import dk.itu.ejuuragr.graph.TMazeVisualizer;
 import dk.itu.ejuuragr.replay.StepSimulator.Stepper;
-import dk.itu.ejuuragr.turing.GravesTuringMachine.GravesTuringMachineTimeStep;
 import dk.itu.ejuuragr.turing.TuringController;
 
 public class Replay {
@@ -92,9 +89,10 @@ public class Replay {
 			//new ReplayVisualizer().show(((TuringControllerMemoryVizProxy)controller).getSteps());
 			
 			Recording<?> recording = ((TuringControllerRecorder)controller).getRecording();
-			//new StaticReplayVisualizer(recording).show();
-			new StepReplayVisualizer(recording).show();
-			//new ReplayStepVisualizer().show((List<TimeStep<GravesTuringMachineTimeStep>>)timeSteps);
+//			new StaticReplayVisualizer(recording).show();
+			new StaticMemoryFocusVisualizer(recording).show();
+//			new StepReplayVisualizer(recording).show();
+//			new ReplayStepVisualizer().show((List<TimeStep<GravesTuringMachineTimeStep>>)timeSteps);
 		}
 	}
 	

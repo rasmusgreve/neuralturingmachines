@@ -25,7 +25,6 @@ public class MultiEvolver {
 			props.load(new FileReader(file));
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		
-		ask(props,br,"simulator.copytask.element.size");
 		ask(props,br,"tm.m");
 		ask(props,br,"popul.size");
 		ask(props,br,"controller.iterations");
@@ -55,7 +54,7 @@ public class MultiEvolver {
 		if (props.getIntProperty("random.seed", -1) == -1) {
 			props.setProperty("random.seed", String.valueOf(new Random().nextInt()));
 		}
-
+		System.out.println("The errors below are not a problem :)");
 		evolver.init(props);
 		evolver.run();
 		System.exit(0);

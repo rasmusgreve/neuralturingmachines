@@ -5,7 +5,7 @@ public class TimeStep<T extends TuringTimeStep>{
 	T turingStep;
 	double[] domainInput;
 	double[][] turingMachineContent;
-	//double[] domainOuput; //TODO: Might be interesting at some point
+	double[] domainOuput; //TODO: Might be interesting at some point
 	
 	public TimeStep(){
 		
@@ -30,8 +30,15 @@ public class TimeStep<T extends TuringTimeStep>{
 	public double[] getDomainInput() {
 		return domainInput;
 	}
+	public double[] getDomainOutput() {
+		return domainOuput;
+	}
 	public void setDomainInput(double[] domainInput) {
 		this.domainInput = domainInput;
 	}
+	public void setDomainOutput(double[] domainOutput){
+		this.domainOuput = domainOutput;
+	}
+	
 	
 }
