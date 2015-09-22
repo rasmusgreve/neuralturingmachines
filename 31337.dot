@@ -13,6 +13,7 @@ digraph G {
 		M1[label="TM 1-8"];
 		M9[label="TM 9"];
 		M10[label="TM 10"];
+		M11[label="TM 11"];
 		Bias;
 	}
 
@@ -23,6 +24,7 @@ digraph G {
 		Mo1[label="TM 1-8"];
 		Mo9[label="TM 9"];
 		Mo10[label="TM 10"];
+		Mo11[label="TM 11"];
 		Write;
 		Jump;
 		Left;
@@ -51,6 +53,7 @@ digraph G {
 	Boundary -> Bias;
 	Bias -> M9;
 	M9 -> M10;
+	M10 -> M11;
 	
 	Eo1 -> Mo1;
 	Eo1 -> Mo9;
@@ -78,6 +81,8 @@ digraph G {
 	Mo10 -> Left;
 	Mo10 -> Stay;
 	Mo10 -> Right;
+	Mo10 -> Mo11;
+	Mo11 -> Write;
 	Write -> Jump;
 	Write -> Left;
 	Write -> Stay;

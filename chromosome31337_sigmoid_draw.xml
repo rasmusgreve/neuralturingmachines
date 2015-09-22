@@ -7,6 +7,7 @@
 	<neuron id="M1" type="in" activation="linear"/> <!-- M1 -->
 	<neuron id="M9" type="in" activation="linear"/> <!-- M9 -->
 	<neuron id="M10" type="in" activation="linear"/> <!-- M10 -->
+	<neuron id="M11" type="in" activation="linear"/> <!-- M11 -->
 	<neuron id="Bias" type="in" activation="linear"/> <!-- Bias -->
 	
 	<neuron id="Eo1" type="out" activation="sigmoid"/>    <!-- E1 -->
@@ -15,6 +16,7 @@
 	
 	<neuron id="Mo9" type="out" activation="sigmoid"/>    <!-- M9 -->
 	<neuron id="Mo10" type="out" activation="sigmoid"/>    <!-- M10 -->
+	<neuron id="Mo11" type="out" activation="sigmoid"/>    <!-- M11 -->
 	<neuron id="Write" type="out" activation="sigmoid"/>    <!-- Write -->
 	<neuron id="Jump" type="out" activation="sigmoid"/>    <!-- Jump -->
 	<neuron id="Left" type="out" activation="sigmoid"/>    <!-- Shift left -->
