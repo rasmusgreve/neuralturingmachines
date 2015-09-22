@@ -1,0 +1,123 @@
+digraph G {
+	rankdir=LR;
+	dpi=200
+	node [height=.6, width=.6]
+
+	subgraph ins {
+		rank=same;
+		node [color="#BBBBFF", style=filled, shape=circle];
+		Start;
+		Boundary;
+		E1;
+		M1;
+		M9;
+		M10;
+		M11;
+		Bias;
+	}
+
+	subgraph outs {
+		rank=same;
+		node [color="#FFBBBB", style=filled, shape=circle];
+		Eo1;
+		Mo1;
+		Mo9;
+		Mo10;
+		Mo11;
+		Write;
+		Jump;
+		Left;
+		Stay;
+		Right;
+	}
+
+	node [shape=circle];
+
+	Bias -> Write [label="5,00"];
+	Start -> Mo9 [label="10,00"];
+	Bias -> Mo1 [label="-5,00"];
+	Bias -> Right [label="10,00"];
+	Boundary -> Mo9 [label="10,00"];
+	Bias -> Jump [label="-5,00"];
+	Bias -> Mo9 [label="-5,00"];
+	M1 -> Eo1 [label="10,00"];
+	E1 -> Mo1 [label="10,00"];
+	Bias -> Eo1 [label="-5,00"];
+	Boundary -> Jump [label="10,00"];
+
+	edge [style=invis]
+	Start -> Boundary;
+	Start -> E1;
+	Start -> M1;
+	Start -> M9;
+	Start -> M10;
+	Start -> M11;
+	Start -> Bias;
+	Boundary -> E1;
+	Boundary -> M1;
+	Boundary -> M9;
+	Boundary -> M10;
+	Boundary -> M11;
+	Boundary -> Bias;
+	E1 -> M1;
+	E1 -> M9;
+	E1 -> M10;
+	E1 -> M11;
+	E1 -> Bias;
+	M1 -> M9;
+	M1 -> M10;
+	M1 -> M11;
+	M1 -> Bias;
+	M9 -> M10;
+	M9 -> M11;
+	M9 -> Bias;
+	M10 -> M11;
+	M10 -> Bias;
+	M11 -> Bias;
+	Eo1 -> Mo1;
+	Eo1 -> Mo9;
+	Eo1 -> Mo10;
+	Eo1 -> Mo11;
+	Eo1 -> Write;
+	Eo1 -> Jump;
+	Eo1 -> Left;
+	Eo1 -> Stay;
+	Eo1 -> Right;
+	Mo1 -> Mo9;
+	Mo1 -> Mo10;
+	Mo1 -> Mo11;
+	Mo1 -> Write;
+	Mo1 -> Jump;
+	Mo1 -> Left;
+	Mo1 -> Stay;
+	Mo1 -> Right;
+	Mo9 -> Mo10;
+	Mo9 -> Mo11;
+	Mo9 -> Write;
+	Mo9 -> Jump;
+	Mo9 -> Left;
+	Mo9 -> Stay;
+	Mo9 -> Right;
+	Mo10 -> Mo11;
+	Mo10 -> Write;
+	Mo10 -> Jump;
+	Mo10 -> Left;
+	Mo10 -> Stay;
+	Mo10 -> Right;
+	Mo11 -> Write;
+	Mo11 -> Jump;
+	Mo11 -> Left;
+	Mo11 -> Stay;
+	Mo11 -> Right;
+	Write -> Jump;
+	Write -> Left;
+	Write -> Stay;
+	Write -> Right;
+	Jump -> Left;
+	Jump -> Stay;
+	Jump -> Right;
+	Left -> Stay;
+	Left -> Right;
+	Stay -> Right;
+
+}
