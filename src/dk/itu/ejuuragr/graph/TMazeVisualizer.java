@@ -32,8 +32,8 @@ public class TMazeVisualizer {
 	private final int blockSize = 150;
 	private final double rewardSize = 0.5;
 	private final double agentSize = 0.05;
-	private final Color highRewardColor = Color.red;
-	private final Color lowRewardColor = Color.gray;
+	private final Color highRewardColor = new Color(220,0,0);
+	private final Color lowRewardColor = new Color(210,72,88);
 	private volatile boolean doProgress = false;
 	
 	public TMazeVisualizer(final TMaze maze, final boolean userControllable){
@@ -169,9 +169,7 @@ public class TMazeVisualizer {
 					case start:
 						break;
 					case goal:
-						if (x == goal[0] && y == goal[1])	g.setColor(highRewardColor);
-						else								g.setColor(lowRewardColor);
-						drawCircle(g, x, y, rewardSize);
+						drawGoal(g, x, y, rewardSize, (x == goal[0] && y == goal[1]));
 						break;
 					case empty:
 					case wall:
@@ -204,6 +202,29 @@ public class TMazeVisualizer {
 		double ny = (y + (0.5 - size)) * blockSize;
 		drawCircle(g, nx, ny, size);
 	}
+	
+	private void drawGoal(Graphics2D g, int x, int y, double size, boolean high){
+		if (high){
+			g.setColor(highRewardColor);
+			drawCircle(g, x, y, size-0.05);
+			g.setColor(Color.white);
+			Font f = new Font("Verdana", Font.PLAIN, 102);
+			Font f2 = f.deriveFont(AffineTransform.getScaleInstance(g.getTransform().getScaleX(), g.getTransform().getScaleY()));
+			g.setFont(f2);
+			g.drawString("R",x * blockSize + (int)(size*blockSize / 2),y * blockSize + (int)(size * blockSize/2));
+		}
+		else
+		{
+			g.setColor(lowRewardColor);
+			drawCircle(g, x, y, size-0.25);
+			g.setColor(Color.white);
+			Font f = new Font("Verdana", Font.PLAIN, 50);
+			Font f2 = f.deriveFont(AffineTransform.getScaleInstance(g.getTransform().getScaleX(), g.getTransform().getScaleY()));
+			g.setFont(f2);
+			g.drawString("R",x * blockSize + (int)(size*blockSize / 1.30),y * blockSize + (int)(size * blockSize/1.35));
+		}
+	}
+	
 //	
 //	//Quick and dirty test main
 //	public static void main(String[] args) throws Exception {
