@@ -29,10 +29,13 @@ public class TMaze extends BaseSimulator {
 	public static final boolean DEBUG = false; // If true the Simulator will print the state in each step
 	
 	// Simulation specifics
-	public double SPEED; // How many tiles you can move in one step
-	public double SENSOR_CUTOFF; // The maximum distance of the sensors (wherefrom it will have a value of 1.0)
+	public final double SPEED; // How many tiles you can move in one step
+	public final double SENSOR_CUTOFF; // The maximum distance of the sensors (wherefrom it will have a value of 1.0)
 	public final double[] SENSOR_ANGLES = new double[]{-Math.PI / 4.0, 0, Math.PI / 4.0}; // What sensors and their angles to return
-	public double STEER_AMOUNT; // Max 45 degrees to either side
+	public final double STEER_AMOUNT; // Max 45 degrees to either side
+	public String START_DIRECTION; // The initial orientation of the agent (N, S, E or W)
+	public final double START_DIR_OFFSET; // The actual initial orientation will be randomly offset by this number of degrees
+	public final double START_POS_OFFSET; // The actual initial position will be randomly offset by this amount in X and Y direction
  
 	// Things
 	private int maxSteps;
@@ -54,6 +57,10 @@ public class TMaze extends BaseSimulator {
 	
 	private int stepCounter;
 	private int finished = -1;
+
+
+
+
 	
 	/**
 	 * The required constructor to instantiate the Simulator through
@@ -68,13 +75,27 @@ public class TMaze extends BaseSimulator {
 		SPEED = props.getDoubleProperty("simulator.tmaze.game.speed", 0.1);
 		SENSOR_CUTOFF = props.getIntProperty("simulator.tmaze.game.sensors.length", 1);
 		STEER_AMOUNT = (props.getIntProperty("simulator.tmaze.game.steer.max", 45) / 180.0) * Math.PI;
+		START_DIRECTION = props.getProperty("simulator.tmaze.dir.initial", null);
+		START_DIR_OFFSET = (props.getIntProperty("simulator.tmaze.dir.offset", 0) / 180.0) * Math.PI;
+		START_POS_OFFSET = props.getDoubleProperty("simulator.tmaze.pos.offset", 0.0);
 	
 		String mapFile = props.getProperty("simulator.tmaze.map", "tmaze.bmp");
 		loadMap(mapFile);
 		loadWalls();
 		moveGoal(true);
+		
+		if(START_DIRECTION == null) {
+			// Figure it out based on the maze
+			if(map.getType(startPos[0], startPos[1] + 1) == empty) { START_DIRECTION = "N"; }
+			else if(map.getType(startPos[0], startPos[1] - 1) == empty) { START_DIRECTION = "S"; }
+			else if(map.getType(startPos[0] - 1, startPos[1]) == empty) { START_DIRECTION = "W"; }
+			else if(map.getType(startPos[0] + 1, startPos[1]) == empty) { START_DIRECTION = "E"; }
+			else { START_DIRECTION = "N"; }
+		}else {
+			START_DIRECTION = START_DIRECTION.substring(0, 1).toUpperCase();
+		}
 	}
-	
+
 	@Override
 	public void restart() {
 		init();
@@ -221,12 +242,31 @@ public class TMaze extends BaseSimulator {
 	// HELPER METHODS
 	
 	private void init() {
-		location = new double[]{startPos[0] + 0.5, startPos[1] + 0.5};
-		angle = Math.PI / 2.0;
+		double x = startPos[0] + 0.5 + 2 * getRandom().nextDouble() * START_POS_OFFSET - START_POS_OFFSET;
+		double y = startPos[1] + 0.5 + 2 * getRandom().nextDouble() * START_POS_OFFSET - START_POS_OFFSET;
+		location = new double[]{x, y};
+		angle = getInitialAngle();
 		stepCounter = 0;
 		finished = -1;
 	}
 	
+	private double getInitialAngle() {
+		double result;
+
+		switch(START_DIRECTION) {
+		case("E"): result = 0; break;
+		case("S"): result = Math.PI * 1.5; break;
+		case("W"): result = Math.PI; break;
+		default: result = Math.PI * 0.5; // (N)orth
+		}
+		
+		// random offset
+		if(START_DIR_OFFSET > 0.0)
+			result += getRandom().nextDouble() * 2 * START_DIR_OFFSET - START_DIR_OFFSET;
+		
+		return result;
+	}
+
 	private void printState(double steer, double[] sensors) {
 		if(DEBUG){
 			System.out.println("----------------------");
