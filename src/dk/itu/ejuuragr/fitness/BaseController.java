@@ -50,6 +50,7 @@ public abstract class BaseController implements Controller {
 			}
 
 			totalScore += sim.getCurrentScore();
+//			System.out.println("Map "+(i+1)+": "+sim.toString());
 		}
 		
 		double result = Math.max(0.0, totalScore);
