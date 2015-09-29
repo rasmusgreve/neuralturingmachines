@@ -26,7 +26,7 @@ public class StaticMemoryFocusVisualizer extends AbstractReplayVisualizer {
 		g.fillRect(0, 0, 20000, 20000);
 		
 		
-		int pixelSize = 15;
+		int pixelSize = 35;
 		
 		//Write
 		for (int i = 0; i < recording.size();i++){

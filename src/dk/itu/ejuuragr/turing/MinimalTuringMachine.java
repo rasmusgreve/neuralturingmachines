@@ -76,8 +76,8 @@ public class MinimalTuringMachine implements TuringMachine, Replayable<MinimalTu
 		
 		if (DEBUG) {
 			System.out.println("------------------- MINIMAL TURING MACHINE -------------------");
-			System.out.println("Write="+Utilities.toString(writeKey)+" Interp="+interp);
-			System.out.println("Content?="+content+" Shift="+Utilities.toString(shift));
+			System.out.println("Write="+Utilities.toString(writeKey, "%.4f")+" Interp="+interp);
+			System.out.println("Content?="+content+" Shift="+Utilities.toString(shift,"%.4f"));
 		}
 		
 		write(writeKey, interp);
@@ -99,7 +99,7 @@ public class MinimalTuringMachine implements TuringMachine, Replayable<MinimalTu
 		
 		if (DEBUG) {
 			printState();
-			System.out.println("Sending to NN: "+Utilities.toString(result));
+			System.out.println("Sending to NN: "+Utilities.toString(result, "%.4f"));
 			System.out.println("--------------------------------------------------------------");
 		}
 //		return new double[1][result.length];

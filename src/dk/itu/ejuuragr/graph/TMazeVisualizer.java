@@ -66,9 +66,9 @@ public class TMazeVisualizer {
 					if (e.getKeyCode() == KeyEvent.VK_UP)
 						maze.performAction(new double[]{.5});
 					if (e.getKeyCode() == KeyEvent.VK_LEFT)
-						maze.performAction(new double[]{1});
+						maze.performAction(new double[]{1-Math.random() * 0.1});
 					if (e.getKeyCode() == KeyEvent.VK_RIGHT)
-						maze.performAction(new double[]{0});
+						maze.performAction(new double[]{0+Math.random() * 0.1});
 				}
 				if (e.getKeyCode() == KeyEvent.VK_SPACE) {
 					doProgress = true;
@@ -118,17 +118,14 @@ public class TMazeVisualizer {
 			g.setColor(Color.green);
 			g.setTransform(new AffineTransform());
 			g.setFont(rewardFont);
-			g.drawString("Reward: " + maze.getCurrentScore(), 5, 25);
+//			g.drawString("Reward: " + maze.getCurrentScore(), 5, 25);
 			
 		}
 	}
 	
 	private void drawAgent(Graphics2D g){
-		
-		//Agent
+
 		double[] position = maze.getPosition();
-		g.setColor(new Color(120,120,255));
-		drawCircle(g, position[0] * blockSize - agentSize * blockSize, position[1] * blockSize - agentSize * blockSize, agentSize);
 		
 		//Direction
 		double[] endPoint = new double[]{position[0] + Math.cos(maze.getAngle()) * 0.2, position[1] + Math.sin(maze.getAngle()) * 0.2};
@@ -140,7 +137,7 @@ public class TMazeVisualizer {
 		//Sensors
 
 		g.setColor(Color.gray);
-		g.setStroke(new BasicStroke(1));
+		g.setStroke(new BasicStroke(2f));
 		
 		double[] distances = maze.getCurrentObservation();
 		
@@ -155,6 +152,11 @@ public class TMazeVisualizer {
 			g.setColor(Color.yellow);
 			drawCircleCenteredAt(g, sensorEnd[0], sensorEnd[1], 0.02);
 		}
+
+		//Agent
+		g.setColor(new Color(120,120,255));
+		drawCircle(g, position[0] * blockSize - agentSize * blockSize, position[1] * blockSize - agentSize * blockSize, agentSize);
+				
 		
 	}
 	
