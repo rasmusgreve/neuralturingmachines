@@ -1,5 +1,7 @@
 package dk.itu.ejuuragr.domain;
 
+import java.util.Arrays;
+
 import com.anji.util.Properties;
 
 public class RoundsTMaze extends TMaze {
@@ -14,6 +16,8 @@ public class RoundsTMaze extends TMaze {
 	private int curRound; // The current round number
 	private int totalScore; // The accumulated score over all rounds
 
+	private int firstGoal = -1; // for the toString method
+
 	public RoundsTMaze(Properties props) {
 		super(props);
 		this.rounds = props.getIntProperty("simulator.tmaze.rounds", 10);
@@ -26,6 +30,7 @@ public class RoundsTMaze extends TMaze {
 		if(DEBUG) System.out.println("---------------------");
 		super.restart();
 		super.swapGoal(true); // select new goal randomly
+		this.firstGoal = getGoalId(goal);
 		curRound = 0;
 		totalScore = 0;
 		
@@ -87,5 +92,19 @@ public class RoundsTMaze extends TMaze {
 	@Override
 	public int getMaxScore() {
 		return super.getMaxScore() * rounds;
+	}
+	
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("TMaze [h1=");
+		sb.append(firstGoal);
+		sb.append(" h2=");
+		sb.append(this.getGoalId(goal));
+		sb.append(" swap=");
+		sb.append(Arrays.toString(this.switchSpots));
+		sb.append("]");
+		
+		return sb.toString();
 	}
 }
