@@ -17,7 +17,6 @@ import com.anji.util.DummyConfiguration;
 import com.anji.util.Properties;
 
 import dk.itu.ejuuragr.domain.Simulator;
-import dk.itu.ejuuragr.domain.TMaze;
 import dk.itu.ejuuragr.fitness.Controller;
 import dk.itu.ejuuragr.fitness.Utilities;
 
@@ -74,7 +73,7 @@ public class Evaluator {
 			double score = controller.evaluate(activator) / (1.0 * controller.getMaxScore());
 			stats.addValue(score);
 			if (run % (numberOfTests / 100) == 0)
-				System.out.println(run*1.0/numberOfTests*100 + "%");
+				System.out.printf("%.0f%% - %s\n",(run*1.0/numberOfTests*100),controller.getSimulator().toString());
 		}
 		
 		System.out.println("All done, " + numberOfTests + " runs! Results:");
