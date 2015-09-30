@@ -73,7 +73,7 @@ public class TMaze extends BaseSimulator {
 		lowReward = props.getIntProperty("simulator.tmaze.reward.low", 1);
 		maxSteps = props.getIntProperty("simulator.steps.max", 50);
 		SPEED = props.getDoubleProperty("simulator.tmaze.game.speed", 0.1);
-		SENSOR_CUTOFF = props.getIntProperty("simulator.tmaze.game.sensors.length", 1);
+		SENSOR_CUTOFF = props.getIntProperty("simulator.tmaze.game.sensors.length", 3);
 		STEER_AMOUNT = (props.getIntProperty("simulator.tmaze.game.steer.max", 45) / 180.0) * Math.PI;
 		START_DIRECTION = props.getProperty("simulator.tmaze.dir.initial", null);
 		START_DIR_OFFSET = (props.getIntProperty("simulator.tmaze.dir.offset", 0) / 180.0) * Math.PI;
