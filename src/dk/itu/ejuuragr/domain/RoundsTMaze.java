@@ -18,11 +18,14 @@ public class RoundsTMaze extends TMaze {
 
 	private int firstGoal = -1; // for the toString method
 
+	private final boolean SWAP_FIX;
+
 	public RoundsTMaze(Properties props) {
 		super(props);
 		this.rounds = props.getIntProperty("simulator.tmaze.rounds", 10);
 		this.swapFraction = props.getDoubleProperty("simulator.tmaze.swap.fraction", 0.3);
 		this.swapCount = props.getIntProperty("simulator.tmaze.swap.swapcount",1);
+		this.SWAP_FIX = props.getBooleanProperty("simulator.tmaze.swapfix", false);
 	}
 
 	@Override
@@ -38,7 +41,9 @@ public class RoundsTMaze extends TMaze {
 		for (int i = 0; i < swapCount; i++){
 			int swapSize = (int)(rounds * swapFraction);
 			int rawPoint = (int)((rounds/(swapCount+1.0))*(i+1));
-			int fuzzedPoint = rawPoint + getRandom().nextInt(swapSize+1) - swapSize / 2;
+			int fuzzedPoint = rawPoint + getRandom().nextInt(swapSize+1);
+			if(SWAP_FIX)
+				fuzzedPoint -= swapSize / 2;
 			switchSpots[i] = fuzzedPoint;
 		}
 //		int swapArea = (int)(rounds * swapFraction); // The middle X rounds it can switch
