@@ -38,7 +38,7 @@ public class RoundsTMaze extends TMaze {
 		for (int i = 0; i < swapCount; i++){
 			int swapSize = (int)(rounds * swapFraction);
 			int rawPoint = (int)((rounds/(swapCount+1.0))*(i+1));
-			int fuzzedPoint = rawPoint + getRandom().nextInt(swapSize+1);
+			int fuzzedPoint = rawPoint + getRandom().nextInt(swapSize+1);// - swapSize / 2;
 			switchSpots[i] = fuzzedPoint;
 		}
 //		int swapArea = (int)(rounds * swapFraction); // The middle X rounds it can switch
