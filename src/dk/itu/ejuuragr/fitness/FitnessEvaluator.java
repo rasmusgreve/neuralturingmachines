@@ -2,6 +2,9 @@ package dk.itu.ejuuragr.fitness;
 
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import org.jgap.BulkFitnessFunction;
 import org.jgap.Chromosome;
@@ -24,7 +27,10 @@ public class FitnessEvaluator implements BulkFitnessFunction, Configurable {
 	private int newSeedAfter = -1;
 	private int cores;
 	private boolean threading;
-
+	private boolean threadPooling;
+	ExecutorService threadPool;
+	private Controller cachedController;
+	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	final public void evaluate(List arg0) {
@@ -61,6 +67,32 @@ public class FitnessEvaluator implements BulkFitnessFunction, Configurable {
 				e.printStackTrace();
 				throw e;
 			}
+		} else if (threadPooling){
+			final CountDownLatch latch = new CountDownLatch(list.size());
+			for (Chromosome chrom : list){
+				final Chromosome ch = chrom;
+				threadPool.execute(new Runnable() {
+					@Override
+					public void run() {
+						Controller controller = loadController(cachedProps);
+						if (newSeedAfter > 0)
+							controller.getSimulator().setRandomOffset(generation / newSeedAfter);
+						double score;
+						try {
+							score = controller.evaluate(activatorFactory.newActivator(ch));
+							ch.setFitnessValue((int)score);
+							latch.countDown();
+						} catch (TranscriberException e) {
+							throw new RuntimeException(e);
+						}
+					}
+				});
+			};
+			try {
+				latch.await(); // Wait for countdown
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 		}else {
 			handleSubset(list, 0, list.size(), 0);
 		}
@@ -86,13 +118,22 @@ public class FitnessEvaluator implements BulkFitnessFunction, Configurable {
 		}
 	}
 
+	
+	
 	@Override
 	public int getMaxFitnessValue() {
-		int result = controllers[0].getMaxScore();
+		int result;
+		if (threadPooling){
+			result = cachedController.getMaxScore();
+		}
+		else {
+			result = controllers[0].getMaxScore();
+		}
 		// System.out.println("Max Score: "+result);
 		return result;
 	}
 
+	Properties cachedProps;
 	@Override
 	public void init(Properties properties) {
 		// Load properties
@@ -100,14 +141,25 @@ public class FitnessEvaluator implements BulkFitnessFunction, Configurable {
 				.singletonObjectProperty(ActivatorTranscriber.class);
 		newSeedAfter = properties
 				.getIntProperty("simulate.generations.identical", -1);
-		threading = properties.getBooleanProperty("threading");
+		threading = properties.getBooleanProperty("threading", false);
+		threadPooling = properties.getBooleanProperty("thread.pooling", false);
+		
+		if (threading && threadPooling){
+			throw new RuntimeException("Cannot have both threading and thread pooling!");
+		}
 
-		// Prepare for multi-threading
-		cores = threading ? Runtime.getRuntime().availableProcessors() : 1;
-		controllers = new TuringController[cores];
-
+		if (threading) {
+			// Prepare for multi-threading
+			cores = threading ? Runtime.getRuntime().availableProcessors() : 1;
+			controllers = new TuringController[cores];
+		}
+		if (threadPooling){
+			threadPool = Executors.newCachedThreadPool();
+			cachedController = loadController(properties);
+		}
 		// Initialize
 		generation = 0;
+		cachedProps = properties;
 
 		for (int i = 0; i < cores; i++) {
 			controllers[i] = FitnessEvaluator.loadController(properties);
