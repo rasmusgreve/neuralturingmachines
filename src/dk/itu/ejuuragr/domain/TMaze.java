@@ -242,8 +242,12 @@ public class TMaze extends BaseSimulator {
 	// HELPER METHODS
 	
 	private void init() {
-		double x = startPos[0] + 0.5 + 2 * getRandom().nextDouble() * START_POS_OFFSET - START_POS_OFFSET;
-		double y = startPos[1] + 0.5 + 2 * getRandom().nextDouble() * START_POS_OFFSET - START_POS_OFFSET;
+		double x = startPos[0] + 0.5;
+		double y = startPos[1] + 0.5;
+		if (START_POS_OFFSET > 0.0){
+			x += 2 * getRandom().nextDouble() * START_POS_OFFSET - START_POS_OFFSET;
+			y += 2 * getRandom().nextDouble() * START_POS_OFFSET - START_POS_OFFSET;
+		}
 		location = new double[]{x, y};
 		angle = getInitialAngle();
 		stepCounter = 0;
