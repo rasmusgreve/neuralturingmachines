@@ -31,8 +31,8 @@ public class RoundsTMaze extends TMaze {
 		this.rounds = roundsPerPer * (swapCount+1) * pairGoals;
 		this.swapRounds = (int) (this.swapFraction * roundsPerPer); // For each swap
 		
-		System.out.println("Rounds: "+this.rounds);
-		System.out.println("Swap Rounds: "+this.swapRounds);
+//		System.out.println("Rounds: "+this.rounds);
+//		System.out.println("Swap Rounds: "+this.swapRounds);
 	}
 
 	@Override
