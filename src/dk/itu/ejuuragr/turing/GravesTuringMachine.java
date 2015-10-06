@@ -35,6 +35,7 @@ public class GravesTuringMachine implements TuringMachine, Replayable<GravesTuri
 	
 	private boolean recordTimeSteps = false;
 	private GravesTuringMachineTimeStep currentStep;
+	private boolean enabled = true;
 
 	
 	/**
@@ -49,6 +50,7 @@ public class GravesTuringMachine implements TuringMachine, Replayable<GravesTuri
 				props.getIntProperty("tm.heads.write", 1),
 				props.getIntProperty("tm.shift.length" , 3));
 		this.sharpeningFactor = props.getDoubleProperty("tm.sharpening.factor", sharpeningFactor);
+		this.enabled = props.getBooleanProperty("tm.enabled", true);
 	}
 
 	/**
@@ -157,6 +159,9 @@ public class GravesTuringMachine implements TuringMachine, Replayable<GravesTuri
 	 */
 	@Override
 	public double[][] processInput(double[] flatVars) {
+		if(!enabled)
+			return getDefaultRead();
+		
 		return processInput(translateToHeadVars(flatVars));
 	}
 	
