@@ -29,7 +29,7 @@ public class RoundsTMaze extends TMaze {
 		
 		int pairGoals = this.getMap().getOfType(MAP_TYPE.goal).size() / 2;
 		this.rounds = roundsPerPer * (swapCount+1) * pairGoals;
-		this.swapRounds = (int) (this.swapFraction * roundsPerPer); // For each swap
+		this.swapRounds = (int) (this.swapFraction * roundsPerPer * pairGoals); // For each swap
 		
 //		System.out.println("Rounds: "+this.rounds);
 //		System.out.println("Swap Rounds: "+this.swapRounds);
