@@ -13,7 +13,7 @@ persist.all : false
 fitness_function.class : dk.itu.ejuuragr.fitness.FitnessEvaluator
 simulator.tmaze.game.sensors.length : 3
 popul.size : 300
-simulator.tmaze.swap.swapcount : 8
+simulator.tmaze.swap.swapcount : 1
 prune.mutation.rate : 1.00
 initial.topology.num.hidden.neurons : 0
 fitness.threshold : 0.7
@@ -22,12 +22,11 @@ log4j.appender.A1.layout.ConversionPattern : %-5p %m%x%n
 log4j.rootLogger : INFO, A1
 initial.topology.activation.input : linear
 initial.topology.fully.connected : true
-weight.mutation.rate : 0.6
 log4j.appender.A1.layout : org.apache.log4j.PatternLayout
+weight.mutation.rate : 0.6
 weight.min : -10.0
 run.name : tmaze26
 controller.class : dk.itu.ejuuragr.turing.TuringController
-log4j.appender.A1.File : ./db/log.txt
 add.connection.mutation.rate : 0.02
 topology.mutation.classic : true
 simulator.tmaze.swap.fraction : 0.6
@@ -36,20 +35,24 @@ id.file : ./db/id.xml
 persistence.class : com.anji.persistence.FilePersistence
 simulator.tmaze.reward.low : 1
 tm.shift.mode : multiple
+tm.n : 10
 chrom.compat.common.coeff : 0.4
 tm.m : 2
 selector.elitism.min.specie.size : 2
 chrom.compat.excess.coeff : 1.0
 weight.max : 10.0
 survival.rate : 0.2
+tm.sharpening.factor : 1
 simulator.tmaze.game.steer.max : 45
+tm.heads.write : 1
 ann.type : anji
-log4j.appender.A1 : org.apache.log4j.FileAppender
+log4j.appender.A1 : org.apache.log4j.ConsoleAppender
 simulator.tmaze.swapfix : false
 base.dir : ./db
 selector.elitism : true
 simulator.tmaze.game.speed : 0.1
-tm.class : dk.itu.ejuuragr.turing.MinimalTuringMachine
+tm.heads.read : 1
+tm.class : dk.itu.ejuuragr.turing.GravesTuringMachine
 weight.mutation.std.dev : 3
 remove.connection.max.weight : 5
 simulate.generations.identical : -1
@@ -68,7 +71,8 @@ threading : false
 persist.champions : true
 simulator.tmaze.rounds : 5
 remove.connection.mutation.rate : 0.05
+tm.enabled : false
 simulator.class : dk.itu.ejuuragr.domain.RoundsTMaze
 random.seed : 0
 --------------------------------------------------
-[0,820000 - 0,840000] mean: 0,832174 +- 0,009761
+[0,280000 - 0,820000] mean: 0,579322 +- 0,165820

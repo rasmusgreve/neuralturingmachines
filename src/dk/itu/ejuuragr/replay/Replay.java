@@ -37,6 +37,7 @@ public class Replay {
 		props.setProperty("base.dir", "./db");
 		Chromosome chrom = loadChromosome(args.length > 1 ? args[1] : prompt("Chromosome ID: "), props);
 		
+		props.setProperty("simulator.tmaze.rounds", "2");
 		
 		//Setup activator
 		ActivatorTranscriber activatorFactory = (ActivatorTranscriber) props.singletonObjectProperty(ActivatorTranscriber.class);
@@ -72,10 +73,10 @@ public class Replay {
 					if (memViz != null){
 						memViz.update();
 					}
-					while (true){
-						if (mazeViz.getDoProgressAndReset())
-							break;
-					}
+//					while (true){
+//						if (mazeViz.getDoProgressAndReset())
+//							break;
+//					}
 				}
 				
 			});
@@ -85,7 +86,7 @@ public class Replay {
 
 		double fitness = controller.evaluate(activator);
 		System.out.println("FINAL FITNESS: "+fitness + " / " + controller.getMaxScore());
-		if (controller instanceof TuringControllerRecorder && !(simulator instanceof TMaze)){
+		if (controller instanceof TuringControllerRecorder){
 			//new ReplayVisualizer().show(((TuringControllerMemoryVizProxy)controller).getSteps());
 			
 			Recording<?> recording = ((TuringControllerRecorder)controller).getRecording();

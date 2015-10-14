@@ -55,8 +55,8 @@ public class StaticMemoryFocusVisualizer extends AbstractReplayVisualizer {
 		//Read
 		for (int i = 0; i < recording.size();i++){
 			TimeStep<?> t = recording.get(i); 
-			int y = pixelSize * 3;
-			int x = pixelSize * (recording.size() + 2); //TODO
+			int y = pixelSize * 13;//* 3;
+			int x = pixelSize ;//* (recording.size() + 2); //TODO
 			y += drawBWLine(g, t.getDomainOutput(), x + i * pixelSize, y, pixelSize) + pixelSize;
 			y += drawColorLine(g, getRead(t.getTuringStep()), x + i * pixelSize, y, pixelSize) + pixelSize;
 			y += drawBWLine(g, getReadFocus(t.getTuringStep()), x + i * pixelSize, y, pixelSize) + pixelSize;
@@ -66,6 +66,10 @@ public class StaticMemoryFocusVisualizer extends AbstractReplayVisualizer {
 		g.setColor(Color.black);
 		borderX = borderW + pixelSize * 2;
 		borderY = pixelSize * 3;
+		
+		borderX = pixelSize;
+		borderY = pixelSize * 13;
+		
 		borderW = recording.size()*pixelSize;
 		borderH = recording.get(0).getDomainOutput().length * pixelSize;
 		g.drawRect(borderX, borderY, borderW, borderH);
@@ -82,7 +86,7 @@ public class StaticMemoryFocusVisualizer extends AbstractReplayVisualizer {
 		if (step instanceof MinimalTuringMachineTimeStep){
 			MinimalTuringMachineTimeStep ts = (MinimalTuringMachineTimeStep)step;
 			int N = recording.get(recording.size()-1).getTuringMachineContent().length;
-			int zeroPosition = ((MinimalTuringMachineTimeStep)recording.get(recording.size()-1).getTuringStep()).zeroPosition;
+			int zeroPosition = ((MinimalTuringMachineTimeStep)recording.get(recording.size()-1).getTuringStep()).writeZeroPosition;
 			return convertPositionToWeights(ts.correctedWritePosition + zeroPosition,N);
 		}
 		else if (step instanceof GravesTuringMachineTimeStep){
@@ -98,7 +102,7 @@ public class StaticMemoryFocusVisualizer extends AbstractReplayVisualizer {
 		if (step instanceof MinimalTuringMachineTimeStep){
 			MinimalTuringMachineTimeStep ts = (MinimalTuringMachineTimeStep)step;
 			int N = recording.get(recording.size()-1).getTuringMachineContent().length;
-			int zeroPosition = ((MinimalTuringMachineTimeStep)recording.get(recording.size()-1).getTuringStep()).zeroPosition;
+			int zeroPosition = ((MinimalTuringMachineTimeStep)recording.get(recording.size()-1).getTuringStep()).readZeroPosition;
 			return convertPositionToWeights(ts.correctedReadPosition + zeroPosition,N);
 		}
 		else if (step instanceof GravesTuringMachineTimeStep){
@@ -158,6 +162,8 @@ public class StaticMemoryFocusVisualizer extends AbstractReplayVisualizer {
 		for (int i = 0; i < data.length; i++){
 			g.setColor(valueToColor(data[i]));
 			g.fillRect(x, y+i*pixelSize, pixelSize, pixelSize);
+			g.setColor(Color.black);
+			g.drawString(String.format("%.3f",data[i]), x, y+i*pixelSize+pixelSize);
 		}
 		return data.length * pixelSize;
 	}

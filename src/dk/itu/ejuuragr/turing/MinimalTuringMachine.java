@@ -25,6 +25,7 @@ public class MinimalTuringMachine implements TuringMachine, Replayable<MinimalTu
 
 	private boolean recordTimeSteps = false;
 	private MinimalTuringMachineTimeStep lastTimeStep;
+	private MinimalTuringMachineTimeStep internalLastTimeStep;
 	private boolean increasedSizeDown = false;
 	private int zeroPosition = 0;
 
@@ -53,6 +54,11 @@ public class MinimalTuringMachine implements TuringMachine, Replayable<MinimalTu
 		tape.clear();
 		tape.add(new double[m]);
 		pointers = new int[heads];
+
+		if (recordTimeSteps){
+			internalLastTimeStep = new MinimalTuringMachineTimeStep(new double[m], 0, 0, new double[shiftLength], new double[m],0,0,0,0,0,0); 
+			lastTimeStep = new MinimalTuringMachineTimeStep(new double[m], 0, 0, new double[shiftLength], new double[m],0,0,0,0,0,0);
+		}
 		if (DEBUG) printState();
 	}
 
@@ -109,15 +115,19 @@ public class MinimalTuringMachine implements TuringMachine, Replayable<MinimalTu
 			result[i] = headResult;
 			
 			if (recordTimeSteps){
-				int readPosition = pointers[i];
-				int correctedWritePosition = writePosition - zeroPosition;
-				
-				if (increasedSizeDown) {
-					writePosition++;
-					zeroPosition++;
-				}
-				int correctedReadPosition = readPosition - zeroPosition;
-				lastTimeStep = new MinimalTuringMachineTimeStep(writeKeys[i], interps[i], contents[i], shifts[i], headResult, writePosition, readPosition, zeroPosition, correctedWritePosition, correctedReadPosition);
+//				int readPosition = pointers[i];
+//				int correctedWritePosition = writePosition - zeroPosition;
+//				
+//				if (increasedSizeDown) {
+//					writePosition++;
+//					zeroPosition++;
+//				}
+//				int correctedReadPosition = readPosition - zeroPosition;
+//				lastTimeStep = new MinimalTuringMachineTimeStep(writeKeys[i], interps[i], contents[i], shifts[i], headResult, writePosition, readPosition, zeroPosition, correctedWritePosition, correctedReadPosition);
+//			
+//				int correctedReadPosition = readPosition - zeroPosition;
+//				lastTimeStep = new MinimalTuringMachineTimeStep(writeKey, interp, content, shift, internalLastTimeStep.read, writePosition, internalLastTimeStep.readPosition, zeroPosition, internalLastTimeStep.readZeroPosition, correctedWritePosition, internalLastTimeStep.correctedReadPosition);
+//				internalLastTimeStep = new MinimalTuringMachineTimeStep(writeKey, interp, content, shift, result, writePosition, readPosition, zeroPosition, zeroPosition, correctedWritePosition, correctedReadPosition);
 			}
 		}
 		
@@ -142,7 +152,7 @@ public class MinimalTuringMachine implements TuringMachine, Replayable<MinimalTu
 
 	@Override
 	public MinimalTuringMachineTimeStep getInitialTimeStep() {
-		return new MinimalTuringMachineTimeStep(new double[m], 0, 0, new double[shiftLength], new double[m],0,0,0,0,0);
+		return lastTimeStep = new MinimalTuringMachineTimeStep(new double[m], 0, 0, new double[shiftLength], new double[m],0,0,0,0,0,0);
 	}
 
 	
@@ -153,10 +163,11 @@ public class MinimalTuringMachine implements TuringMachine, Replayable<MinimalTu
 		public final double[] read;
 		public final int writePosition;
 		public final int readPosition;
-		public final int zeroPosition;
+		public final int writeZeroPosition;
+		public final int readZeroPosition;
 		public final int correctedWritePosition;
 		public final int correctedReadPosition;
-		public MinimalTuringMachineTimeStep(double[] key, double write, double jump, double[] shift, double[] read, int writePosition, int readPosition, int zeroPosition, int correctedWritePosition, int correctedReadPosition){
+		public MinimalTuringMachineTimeStep(double[] key, double write, double jump, double[] shift, double[] read, int writePosition, int readPosition, int writeZeroPosition, int readZeroPosition, int correctedWritePosition, int correctedReadPosition){
 			this.key = key;
 			writeInterpolation = write;
 			contentJump = jump;
@@ -164,7 +175,8 @@ public class MinimalTuringMachine implements TuringMachine, Replayable<MinimalTu
 			this.read = read;
 			this.writePosition = writePosition;
 			this.readPosition = readPosition;
-			this.zeroPosition = zeroPosition;
+			this.writeZeroPosition = writeZeroPosition;
+			this.readZeroPosition = readZeroPosition;
 			this.correctedWritePosition = correctedWritePosition;
 			this.correctedReadPosition = correctedReadPosition;
 		}
