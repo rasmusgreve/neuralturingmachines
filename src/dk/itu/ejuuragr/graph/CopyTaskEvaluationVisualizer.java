@@ -110,34 +110,34 @@ public class CopyTaskEvaluationVisualizer {
 			Graphics2D g = (Graphics2D) arg0;
 			g.setColor(Color.white);
 			g.fillRect(0, 0, 50000, 50000);
-			int pixelSize = 15;
+			int pixelSize = 25;
 			int borderWidth = 83;
 			
 			int maxWidth = 0;
 			int totalHeight = 0;
 			int rows = 0;
 			int x = pixelSize;
-			int y = pixelSize;
-			//drawLabels(g, x, y);
+			int y = pixelSize*2;
+			drawLabels(g, x, y);
 			
-//			x += 220;
+			x += 220;
 			
 			Dimension dim = new Dimension(pixelSize, pixelSize);
 			for (Result result : results){
 				dim = drawResult(g, result, x, y, pixelSize);
 				x += borderWidth + dim.width;
 				maxWidth = Math.max(maxWidth, x);
-				if (x > 1800){
+				if (x > 2100){
 					totalHeight += dim.height + borderWidth;
 					y += borderWidth + dim.height;
 					x = pixelSize;
-//					drawLabels(g, x, y);
-//					x += 220;
+					drawLabels(g, x, y);
+					x += 220;
 					rows++;
 				}
 			}
 			
-			drawLegend(g, maxWidth , pixelSize, pixelSize * 2, totalHeight - borderWidth);
+			drawLegend(g, maxWidth , pixelSize*2, pixelSize * 2, totalHeight - borderWidth - 15);
 			
 		}
 		
@@ -150,17 +150,17 @@ public class CopyTaskEvaluationVisualizer {
 			g.drawString("Target", x + 180 - targetWidth, y + 125);
 			int outputWidth = fm.stringWidth("Output");
 			g.drawString("Output", x + 180 - outputWidth, y + 125 + 220);
-			int diffWidth = fm.stringWidth("Diff.");
-			g.drawString("Diff.", x + 180 - diffWidth, y + 125 + 220 * 2);
+//			int diffWidth = fm.stringWidth("Diff.");
+//			g.drawString("Diff.", x + 180 - diffWidth, y + 125 + 220 * 2);
 		}
 		
 		private Dimension drawResult(Graphics2D g, Result result, int x, int y, int pixelSize){
 			Dimension targetDimension = drawData(g, result.target, x, y, pixelSize);
 			Dimension outputDimension = drawData(g, result.output, x, y + targetDimension.height + pixelSize, pixelSize);
-			Dimension diffDimension = drawDiff(g, result, x, y + targetDimension.height + outputDimension.height + 2 * pixelSize, pixelSize);
+//			Dimension diffDimension = drawDiff(g, result, x, y + targetDimension.height + outputDimension.height + 2 * pixelSize, pixelSize);
 			return new Dimension(
 					targetDimension.width, 
-					targetDimension.height + outputDimension.height + diffDimension.height + pixelSize * 2);
+					targetDimension.height + outputDimension.height + /*diffDimension.height +*/ pixelSize * 2);
 		}
 		
 		private Dimension drawData(Graphics2D g, double[][] data, int x, int y, int pixelSize){
@@ -231,8 +231,8 @@ public class CopyTaskEvaluationVisualizer {
 	public static void main(String[] args) throws IOException, TranscriberException{
 		Properties props = new Properties("copytask.properties");
 		props.setProperty("base.dir", "./db");
-		Chromosome chrom = loadChromosome(args.length > 1 ? args[1] : prompt("Chromosome ID: "), props);
-//		Chromosome chrom = loadChromosome("2388977", props);
+//		Chromosome chrom = loadChromosome(args.length > 1 ? args[1] : prompt("Chromosome ID: "), props);
+		Chromosome chrom = loadChromosome("2388977", props);
 		
 		//Setup activator
 		ActivatorTranscriber activatorFactory = (ActivatorTranscriber) props.singletonObjectProperty(ActivatorTranscriber.class);
