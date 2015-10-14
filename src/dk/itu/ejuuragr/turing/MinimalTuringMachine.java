@@ -1,5 +1,6 @@
 package dk.itu.ejuuragr.turing;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -15,11 +16,12 @@ public class MinimalTuringMachine implements TuringMachine, Replayable<MinimalTu
 	private static final boolean DEBUG = false;
 
 	private LinkedList<double[]> tape;
-	private int pointer;
+	private int[] pointers;
 	private int m;
 	private int shiftLength;
 	private String shiftMode;
 	private boolean enabled;
+	private int heads;
 
 	private boolean recordTimeSteps = false;
 	private MinimalTuringMachineTimeStep lastTimeStep;
@@ -35,18 +37,22 @@ public class MinimalTuringMachine implements TuringMachine, Replayable<MinimalTu
 		this.shiftLength = props.getIntProperty("tm.shift.length");
 		this.shiftMode = props.getProperty("tm.shift.mode", "multiple");
 		this.enabled = props.getBooleanProperty("tm.enabled", true);
+		this.heads = props.getIntProperty("tm.heads.readwrite", 1);
 
 		tape = new LinkedList<double[]>();
 		
 		this.reset();
-		initialRead = new double[][]{getRead()};
+		initialRead = new double[heads][];
+		for(int i = 0; i < heads; i++) {
+			initialRead[i] = getRead(i);
+		}
 	}
 
 	@Override
 	public void reset() {
 		tape.clear();
 		tape.add(new double[m]);
-		pointer = 0;
+		pointers = new int[heads];
 		if (DEBUG) printState();
 	}
 
@@ -65,36 +71,54 @@ public class MinimalTuringMachine implements TuringMachine, Replayable<MinimalTu
 		Queue<Double> queue = new LinkedList<Double>();
 		for(double d : fromNN) queue.add(d);
 		
-		// Should be M + 2 + S elements
-		double[] writeKey = take(queue,this.m);
-		double interp = queue.poll();
-		double content = queue.poll();
-		double[] shift = take(queue,getShiftInputs());
+		double[][] result = new double[heads][];
+		double[][] writeKeys = new double[heads][];
+		double[] interps = new double[heads];
+		double[] contents = new double[heads];
+		double[][] shifts = new double[heads][];
 		
-		int writePosition = pointer;
-		increasedSizeDown = false;
-		
-		if (DEBUG) {
-			System.out.println("------------------- MINIMAL TURING MACHINE -------------------");
-			System.out.println("Write="+Utilities.toString(writeKey, "%.4f")+" Interp="+interp);
-			System.out.println("Content?="+content+" Shift="+Utilities.toString(shift,"%.4f"));
+		// First all writes
+		for(int i = 0; i < heads; i++) {
+			// Should be M + 2 + S elements
+			writeKeys[i] = take(queue,this.m);
+			interps[i] = queue.poll();
+			contents[i] = queue.poll();
+			shifts[i] = take(queue,getShiftInputs());
+			
+			if (DEBUG) {
+				System.out.println("------------------- MINIMAL TURING MACHINE (HEAD "+(i+1)+") -------------------");
+				System.out.println("Write="+Utilities.toString(writeKeys[i], "%.4f")+" Interp="+interps[i]);
+				System.out.println("Content?="+contents[i]+" Shift="+Utilities.toString(shifts[i],"%.4f"));
+			}
+			
+			write(i, writeKeys[i], interps[i]);
 		}
 		
-		write(writeKey, interp);
-		moveHead(content, writeKey, shift);
+		// Perform content jump
+		for(int i = 0; i < heads; i++) {
+			performContentJump(i, contents[i], writeKeys[i]);
+		}
 		
-		double[] result = getRead();
-		
-		if (recordTimeSteps){
-			int readPosition = pointer;
-			int correctedWritePosition = writePosition - zeroPosition;
+		// Shift and read (no interaction)
+		for(int i = 0; i < heads; i++) {
+			int writePosition = pointers[i];
+			increasedSizeDown = false;
+			moveHead(i, shifts[i]);
 			
-			if (increasedSizeDown) {
-				writePosition++;
-				zeroPosition++;
+			double[] headResult = getRead(i); // Show me what you've got! \cite{rickEtAl2014}
+			result[i] = headResult;
+			
+			if (recordTimeSteps){
+				int readPosition = pointers[i];
+				int correctedWritePosition = writePosition - zeroPosition;
+				
+				if (increasedSizeDown) {
+					writePosition++;
+					zeroPosition++;
+				}
+				int correctedReadPosition = readPosition - zeroPosition;
+				lastTimeStep = new MinimalTuringMachineTimeStep(writeKeys[i], interps[i], contents[i], shifts[i], headResult, writePosition, readPosition, zeroPosition, correctedWritePosition, correctedReadPosition);
 			}
-			int correctedReadPosition = readPosition - zeroPosition;
-			lastTimeStep = new MinimalTuringMachineTimeStep(writeKey, interp, content, shift, result, writePosition, readPosition, zeroPosition, correctedWritePosition, correctedReadPosition);
 		}
 		
 		if (DEBUG) {
@@ -103,7 +127,7 @@ public class MinimalTuringMachine implements TuringMachine, Replayable<MinimalTu
 			System.out.println("--------------------------------------------------------------");
 		}
 //		return new double[1][result.length];
-		return new double[][]{result};
+		return result;
 	}
 	
 	public MinimalTuringMachineTimeStep getLastTimeStep(){
@@ -166,12 +190,12 @@ public class MinimalTuringMachine implements TuringMachine, Replayable<MinimalTu
 	@Override
 	public int getInputCount() {
 		// WriteKey, Interpolation, ToContentJump, Shift
-		return this.m + 2 + getShiftInputs();
+		return this.heads * (this.m + 2 + getShiftInputs());
 	}
 
 	@Override
 	public int getOutputCount() {
-		return this.m;
+		return this.m * this.heads;
 	}
 	
 	@Override
@@ -184,8 +208,8 @@ public class MinimalTuringMachine implements TuringMachine, Replayable<MinimalTu
 		StringBuilder b = new StringBuilder();
 		b.append(Utilities.toString(tape.toArray(new double[tape.size()][])));
 		b.append("\n");
-		b.append("Pointer=");
-		b.append(pointer);
+		b.append("Pointers=");
+		b.append(Arrays.toString(pointers));
 		return b.toString();
 	}
 
@@ -206,11 +230,11 @@ public class MinimalTuringMachine implements TuringMachine, Replayable<MinimalTu
 	}
 
 	private void printState() {
-		System.out.println("TM: " + Utilities.toString(tape.toArray(new double[tape.size()][]))+" pointer="+pointer);
+		System.out.println("TM: " + Utilities.toString(tape.toArray(new double[tape.size()][]))+" pointers="+Arrays.toString(pointers));
 	}
 
-	private void write(double[] content, double interp) {
-		tape.set(pointer, interpolate(content, tape.get(pointer), interp));
+	private void write(int head, double[] content, double interp) {
+		tape.set(pointers[head], interpolate(content, tape.get(pointers[head]), interp));
 	}
 
 	private double[] interpolate(double[] first, double[] second, double interp) {
@@ -220,8 +244,8 @@ public class MinimalTuringMachine implements TuringMachine, Replayable<MinimalTu
 		}
 		return result;
 	}
-
-	private void moveHead(double contentJump, double[] key, double[] shift) {
+	
+	private void performContentJump(int head, double contentJump, double[] key) {
 		if(contentJump >= 0.5) {
 			// JUMPING POINTER TO BEST MATCH
 			int bestPos = 0;
@@ -235,12 +259,14 @@ public class MinimalTuringMachine implements TuringMachine, Replayable<MinimalTu
 				}
 			}
 			
-			if(DEBUG) System.out.println("PERFORMING CONTENT JUMP! from "+this.pointer+" to "+bestPos);
+			if(DEBUG) System.out.println("PERFORMING CONTENT JUMP! from "+this.pointers[head]+" to "+bestPos);
 			
-			this.pointer = bestPos;
+			this.pointers[head] = bestPos;
 			
 		}
+	}
 
+	private void moveHead(int head, double[] shift) {
 		// SHIFTING
 		int highest;
 		switch(shiftMode){
@@ -255,15 +281,23 @@ public class MinimalTuringMachine implements TuringMachine, Replayable<MinimalTu
 
 		while (offset != 0) {
 			if (offset > 0) {
-				pointer++;
-				if (pointer >= tape.size()) {
+				pointers[head] = pointers[head] + 1;
+				
+				if (pointers[head] >= tape.size()) {
 					tape.addLast(new double[this.m]);
 				}
 			} else {
-				pointer--;
-				if (pointer < 0) {
+				pointers[head] = pointers[head] - 1;
+				if (pointers[head] < 0) {
 					tape.addFirst(new double[this.m]);
-					pointer = 0;
+					pointers[head] = 0;
+					
+					// Moving all other heads accordingly
+					for(int i = 0; i < heads; i++) {
+						if(i != head)
+							pointers[i] = pointers[i] + 1;
+					}
+					
 					increasedSizeDown = true;
 				}
 			}
@@ -272,8 +306,8 @@ public class MinimalTuringMachine implements TuringMachine, Replayable<MinimalTu
 		}
 	}
 
-	private double[] getRead() {
-		return tape.get(pointer).clone();
+	private double[] getRead(int head) {
+		return tape.get(pointers[head]).clone();
 	}
 
 }
