@@ -13,7 +13,7 @@ import com.anji.util.DummyConfiguration;
 import com.anji.util.Properties;
 
 import dk.itu.ejuuragr.domain.Simulator;
-import dk.itu.ejuuragr.domain.TMaze;
+import dk.itu.ejuuragr.domain.tmaze.TMaze;
 import dk.itu.ejuuragr.fitness.Controller;
 import dk.itu.ejuuragr.fitness.Utilities;
 import dk.itu.ejuuragr.graph.StaticMemoryFocusVisualizer;

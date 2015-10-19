@@ -6,8 +6,8 @@ import java.io.InputStreamReader;
 
 import com.anji.util.Properties;
 
-import dk.itu.ejuuragr.domain.RoundsTMaze;
-import dk.itu.ejuuragr.domain.TMaze;
+import dk.itu.ejuuragr.domain.tmaze.RoundsTMaze;
+import dk.itu.ejuuragr.domain.tmaze.TMaze;
 import dk.itu.ejuuragr.graph.TMazeVisualizer;
 import dk.itu.ejuuragr.graph.TMazeVisualizerAsNN;
 
