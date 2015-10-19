@@ -54,6 +54,7 @@ public abstract class BaseController implements Controller {
 		}
 		
 		double result = Math.max(0.0, totalScore);
+//		System.out.println("One Chromosome evaluated");
 		return result;
 	}
 	
