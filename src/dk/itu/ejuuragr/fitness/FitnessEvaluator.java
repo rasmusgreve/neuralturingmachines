@@ -152,10 +152,12 @@ public class FitnessEvaluator implements BulkFitnessFunction, Configurable {
 			// Prepare for multi-threading
 			cores = threading ? Runtime.getRuntime().availableProcessors() : 1;
 			controllers = new TuringController[cores];
-		}
-		if (threadPooling){
+		} else if (threadPooling){
 			threadPool = Executors.newCachedThreadPool();
 			cachedController = loadController(properties);
+		} else {
+			cores = 1;
+			controllers = new TuringController[1];
 		}
 		// Initialize
 		generation = 0;

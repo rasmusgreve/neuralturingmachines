@@ -19,9 +19,9 @@ import javax.swing.JFrame;
 
 import com.anji.util.Properties;
 
-import dk.itu.ejuuragr.domain.TMaze;
-import dk.itu.ejuuragr.domain.TMaze.MAP_TYPE;
-import dk.itu.ejuuragr.domain.TMaze.MazeMap;
+import dk.itu.ejuuragr.domain.tmaze.TMaze;
+import dk.itu.ejuuragr.domain.tmaze.TMaze.MAP_TYPE;
+import dk.itu.ejuuragr.domain.tmaze.TMaze.MazeMap;
 
 public class TMazeVisualizerAsNN {
 

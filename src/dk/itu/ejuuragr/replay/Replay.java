@@ -13,7 +13,7 @@ import com.anji.util.DummyConfiguration;
 import com.anji.util.Properties;
 
 import dk.itu.ejuuragr.domain.Simulator;
-import dk.itu.ejuuragr.domain.TMaze;
+import dk.itu.ejuuragr.domain.tmaze.TMaze;
 import dk.itu.ejuuragr.fitness.Controller;
 import dk.itu.ejuuragr.fitness.Utilities;
 import dk.itu.ejuuragr.graph.StaticMemoryFocusVisualizer;
@@ -37,7 +37,7 @@ public class Replay {
 		props.setProperty("base.dir", "./db");
 		Chromosome chrom = loadChromosome(args.length > 1 ? args[1] : prompt("Chromosome ID: "), props);
 		
-		props.setProperty("simulator.tmaze.rounds", "2");
+//		props.setProperty("simulator.tmaze.rounds", "2");
 		
 		//Setup activator
 		ActivatorTranscriber activatorFactory = (ActivatorTranscriber) props.singletonObjectProperty(ActivatorTranscriber.class);

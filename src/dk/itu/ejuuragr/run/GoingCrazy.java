@@ -5,7 +5,7 @@ import java.util.Arrays;
 
 import com.anji.util.Properties;
 
-import dk.itu.ejuuragr.domain.TMaze;
+import dk.itu.ejuuragr.domain.tmaze.TMaze;
 import dk.itu.ejuuragr.fitness.Utilities;
 
 public class GoingCrazy {

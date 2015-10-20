@@ -1,8 +1,8 @@
-package dk.itu.ejuuragr.domain;
-
-import java.util.Arrays;
+package dk.itu.ejuuragr.domain.tmaze;
 
 import com.anji.util.Properties;
+
+import dk.itu.ejuuragr.domain.tmaze.TMaze.MAP_TYPE;
 
 public class RoundsTMaze extends TMaze {
 	
@@ -18,7 +18,9 @@ public class RoundsTMaze extends TMaze {
 	private int curRound; // The current round number
 	private int totalScore; // The accumulated score over all rounds
 
-	private int goals[]; // for the toString method
+	private int goals[]; // for the switching
+	
+	private boolean isResetting = false;
 
 	public RoundsTMaze(Properties props) {
 		super(props);
@@ -46,6 +48,7 @@ public class RoundsTMaze extends TMaze {
 		totalScore = 0;
 		
 		switchSpots = new int[swapCount];
+		int goalCount = this.getMap().getOfType(MAP_TYPE.goal).size();
 		for (int i = 0; i < swapCount; i++){
 			//int swapSize = (int)(rounds * swapFraction);
 			int rawPoint = (int)((rounds/(swapCount+1.0))*(i+1));
@@ -53,12 +56,12 @@ public class RoundsTMaze extends TMaze {
 			if(SWAP_FIX)
 				fuzzedPoint -= swapRounds / 2;
 			switchSpots[i] = fuzzedPoint;
+			
+			// choose locations already
+			int nextGoal = getRandom().nextInt(goalCount-1);
+			this.goals[i+1] = nextGoal == this.goals[i] ? goalCount-1 : nextGoal;
 		}
-//		int swapArea = (int)(rounds * swapFraction); // The middle X rounds it can switch
-//		this.switchSpot = (rounds - swapArea) / 2 + getRandom().nextInt(swapArea+1);
 	}
-	
-	private boolean isResetting = false;
 
 	private int swapRound(int round){
 		for (int index = 0; index < switchSpots.length; index++) {
@@ -77,8 +80,7 @@ public class RoundsTMaze extends TMaze {
 			
 			int swapRound = swapRound(curRound);
 			if(swapRound > -1) {
-				super.swapGoal(false); // switch goal to another of the options
-				goals[swapRound+1] = getGoalId(goal);
+				super.swapGoal(goals[swapRound+1]); // switch goal to another of the options
 			}
 			return super.getInitialObservation();
 		}
@@ -136,5 +138,14 @@ public class RoundsTMaze extends TMaze {
 		sb.append("]");
 		
 		return sb.toString();
+	}
+	
+	public int getSwapCount() {
+		return this.swapCount;
+	}
+	
+	public void setSwaps(int[] newGoals) {
+		this.goal = this.getMap().getOfType(MAP_TYPE.goal).get(goals[0]);
+		this.goals = newGoals;
 	}
 }

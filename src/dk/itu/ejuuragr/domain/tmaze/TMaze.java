@@ -1,4 +1,4 @@
-package dk.itu.ejuuragr.domain;
+package dk.itu.ejuuragr.domain.tmaze;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
@@ -8,11 +8,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static dk.itu.ejuuragr.domain.TMaze.MAP_TYPE.*;
+import static dk.itu.ejuuragr.domain.tmaze.TMaze.MAP_TYPE.*;
 
 import javax.imageio.ImageIO;
 
 import com.anji.util.Properties;
+
+import dk.itu.ejuuragr.domain.BaseSimulator;
 
 /**
  * The classical T-Maze of Machine Learning for challenging
@@ -57,10 +59,6 @@ public class TMaze extends BaseSimulator {
 	
 	private int stepCounter;
 	private int finished = -1;
-
-
-
-
 	
 	/**
 	 * The required constructor to instantiate the Simulator through
@@ -215,6 +213,17 @@ public class TMaze extends BaseSimulator {
 	 */
 	public void swapGoal(boolean canBeSame) {
 		moveGoal(canBeSame);
+	}
+	
+	/**
+	 * Moves the goal from its current location to the
+	 * requested goal id, can also be the same as current.
+	 * @param goal_id The id of the new placement of the
+	 * goal.
+	 */
+	public void swapGoal(int goal_id) {
+		List<int[]> goals = map.getOfType(MAP_TYPE.goal);
+		goal = goals.get(goal_id);
 	}
 	
 	/**
