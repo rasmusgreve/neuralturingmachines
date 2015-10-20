@@ -73,7 +73,7 @@ public abstract class BaseController implements Controller {
 		}
 		
 		double result = Math.max(0.0, totalScore);
-		System.out.printf("One Chromosome evaluated: nn = %d ms, tm = %d ms, sim = %d ms (%d steps)\n",nnTime,contTime,simTime,steps);
+//		System.out.printf("One Chromosome evaluated: nn = %d ms, tm = %d ms, sim = %d ms (%d steps)\n",nnTime,contTime,simTime,steps);
 		return result;
 	}
 	

@@ -18,6 +18,7 @@ public class MinimalTuringMachine implements TuringMachine, Replayable<MinimalTu
 	private LinkedList<double[]> tape;
 	private int[] pointers;
 	private int m;
+	private int n;
 	private int shiftLength;
 	private String shiftMode;
 	private boolean enabled;
@@ -31,10 +32,9 @@ public class MinimalTuringMachine implements TuringMachine, Replayable<MinimalTu
 
 	private double[][] initialRead;
 
-
-
 	public MinimalTuringMachine(Properties props) {
 		this.m = props.getIntProperty("tm.m");
+		this.n = props.getIntProperty("tm.n", -1);
 		this.shiftLength = props.getIntProperty("tm.shift.length");
 		this.shiftMode = props.getProperty("tm.shift.mode", "multiple");
 		this.enabled = props.getBooleanProperty("tm.enabled", true);
@@ -293,25 +293,35 @@ public class MinimalTuringMachine implements TuringMachine, Replayable<MinimalTu
 
 		while (offset != 0) {
 			if (offset > 0) {
-				pointers[head] = pointers[head] + 1;
-				
-				if (pointers[head] >= tape.size()) {
-					tape.addLast(new double[this.m]);
-				}
-			} else {
-				pointers[head] = pointers[head] - 1;
-				if (pointers[head] < 0) {
-					tape.addFirst(new double[this.m]);
+				if(this.n > 0 && tape.size() >= this.n) {
 					pointers[head] = 0;
+				}else {
+					pointers[head] = pointers[head] + 1;
 					
-					// Moving all other heads accordingly
-					for(int i = 0; i < heads; i++) {
-						if(i != head)
-							pointers[i] = pointers[i] + 1;
+					if (pointers[head] >= tape.size()) {
+						tape.addLast(new double[this.m]);
 					}
-					
-					increasedSizeDown = true;
 				}
+	
+			} else {
+				if(this.n > 0 && tape.size() >= this.n) {
+					pointers[head] = tape.size()-1;
+				} else {
+					pointers[head] = pointers[head] - 1;
+					if (pointers[head] < 0) {
+						tape.addFirst(new double[this.m]);
+						pointers[head] = 0;
+						
+						// Moving all other heads accordingly
+						for(int i = 0; i < heads; i++) {
+							if(i != head)
+								pointers[i] = pointers[i] + 1;
+						}
+						
+						increasedSizeDown = true;
+					}
+				}
+
 			}
 
 			offset = offset > 0 ? offset - 1 : offset + 1; // Go closer to 0

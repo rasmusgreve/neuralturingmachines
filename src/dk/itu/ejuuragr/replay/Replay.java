@@ -73,10 +73,10 @@ public class Replay {
 					if (memViz != null){
 						memViz.update();
 					}
-//					while (true){
-//						if (mazeViz.getDoProgressAndReset())
-//							break;
-//					}
+					while (true){
+						if (mazeViz.getDoProgressAndReset())
+							break;
+					}
 				}
 				
 			});
