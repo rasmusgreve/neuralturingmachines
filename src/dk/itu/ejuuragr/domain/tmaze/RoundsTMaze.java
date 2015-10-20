@@ -2,8 +2,6 @@ package dk.itu.ejuuragr.domain.tmaze;
 
 import com.anji.util.Properties;
 
-import dk.itu.ejuuragr.domain.tmaze.TMaze.MAP_TYPE;
-
 public class RoundsTMaze extends TMaze {
 	
 	private static final boolean DEBUG = false; // True if it should print scores for each round
@@ -88,7 +86,7 @@ public class RoundsTMaze extends TMaze {
 		
 		if(super.isTerminated()){ // Round over
 			if(DEBUG) {
-				System.out.printf("Round %d: %d (G%s) step=%02d %s",curRound,super.getCurrentScore(),super.getGoalId(super.getPositionTile()),getStep(),swapRound(curRound) > -1 ? "~" : "");
+				System.out.printf("Round %d: %.0f (G%s) step=%02d %s",curRound,super.getCurrentScore(),super.getGoalId(super.getPositionTile()),getStep(),swapRound(curRound) > -1 ? "~" : "");
 				System.out.println();
 			}
 			this.totalScore += super.getCurrentScore();

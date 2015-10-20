@@ -6,11 +6,14 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 
 import static dk.itu.ejuuragr.domain.tmaze.TMaze.MAP_TYPE.*;
 
 import javax.imageio.ImageIO;
+
+import org.apache.commons.math3.util.Pair;
 
 import com.anji.util.Properties;
 
@@ -41,6 +44,8 @@ public class TMaze extends BaseSimulator {
  
 	// Things
 	private int maxSteps;
+	private int maxStepsPerNewTile;
+
 	
 	// The map
 	private MazeMap map;
@@ -58,7 +63,11 @@ public class TMaze extends BaseSimulator {
 	public int[] goal;
 	
 	private int stepCounter;
+	private HashSet<Pair<Integer, Integer>> visitedTiles;
+	
 	private int finished = -1;
+
+
 	
 	/**
 	 * The required constructor to instantiate the Simulator through
@@ -70,6 +79,7 @@ public class TMaze extends BaseSimulator {
 		highReward = props.getIntProperty("simulator.tmaze.reward.high", 10);
 		lowReward = props.getIntProperty("simulator.tmaze.reward.low", 1);
 		maxSteps = props.getIntProperty("simulator.steps.max", 50);
+		maxStepsPerNewTile = props.getIntProperty("simulator.steps.tile.max", 10);
 		SPEED = props.getDoubleProperty("simulator.tmaze.game.speed", 0.1);
 		SENSOR_CUTOFF = props.getIntProperty("simulator.tmaze.game.sensors.length", 3);
 		STEER_AMOUNT = (props.getIntProperty("simulator.tmaze.game.steer.max", 45) / 180.0) * Math.PI;
@@ -121,8 +131,12 @@ public class TMaze extends BaseSimulator {
 		steer(action[0]);
 		moveAgent();
 		
-		if(isWithinGoal())
+		if(isWithinGoal()) {
 			finished = stepCounter;
+		}
+		
+		
+		this.visitedTiles.add(new Pair<Integer,Integer>((int)location[0],(int)location[1]));
 		stepCounter++; // next round
 		
 		double[] obs = getObservation();
@@ -143,7 +157,10 @@ public class TMaze extends BaseSimulator {
 
 	@Override
 	public boolean isTerminated() {
-		return isInWall() || finishedLastStep() || stepCounter == maxSteps-1;
+		boolean result = isInWall() || finishedLastStep() || stepCounter >= maxSteps-1 || (stepCounter >= this.maxStepsPerNewTile * this.visitedTiles.size());
+//	if(result)
+//		System.out.println(this.visitedTiles.size());
+	return result;
 	}
 
 	// SPECIFIC PUBLIC METHODS
@@ -260,6 +277,7 @@ public class TMaze extends BaseSimulator {
 		location = new double[]{x, y};
 		angle = getInitialAngle();
 		stepCounter = 0;
+		this.visitedTiles = new HashSet<>();
 		finished = -1;
 	}
 	

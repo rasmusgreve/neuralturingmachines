@@ -12,7 +12,7 @@ import com.anji.integration.TranscriberException;
 import com.ojcoleman.ahni.hyperneat.HyperNEATEvolver;
 
 //TODO: Extend BulkFitnessFunctionMT instead
-public class HyperFitnessEvaluator extends BulkFitnessFunction {
+public class HyperTMazeEvaluator extends BulkFitnessFunction {
 
 	ExecutorService threadPool = Executors.newCachedThreadPool();;
 	

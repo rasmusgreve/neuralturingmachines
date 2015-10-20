@@ -32,6 +32,12 @@ public abstract class BaseController implements Controller {
 	public double evaluate(Activator nn) {
 		double totalScore = 0;
 		sim.reset();
+		int steps = 0;
+		
+		long time = System.currentTimeMillis();
+		long nnTime = 0;
+		long contTime = 0;
+		long simTime = 0;
 		
 		// For each iteration
 		for(int i = 0; i < iterations; i++) {
@@ -42,11 +48,24 @@ public abstract class BaseController implements Controller {
 			double[] simOutput = sim.getInitialObservation();
 			
 			while(!sim.isTerminated()){
+				time = System.currentTimeMillis();
+				
 				double[] nnOutput = this.activateNeuralNetwork(nn, simOutput, controllerOutput);
+				
+				nnTime += (System.currentTimeMillis() - time);
+				time = System.currentTimeMillis();
 				
 				// CopyTask can rely on the TM acting first
 				controllerOutput = this.getControllerResponse(Arrays.copyOfRange(nnOutput, sim.getInputCount(), nnOutput.length));
+				
+				contTime += (System.currentTimeMillis() - time);
+				time = System.currentTimeMillis();
+				
 				simOutput = this.getSimulationResponse(Arrays.copyOfRange(nnOutput, 0, sim.getInputCount()));
+				
+				simTime += (System.currentTimeMillis() - time);
+				time = System.currentTimeMillis();
+				steps++;
 			}
 
 			totalScore += sim.getCurrentScore();
@@ -54,7 +73,7 @@ public abstract class BaseController implements Controller {
 		}
 		
 		double result = Math.max(0.0, totalScore);
-//		System.out.println("One Chromosome evaluated");
+		System.out.printf("One Chromosome evaluated: nn = %d ms, tm = %d ms, sim = %d ms (%d steps)\n",nnTime,contTime,simTime,steps);
 		return result;
 	}
 	

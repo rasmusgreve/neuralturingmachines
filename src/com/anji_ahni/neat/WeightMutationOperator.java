@@ -103,7 +103,7 @@ public class WeightMutationOperator extends MutationOperator implements Configur
 		NeatConfiguration config = (NeatConfiguration) jgapConfig;
 		
 		// If bias is provided via an input to the network then just get connection alleles, otherwise get connection and neuron alleles.
-		List<Allele> alleles = config.biasViaInput() ? NeatChromosomeUtility.getConnectionList(target.getAlleles()) : new ArrayList(target.getAlleles());
+		List<Allele> alleles = config.biasViaInput() ? toAllele(NeatChromosomeUtility.getConnectionList(target.getAlleles())) : new ArrayList(target.getAlleles());
 		Collections.shuffle(alleles, config.getRandomGenerator());
 
 		if (!dbg) {
@@ -151,6 +151,12 @@ public class WeightMutationOperator extends MutationOperator implements Configur
 				}
 			}
 		}
+	}
+
+	private List<Allele> toAllele(List<ConnectionAllele> connectionList) {
+		ArrayList<Allele> result = new ArrayList<>(connectionList.size());
+		result.addAll(connectionList);
+		return result;//O(2N)
 	}
 
 	/**
