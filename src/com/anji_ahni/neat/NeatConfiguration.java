@@ -328,7 +328,7 @@ public class NeatConfiguration extends Configuration implements Configurable {
 		} else {
 			String selStr = props.getProperty(SELECTOR_CLASS_KEY, "auto").trim();
 			if (selStr.toLowerCase().equals("auto")) {
-				selStr = bulkFitnessFunc.getObjectiveCount() > 1 ? "com.ojcoleman.ahni.misc.NSGAIISelector" : "com.anji.integration.SimpleSelector";
+				selStr = bulkFitnessFunc.getObjectiveCount() > 1 ? "com.ojcoleman.ahni.misc.NSGAIISelector" : "com.anji_ahni.integration.SimpleSelector";
 				logger.info("Using " + selStr + " as the NaturalSelector.");
 			}
 			Class selCls;

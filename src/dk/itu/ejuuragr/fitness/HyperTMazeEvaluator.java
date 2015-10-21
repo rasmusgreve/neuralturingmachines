@@ -1,73 +1,166 @@
 package dk.itu.ejuuragr.fitness;
 
-import java.util.List;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.Iterator;
+import java.util.Map.Entry;
 
-import org.jgapcustomised.BulkFitnessFunction;
 import org.jgapcustomised.Chromosome;
 
-import com.anji.integration.TranscriberException;
-import com.ojcoleman.ahni.hyperneat.HyperNEATEvolver;
+import com.anji_ahni.integration.Activator;
+import com.ojcoleman.ahni.evaluation.BulkFitnessFunctionMT;
+import com.ojcoleman.ahni.hyperneat.Properties;
+import com.ojcoleman.ahni.util.Point;
 
-//TODO: Extend BulkFitnessFunctionMT instead
-public class HyperTMazeEvaluator extends BulkFitnessFunction {
+import dk.itu.ejuuragr.domain.tmaze.RoundsTMaze;
+import dk.itu.ejuuragr.turing.TuringController;
 
-	ExecutorService threadPool = Executors.newCachedThreadPool();;
+public class HyperTMazeEvaluator extends BulkFitnessFunctionMT {
+
+	private static final long serialVersionUID = 1L;
+	private RoundsTMaze tmaze;
+	private TuringController controller;
+	
+	private com.anji.util.Properties convertProps(Properties props){
+		com.anji.util.Properties anjiProps = new com.anji.util.Properties();
+		Iterator<Entry<Object, Object>> ite = props.entrySet().iterator();
+		while(ite.hasNext()){
+			Entry<Object, Object> item = ite.next();
+			anjiProps.put(item.getKey(), item.getValue());
+		}
+		return anjiProps;
+	}
+	
 	
 	@Override
-	public void evaluate(List<Chromosome> subjects) {
-//		subjects.get(0).setFitnessValue(a_newFitnessValue, objective);
+	public void init(Properties props) {
+		super.init(props);
+		com.anji.util.Properties anjiProps = convertProps(props);
+		tmaze = new RoundsTMaze(anjiProps);
+		controller = new TuringController(anjiProps, tmaze);
+	}
+
+	@Override
+	protected double evaluate(Chromosome genotype, Activator substrate, int evalThreadIndex) {
+		return _evaluate(genotype, substrate, null, false, false);
+	}
+
+	@Override
+	public void evaluate(Chromosome genotype, Activator substrate, String baseFileName, boolean logText, boolean logImage) {
+		_evaluate(genotype, substrate, baseFileName, logText, logImage);
+	}	
 		
-		//NOTES:
-		//selector.class defaults to auto which uses the overall fitness of the chromosome set via Chromosome.setFitnessValue(Double);
+	private class ActivatorProxy implements com.anji.integration.Activator{
+
+		private Activator substrate;
+		public ActivatorProxy(Activator substrate){
+			this.substrate = substrate;
+		}
 		
-//		final CountDownLatch latch = new CountDownLatch(list.size());
-//		for (Chromosome chrom : subjects){
-//			final Chromosome ch = chrom;
-//			threadPool.execute(new Runnable() {
-//				@Override
-//				public void run() {
-//					Controller controller = loadController(cachedProps);
-//					if (newSeedAfter > 0)
-//						controller.getSimulator().setRandomOffset(generation / newSeedAfter);
-//					double score;
-//					try {
-//						score = controller.evaluate(activatorFactory.newActivator(ch));
-//						ch.setFitnessValue((int)score);
-//						latch.countDown();
-//					} catch (TranscriberException e) {
-//						throw new RuntimeException(e);
-//					}
+		@Override
+		public String getXmlRootTag() {
+			return substrate.getXmlRootTag();
+		}
+
+		@Override
+		public String getXmld() {
+			return substrate.getXmld();
+		}
+
+		@Override
+		public double[] next() {
+			return (double[])substrate.next();
+		}
+
+		@Override
+		public double[] next(double[] stimuli) {
+			return substrate.next(stimuli);
+		}
+
+		@Override
+		public double[][] next(double[][] stimuli) {
+			return substrate.next(stimuli);
+		}
+
+		@Override
+		public String toXml() {
+			return substrate.toXml();
+		}
+
+		@Override
+		public void reset() {
+			substrate.reset();
+		}
+
+		@Override
+		public String getName() {
+			return substrate.getName();
+		}
+
+		@Override
+		public double getMinResponse() {
+			return substrate.getMinResponse();
+		}
+
+		@Override
+		public double getMaxResponse() {
+			return substrate.getMaxResponse();
+		}
+
+		@Override
+		public int getInputDimension() {
+			return substrate.getInputCount();
+		}
+
+		@Override
+		public int getOutputDimension() {
+			return substrate.getOutputCount();
+		}
+		
+	}
+	
+	public double _evaluate(Chromosome genotype, Activator substrate, String baseFileName, boolean logText, boolean logImage) {
+		ActivatorProxy proxy = new ActivatorProxy(substrate);
+		//controller.reset();
+		double fitness = controller.evaluate(proxy);
+		genotype.setFitnessValue(fitness);
+		return fitness;
+	}
+	
+	@Override
+	public int[] getLayerDimensions(int layer, int totalLayerCount) {
+		if (layer == 0) // Input layer.
+			// 3 range sensors plus reward plus TM 1+2.
+			return new int[] { 3+1+2, 1 };
+		else if (layer == totalLayerCount - 1) { // Output layer.
+			return new int[] { 1+2+5, 1 }; // 1 Domain (S), 2 TM data, 5 TM control (W,J,L,S,R)
+		}
+		return null;
+	}
+
+	@Override
+	public Point[] getNeuronPositions(int layer, int totalLayerCount) {
+		// Coordinates are given in unit ranges and translated to whatever range is specified by the
+		// experiment properties.
+		Point[] positions = null;
+		if (layer == 0) { // Input layer.
+//			positions = new Point[6];
+//			positions[0] = new Point(0, 0, 0);
+//			positions[1] = new Point(0, 1, 0);
+//			positions[2] = new Point(1, 0, 0);
+//			positions[3] = new Point(1, 1, 0);
+//			positions[4] = new Point(1, 1, 0);
+//			positions[5] = new Point(1, 1, 0);
+//		} else if (layer == totalLayerCount - 1) { // Output layer.
+//			if (outputType == OutputType.SINGLE) {
+//				positions = new Point[] { new Point(0.5, 0.5, 1) };
+//			} else {
+//				positions = new Point[3];
+//				// Action to perform next (left, forward, right).
+//				for (int i = 0; i < 3; i++) {
+//					positions[i] = new Point((double) i / 2, 0.5, 1);
 //				}
-//			});
-//		};
-//		try {
-//			latch.await(); // Wait for countdown
-//		} catch (InterruptedException e) {
-//			e.printStackTrace();
-//		}
-		
-		
-		
-	}
-
-	@Override
-	public boolean endRun() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public void dispose() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void evolutionFinished(HyperNEATEvolver evolver) {
-		//Deprecated - do not implement
+//			}
+		}
+		return positions;
 	}
 
 }
