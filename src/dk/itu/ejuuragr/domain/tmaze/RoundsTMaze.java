@@ -20,6 +20,8 @@ public class RoundsTMaze extends TMaze {
 	
 	private boolean isResetting = false;
 
+	private RestartListener listener; // Hack for letting the controller know 
+
 	public RoundsTMaze(Properties props) {
 		super(props);
 		int roundsPerPer = props.getIntProperty("simulator.tmaze.rounds", 10);
@@ -59,6 +61,9 @@ public class RoundsTMaze extends TMaze {
 			int nextGoal = getRandom().nextInt(goalCount-1);
 			this.goals[i+1] = nextGoal == this.goals[i] ? goalCount-1 : nextGoal;
 		}
+		
+		if(this.listener != null)
+			this.listener.onRestart(this);
 	}
 
 	private int swapRound(int round){
@@ -143,7 +148,13 @@ public class RoundsTMaze extends TMaze {
 	}
 	
 	public void setSwaps(int[] newGoals) {
-		this.goal = this.getMap().getOfType(MAP_TYPE.goal).get(goals[0]);
+		super.swapGoal(newGoals[0]);
 		this.goals = newGoals;
+	}
+	
+	public void setRestartListener(RestartListener listener) { this.listener = listener; }
+	
+	public interface RestartListener {
+		void onRestart(RoundsTMaze tmaze);
 	}
 }
