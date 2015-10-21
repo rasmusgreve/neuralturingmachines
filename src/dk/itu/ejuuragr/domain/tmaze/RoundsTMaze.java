@@ -4,7 +4,7 @@ import com.anji.util.Properties;
 
 public class RoundsTMaze extends TMaze {
 	
-	private static final boolean DEBUG = false; // True if it should print scores for each round
+	private static final boolean DEBUG = true; // True if it should print scores for each round
 
 	private final boolean SWAP_FIX;
 	private double swapFraction; // The center fraction of the stepLength
@@ -22,6 +22,10 @@ public class RoundsTMaze extends TMaze {
 
 	private RestartListener listener; // Hack for letting the controller know 
 
+	private final int numGoals;
+	private int timesExplored;
+	private int maxScore;
+
 	public RoundsTMaze(Properties props) {
 		super(props);
 		int roundsPerPer = props.getIntProperty("simulator.tmaze.rounds", 10);
@@ -29,9 +33,12 @@ public class RoundsTMaze extends TMaze {
 		this.swapCount = props.getIntProperty("simulator.tmaze.swap.swapcount",1);
 		this.SWAP_FIX = props.getBooleanProperty("simulator.tmaze.swapfix", false);
 		
-		int pairGoals = this.getMap().getOfType(MAP_TYPE.goal).size() / 2;
+		this.numGoals = this.getMap().getOfType(MAP_TYPE.goal).size();
+		int pairGoals = numGoals / 2;
 		this.rounds = roundsPerPer * (swapCount+1) * pairGoals;
 		this.swapRounds = (int) (this.swapFraction * roundsPerPer * pairGoals); // For each swap
+		
+		this.maxScore = (rounds - (this.numGoals-1) * (swapCount+1)) * super.getHighReward();
 		
 //		System.out.println("Rounds: "+this.rounds);
 //		System.out.println("Swap Rounds: "+this.swapRounds);
@@ -46,6 +53,7 @@ public class RoundsTMaze extends TMaze {
 		this.goals[0] = getGoalId(goal);
 		curRound = 0;
 		totalScore = 0;
+		timesExplored = 0;
 		
 		switchSpots = new int[swapCount];
 		int goalCount = this.getMap().getOfType(MAP_TYPE.goal).size();
@@ -94,7 +102,20 @@ public class RoundsTMaze extends TMaze {
 				System.out.printf("Round %d: %.0f (G%s) step=%02d %s",curRound,super.getCurrentScore(),super.getGoalId(super.getPositionTile()),getStep(),swapRound(curRound) > -1 ? "~" : "");
 				System.out.println();
 			}
-			this.totalScore += super.getCurrentScore();
+			// Determine score
+			if(swapRound(curRound) > -1) {
+				this.timesExplored = 0;
+			}
+			
+			if(this.timesExplored < this.numGoals - 1) {
+				this.timesExplored++;
+				if(DEBUG) System.out.println("> Ok, exploring");
+			} else { // You should know this one
+				this.totalScore += super.getCurrentScore();
+				if(DEBUG) System.out.println("> You should know");
+			}
+
+			
 			isResetting = true;
 		}
 		
@@ -116,7 +137,7 @@ public class RoundsTMaze extends TMaze {
 
 	@Override
 	public int getMaxScore() {
-		return super.getMaxScore() * rounds;
+		return maxScore;
 	}
 	
 	@Override
