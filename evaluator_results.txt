@@ -19,6 +19,7 @@ initial.topology.num.hidden.neurons : 0
 fitness.threshold : 0.7
 persist.last : true
 log4j.appender.A1.layout.ConversionPattern : %-5p %m%x%n
+simulator.steps.tile.max : 20
 log4j.rootLogger : INFO, A1
 initial.topology.activation.input : linear
 initial.topology.fully.connected : true
@@ -27,6 +28,7 @@ weight.mutation.rate : 0.6
 weight.min : -10.0
 run.name : tmaze26
 controller.class : dk.itu.ejuuragr.turing.TuringController
+replay.simulator.class : dk.itu.ejuuragr.domain.tmaze.RoundsTMaze
 add.connection.mutation.rate : 0.02
 topology.mutation.classic : true
 simulator.tmaze.swap.fraction : 0.6
@@ -35,7 +37,7 @@ id.file : ./db/id.xml
 persistence.class : com.anji.persistence.FilePersistence
 simulator.tmaze.reward.low : 1
 tm.shift.mode : multiple
-tm.n : 10
+tm.n : 100
 chrom.compat.common.coeff : 0.4
 tm.m : 2
 selector.elitism.min.specie.size : 2
@@ -47,21 +49,22 @@ simulator.tmaze.game.steer.max : 45
 tm.heads.write : 1
 ann.type : anji
 log4j.appender.A1 : org.apache.log4j.ConsoleAppender
-simulator.tmaze.swapfix : false
+simulator.tmaze.swapfix : true
 base.dir : ./db
 selector.elitism : true
 simulator.tmaze.game.speed : 0.1
 tm.heads.read : 1
-tm.class : dk.itu.ejuuragr.turing.GravesTuringMachine
+tm.class : dk.itu.ejuuragr.turing.MinimalTuringMachine
 weight.mutation.std.dev : 3
 remove.connection.max.weight : 5
-simulate.generations.identical : -1
+simulate.generations.identical : 1
 initial.topology.activation : sigmoid
 controller.iterations : 1
 thread.pooling : true
 selector.roulette : false
 neat.id.file : ./db/neatid.xml
-fitness.target : 0.8499
+tm.heads.readwrite : 1
+fitness.target : 0.87
 persistence.base.dir : ./db
 tm.shift.length : 3
 simulator.tmaze.reward.high : 10
@@ -71,8 +74,8 @@ threading : false
 persist.champions : true
 simulator.tmaze.rounds : 5
 remove.connection.mutation.rate : 0.05
-tm.enabled : false
-simulator.class : dk.itu.ejuuragr.domain.RoundsTMaze
+tm.enabled : true
+simulator.class : dk.itu.ejuuragr.domain.tmaze.PermutationsTMaze
 random.seed : 0
 --------------------------------------------------
-[0,280000 - 0,820000] mean: 0,579322 +- 0,165820
+[0,190000 - 1,000000] mean: 0,600985 +- 0,266230

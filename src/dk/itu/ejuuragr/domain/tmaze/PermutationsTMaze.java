@@ -69,10 +69,11 @@ public class PermutationsTMaze extends RoundsTMaze {
 			this.totalScore += score;
 			completedRounds++;
 			
-			super.restart();
-			this.incrementPermutation();
-			this.enforcePermutation();
-			
+			if(!this.isTerminated()) {
+				super.restart();
+				this.incrementPermutation();
+				this.enforcePermutation();
+			}
 		}
 		
 		return superResult;

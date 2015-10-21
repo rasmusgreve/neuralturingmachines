@@ -59,7 +59,7 @@ public class Evaluator {
 		Activator activator = activatorFactory.newActivator(chrom);
 	
 		//Initiate simulator and controller from properties to test their types
-		Simulator simulator = (Simulator) Utilities.instantiateObject(props.getProperty("simulator.class"),new Object[]{props},null);
+		Simulator simulator = (Simulator) Utilities.instantiateObject(props.getProperty("replay.simulator.class", props.getProperty("simulator.class")),new Object[]{props},null);
 		Controller controller = (Controller) Utilities.instantiateObject(props.getProperty("controller.class"),new Object[]{props,simulator}, new Class<?>[]{Properties.class,Simulator.class});
 	
 		

@@ -44,7 +44,7 @@ public class Replay {
 		Activator activator = activatorFactory.newActivator(chrom);
 	
 		//Initiate simulator and controller from properties to test their types
-		Simulator simulator = (Simulator) Utilities.instantiateObject(props.getProperty("simulator.class"),new Object[]{props},null);
+		Simulator simulator = (Simulator) Utilities.instantiateObject(props.getProperty("replay.simulator.class",props.getProperty("simulator.class")),new Object[]{props},null);
 		simulator.reset();
 		simulator.restart();
 		StepSimulator stepSim = new StepSimulator(simulator);
@@ -91,7 +91,7 @@ public class Replay {
 			
 			Recording<?> recording = ((TuringControllerRecorder)controller).getRecording();
 //			new StaticReplayVisualizer(recording).show();
-			new StaticMemoryFocusVisualizer(recording).show();
+//			new StaticMemoryFocusVisualizer(recording).show();
 //			new StepReplayVisualizer(recording).show();
 //			new ReplayStepVisualizer().show((List<TimeStep<GravesTuringMachineTimeStep>>)timeSteps);
 		}

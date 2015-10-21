@@ -5,6 +5,7 @@ import java.util.Arrays;
 import com.anji.util.Properties;
 
 import dk.itu.ejuuragr.domain.Simulator;
+import dk.itu.ejuuragr.domain.tmaze.RoundsTMaze;
 import dk.itu.ejuuragr.fitness.BaseController;
 import dk.itu.ejuuragr.fitness.Utilities;
 
@@ -17,7 +18,7 @@ import dk.itu.ejuuragr.fitness.Utilities;
  * @author Emil
  *
  */
-public class TuringController extends BaseController {
+public class TuringController extends BaseController implements RoundsTMaze.RestartListener {
 
 	protected TuringMachine tm;
 
@@ -31,6 +32,10 @@ public class TuringController extends BaseController {
 		super(props,sim);
 		// Initialize everything (using properties)
 		this.tm = (TuringMachine) Utilities.instantiateObject(props.getProperty("tm.class"), new Object[]{props}, null);
+		
+		if(this.sim instanceof RoundsTMaze) {
+			((RoundsTMaze)sim).setRestartListener(this);
+		}
 	}
 
 	@Override
@@ -55,5 +60,10 @@ public class TuringController extends BaseController {
 	
 	public TuringMachine getTuringMachine() {
 		return tm;
+	}
+
+	@Override
+	public void onRestart(RoundsTMaze tmaze) {
+		this.reset();
 	}
 }

@@ -6,6 +6,7 @@ import com.anji.integration.Activator;
 import com.anji.util.Properties;
 
 import dk.itu.ejuuragr.domain.Simulator;
+import dk.itu.ejuuragr.domain.tmaze.RoundsTMaze;
 
 /**
  * Abstracts the flow of evaluating away from subclasses
