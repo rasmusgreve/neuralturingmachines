@@ -6,7 +6,7 @@ import com.anji.util.Properties;
 
 public class RoundsTMaze extends TMaze {
 	
-	private static final boolean DEBUG = true; // True if it should print scores for each round
+	private static final boolean DEBUG = false; // True if it should print scores for each round
 
 	private final boolean SWAP_FIX;
 	private double swapFraction; // The center fraction of the stepLength
@@ -28,12 +28,15 @@ public class RoundsTMaze extends TMaze {
 	private HashSet<Integer> highCanBeIn;
 	private int maxScore;
 
+	private int mistakePenalty;
+
 	public RoundsTMaze(Properties props) {
 		super(props);
-		int roundsPerPer = props.getIntProperty("simulator.tmaze.rounds", 10);
+		int roundsPerPer = props.getIntProperty("simulator.tmaze.rounds", 5);
 		this.swapFraction = props.getDoubleProperty("simulator.tmaze.swap.fraction", 0.3);
 		this.swapCount = props.getIntProperty("simulator.tmaze.swap.swapcount",1);
 		this.SWAP_FIX = props.getBooleanProperty("simulator.tmaze.swapfix", false);
+		this.mistakePenalty = props.getIntProperty("simulator.tmaze.mistake.penalty", 0);
 		
 		this.numGoals = this.getMap().getOfType(MAP_TYPE.goal).size();
 		int pairGoals = numGoals / 2;
@@ -125,8 +128,10 @@ public class RoundsTMaze extends TMaze {
 				if(DEBUG) System.out.println("> Exploiting: SUCCESS");
 				
 			} else if(this.highCanBeIn.size() == 1 && !this.highCanBeIn.contains(curGoal)){ // Revisit, MISTAKE
+				this.totalScore -= this.mistakePenalty;
 				if(DEBUG) System.out.println("> Exploiting: MISTAKE! (know the right one)");
 			} else if(!this.highCanBeIn.contains(curGoal)) { // Exploring multiple times
+				this.totalScore -= this.mistakePenalty;
 				if (DEBUG) System.out.println("> Exploring: MISTAKE! (explored before)");
 			} else if(super.isInHighGoal()) { // Found right by chance
 				this.highCanBeIn.clear();
