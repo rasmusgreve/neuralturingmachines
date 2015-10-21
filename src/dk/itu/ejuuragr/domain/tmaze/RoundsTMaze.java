@@ -1,5 +1,7 @@
 package dk.itu.ejuuragr.domain.tmaze;
 
+import java.util.HashSet;
+
 import com.anji.util.Properties;
 
 public class RoundsTMaze extends TMaze {
@@ -23,7 +25,7 @@ public class RoundsTMaze extends TMaze {
 	private RestartListener listener; // Hack for letting the controller know 
 
 	private final int numGoals;
-	private int timesExplored;
+	private HashSet<Integer> highCanBeIn;
 	private int maxScore;
 
 	public RoundsTMaze(Properties props) {
@@ -39,6 +41,7 @@ public class RoundsTMaze extends TMaze {
 		this.swapRounds = (int) (this.swapFraction * roundsPerPer * pairGoals); // For each swap
 		
 		this.maxScore = (rounds - (this.numGoals-1) * (swapCount+1)) * super.getHighReward();
+		this.highCanBeIn = new HashSet<>(this.numGoals);
 		
 //		System.out.println("Rounds: "+this.rounds);
 //		System.out.println("Swap Rounds: "+this.swapRounds);
@@ -53,7 +56,7 @@ public class RoundsTMaze extends TMaze {
 		this.goals[0] = getGoalId(goal);
 		curRound = 0;
 		totalScore = 0;
-		timesExplored = 0;
+		resetHashSet();
 		
 		switchSpots = new int[swapCount];
 		int goalCount = this.getMap().getOfType(MAP_TYPE.goal).size();
@@ -72,6 +75,12 @@ public class RoundsTMaze extends TMaze {
 		
 		if(this.listener != null)
 			this.listener.onRestart(this);
+	}
+
+	private void resetHashSet() {
+		highCanBeIn.clear();
+		for(int i = 0; i < numGoals; i++)
+			highCanBeIn.add(i);
 	}
 
 	private int swapRound(int round){
@@ -104,17 +113,30 @@ public class RoundsTMaze extends TMaze {
 			}
 			// Determine score
 			if(swapRound(curRound) > -1) {
-				this.timesExplored = 0;
+				resetHashSet();
 			}
 			
-			if(this.timesExplored < this.numGoals - 1) {
-				this.timesExplored++;
-				if(DEBUG) System.out.println("> Ok, exploring");
-			} else { // You should know this one
+			int curGoal = super.getGoalId(super.getPositionTile());
+			
+			if(curGoal < 0) { // Stop hitting the wall...
+				if(DEBUG) System.out.println("> Crash");
+			}else if(this.highCanBeIn.size() == 1 && this.highCanBeIn.contains(curGoal)) { // You should know this one
 				this.totalScore += super.getCurrentScore();
-				if(DEBUG) System.out.println("> You should know");
+				if(DEBUG) System.out.println("> Exploiting: SUCCESS");
+				
+			} else if(this.highCanBeIn.size() == 1 && !this.highCanBeIn.contains(curGoal)){ // Revisit, MISTAKE
+				if(DEBUG) System.out.println("> Exploiting: MISTAKE! (know the right one)");
+			} else if(!this.highCanBeIn.contains(curGoal)) { // Exploring multiple times
+				if (DEBUG) System.out.println("> Exploring: MISTAKE! (explored before)");
+			} else if(super.isInHighGoal()) { // Found right by chance
+				this.highCanBeIn.clear();
+				this.highCanBeIn.add(curGoal);
+					
+				if(DEBUG) System.out.println("> Exploring: Found");
+			} else { // Didn't find correct one by chance
+				this.highCanBeIn.remove(curGoal);
+				if(DEBUG) System.out.println("> Exploring: Miss");
 			}
-
 			
 			isResetting = true;
 		}
