@@ -1,0 +1,97 @@
+digraph G {
+	rankdir=LR;
+	ranksep=2;
+	dpi=200
+	node [height=1, width=1]
+
+	subgraph ins {
+		rank=same;
+		node [color="#BBBBFF", style=filled, shape=circle];
+		Start;
+		Boundary;
+		E1[label="E 1-8"];
+		M1[label="TM 1-8"];
+		M9[label="TM 9"];
+		M10[label="TM 10"];
+		M11[label="TM 11"];
+		Bias;
+	}
+
+	subgraph outs {
+		rank=same;
+		node [color="#FFBBBB", style=filled, shape=circle];
+		Eo1[label="E 1-8"];
+		Mo1[label="TM 1-8"];
+		Mo9[label="TM 9"];
+		Mo10[label="TM 10"];
+		Mo11[label="TM 11"];
+		Write;
+		Jump;
+		Left;
+		Stay;
+		Right;
+	}
+
+	node [shape=circle];
+
+	Bias -> Write [label="5,00"];
+	Start -> Mo9 [label="10,00"];
+	Bias -> Mo1 [label="-5,00"];
+	Bias -> Right [label="10,00"];
+	Boundary -> Mo9 [label="10,00"];
+	Bias -> Jump [label="-5,00"];
+	Bias -> Mo9 [label="-5,00"];
+	M1 -> Eo1 [label="10,00"];
+	E1 -> Mo1 [label="10,00"];
+	Bias -> Eo1 [label="-5,00"];
+	Boundary -> Jump [label="10,00"];
+
+	edge [style=invis]
+	M1 -> E1;
+	E1 -> Start;
+	Start -> Boundary;
+	Boundary -> Bias;
+	Bias -> M9;
+	M9 -> M10;
+	M10 -> M11;
+	
+	Eo1 -> Mo1;
+	Eo1 -> Mo9;
+	Eo1 -> Mo10;
+	Eo1 -> Write;
+	Eo1 -> Jump;
+	Eo1 -> Left;
+	Eo1 -> Stay;
+	Eo1 -> Right;
+	Mo1 -> Mo9;
+	Mo1 -> Mo10;
+	Mo1 -> Write;
+	Mo1 -> Jump;
+	Mo1 -> Left;
+	Mo1 -> Stay;
+	Mo1 -> Right;
+	Mo9 -> Mo10;
+	Mo9 -> Write;
+	Mo9 -> Jump;
+	Mo9 -> Left;
+	Mo9 -> Stay;
+	Mo9 -> Right;
+	Mo10 -> Write;
+	Mo10 -> Jump;
+	Mo10 -> Left;
+	Mo10 -> Stay;
+	Mo10 -> Right;
+	Mo10 -> Mo11;
+	Mo11 -> Write;
+	Write -> Jump;
+	Write -> Left;
+	Write -> Stay;
+	Write -> Right;
+	Jump -> Left;
+	Jump -> Stay;
+	Jump -> Right;
+	Left -> Stay;
+	Left -> Right;
+	Stay -> Right;
+
+}
