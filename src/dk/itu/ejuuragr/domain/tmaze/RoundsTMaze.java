@@ -6,7 +6,7 @@ import com.anji.util.Properties;
 
 public class RoundsTMaze extends TMaze {
 	
-	private static final boolean DEBUG = true; // True if it should print scores for each round
+	private static final boolean DEBUG = false; // True if it should print scores for each round
 
 	private final boolean SWAP_FIX;
 	private double swapFraction; // The center fraction of the stepLength
