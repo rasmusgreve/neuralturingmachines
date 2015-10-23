@@ -6,7 +6,7 @@ import com.anji.util.Properties;
 
 public class RoundsTMaze extends TMaze {
 	
-	private static final boolean DEBUG = false; // True if it should print scores for each round
+	private static final boolean DEBUG = true; // True if it should print scores for each round
 
 	private final boolean SWAP_FIX;
 	private double swapFraction; // The center fraction of the stepLength
@@ -27,15 +27,12 @@ public class RoundsTMaze extends TMaze {
 	private final int numGoals;
 	private HashSet<Integer> highCanBeIn;
 
-	private int mistakePenalty;
-
 	public RoundsTMaze(Properties props) {
 		super(props);
 		int roundsPerPer = props.getIntProperty("simulator.tmaze.rounds", 5);
 		this.swapFraction = props.getDoubleProperty("simulator.tmaze.swap.fraction", 0.3);
 		this.swapCount = props.getIntProperty("simulator.tmaze.swap.swapcount",1);
 		this.SWAP_FIX = props.getBooleanProperty("simulator.tmaze.swapfix", false);
-		this.mistakePenalty = props.getIntProperty("simulator.tmaze.mistake.penalty", 0);
 		
 		this.numGoals = this.getMap().getOfType(MAP_TYPE.goal).size();
 		int pairGoals = numGoals / 2;
