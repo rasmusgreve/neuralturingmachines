@@ -4,6 +4,8 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 
+import com.anji_ahni.integration.Activator;
+
 
 public class Utilities {
 
@@ -238,6 +240,76 @@ public class Utilities {
 //		System.out.println(sum+","+usum+","+vsum);
 		return sum / Math.sqrt(usum * vsum);
 	}
+	
+	public static class ActivatorProxy implements com.anji.integration.Activator{
+
+		private Activator substrate;
+		public ActivatorProxy(Activator substrate){
+			this.substrate = substrate;
+		}
+		
+		@Override
+		public String getXmlRootTag() {
+			return substrate.getXmlRootTag();
+		}
+
+		@Override
+		public String getXmld() {
+			return substrate.getXmld();
+		}
+
+		@Override
+		public double[] next() {
+			return (double[])substrate.next();
+		}
+
+		@Override
+		public double[] next(double[] stimuli) {
+			return substrate.next(stimuli);
+		}
+
+		@Override
+		public double[][] next(double[][] stimuli) {
+			return substrate.next(stimuli);
+		}
+
+		@Override
+		public String toXml() {
+			return substrate.toXml();
+		}
+
+		@Override
+		public void reset() {
+			substrate.reset();
+		}
+
+		@Override
+		public String getName() {
+			return substrate.getName();
+		}
+
+		@Override
+		public double getMinResponse() {
+			return substrate.getMinResponse();
+		}
+
+		@Override
+		public double getMaxResponse() {
+			return substrate.getMaxResponse();
+		}
+
+		@Override
+		public int getInputDimension() {
+			return substrate.getInputCount();
+		}
+
+		@Override
+		public int getOutputDimension() {
+			return substrate.getOutputCount();
+		}
+		
+	}
+	
 
 	/**
 	 * Just testing some stuff

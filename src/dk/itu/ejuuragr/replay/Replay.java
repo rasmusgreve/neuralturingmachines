@@ -1,21 +1,31 @@
 package dk.itu.ejuuragr.replay;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.charset.Charset;
+import java.util.Iterator;
+import java.util.Map.Entry;
 
+import org.apache.commons.io.IOUtils;
 import org.jgap.Chromosome;
+import org.jgapcustomised.ChromosomeMaterial;
 
 import com.anji.integration.Activator;
 import com.anji.integration.ActivatorTranscriber;
 import com.anji.persistence.FilePersistence;
 import com.anji.util.DummyConfiguration;
 import com.anji.util.Properties;
+import com.anji_ahni.integration.Transcriber;
+import com.ojcoleman.ahni.transcriber.HyperNEATTranscriberBain;
 
 import dk.itu.ejuuragr.domain.Simulator;
 import dk.itu.ejuuragr.domain.tmaze.TMaze;
 import dk.itu.ejuuragr.fitness.Controller;
 import dk.itu.ejuuragr.fitness.Utilities;
+import dk.itu.ejuuragr.fitness.Utilities.ActivatorProxy;
 import dk.itu.ejuuragr.graph.StaticMemoryFocusVisualizer;
 import dk.itu.ejuuragr.graph.TMazeStepReplayVisualizer;
 import dk.itu.ejuuragr.graph.TMazeVisualizer;
@@ -24,6 +34,17 @@ import dk.itu.ejuuragr.turing.TuringController;
 
 public class Replay {
 
+	private static com.ojcoleman.ahni.hyperneat.Properties convertProps(Properties props){
+		com.ojcoleman.ahni.hyperneat.Properties anjiProps = new com.ojcoleman.ahni.hyperneat.Properties();
+		Iterator<Entry<Object, Object>> ite = props.entrySet().iterator();
+		while(ite.hasNext()){
+			Entry<Object, Object> item = ite.next();
+			anjiProps.put(item.getKey(), item.getValue());
+		}
+		return anjiProps;
+	}
+	
+	
 	public static void main(String[] args) throws Exception {
 		if (args.length == 0){
 			args = getArgsFromStdIn();
@@ -35,13 +56,35 @@ public class Replay {
 			propsFilename += ".properties";
 		Properties props = new Properties(propsFilename);
 		props.setProperty("base.dir", "./db");
-		Chromosome chrom = loadChromosome(args.length > 1 ? args[1] : prompt("Chromosome ID: "), props);
 		
-//		props.setProperty("simulator.tmaze.rounds", "2");
+		//Load activator
+		Activator activator;
 		
-		//Setup activator
-		ActivatorTranscriber activatorFactory = (ActivatorTranscriber) props.singletonObjectProperty(ActivatorTranscriber.class);
-		Activator activator = activatorFactory.newActivator(chrom);
+		String chromFile = prompt("Chromosome ID: ");
+		if (new File("db/chromosome/"+chromFile+".ahni.xml").exists()){
+			String seedStr = IOUtils.toString(new FileInputStream("db/chromosome/"+chromFile+".ahni.xml"), Charset.defaultCharset());
+			ChromosomeMaterial seedMaterial = ChromosomeMaterial.fromXML(seedStr);
+			
+			HyperNEATTranscriberBain trans = new HyperNEATTranscriberBain(convertProps(props));
+			//com.anji_ahni.integration.Transcriber transcriber = (com.anji_ahni.integration.Transcriber) props.singletonObjectProperty("ann.transcriber");
+			org.jgapcustomised.Chromosome chrom = new org.jgapcustomised.Chromosome(seedMaterial, 10L, 1, 1);
+			activator = new ActivatorProxy(trans.transcribe(chrom, null));
+			
+		}
+		else
+		{
+			Chromosome chrom = loadChromosome(chromFile, props);
+			
+			//Setup activator
+			ActivatorTranscriber activatorFactory = (ActivatorTranscriber) props.singletonObjectProperty(ActivatorTranscriber.class);
+			activator = activatorFactory.newActivator(chrom);
+		}
+//		Chromosome chrom = loadChromosome(args.length > 1 ? args[1] : prompt("Chromosome ID: "), props);
+//		
+//		
+//		//Setup activator
+//		ActivatorTranscriber activatorFactory = (ActivatorTranscriber) props.singletonObjectProperty(ActivatorTranscriber.class);
+//		Activator activator = activatorFactory.newActivator(chrom);
 	
 		//Initiate simulator and controller from properties to test their types
 		Simulator simulator = (Simulator) Utilities.instantiateObject(props.getProperty("replay.simulator.class",props.getProperty("simulator.class")),new Object[]{props},null);

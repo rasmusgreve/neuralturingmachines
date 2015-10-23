@@ -11,6 +11,7 @@ import com.ojcoleman.ahni.hyperneat.Properties;
 import com.ojcoleman.ahni.util.Point;
 
 import dk.itu.ejuuragr.domain.tmaze.RoundsTMaze;
+import dk.itu.ejuuragr.fitness.Utilities.ActivatorProxy;
 import dk.itu.ejuuragr.turing.TuringController;
 
 public class HyperTMazeEvaluator extends BulkFitnessFunctionMT {
@@ -50,74 +51,7 @@ public class HyperTMazeEvaluator extends BulkFitnessFunctionMT {
 		_evaluate(genotype, substrate, baseFileName, logText, logImage);
 	}	
 		
-	private class ActivatorProxy implements com.anji.integration.Activator{
-
-		private Activator substrate;
-		public ActivatorProxy(Activator substrate){
-			this.substrate = substrate;
-		}
-		
-		@Override
-		public String getXmlRootTag() {
-			return substrate.getXmlRootTag();
-		}
-
-		@Override
-		public String getXmld() {
-			return substrate.getXmld();
-		}
-
-		@Override
-		public double[] next() {
-			return (double[])substrate.next();
-		}
-
-		@Override
-		public double[] next(double[] stimuli) {
-			return substrate.next(stimuli);
-		}
-
-		@Override
-		public double[][] next(double[][] stimuli) {
-			return substrate.next(stimuli);
-		}
-
-		@Override
-		public String toXml() {
-			return substrate.toXml();
-		}
-
-		@Override
-		public void reset() {
-			substrate.reset();
-		}
-
-		@Override
-		public String getName() {
-			return substrate.getName();
-		}
-
-		@Override
-		public double getMinResponse() {
-			return substrate.getMinResponse();
-		}
-
-		@Override
-		public double getMaxResponse() {
-			return substrate.getMaxResponse();
-		}
-
-		@Override
-		public int getInputDimension() {
-			return substrate.getInputCount();
-		}
-
-		@Override
-		public int getOutputDimension() {
-			return substrate.getOutputCount();
-		}
-		
-	}
+	
 	
 	public double _evaluate(Chromosome genotype, Activator substrate, String baseFileName, boolean logText, boolean logImage) {
 		RoundsTMaze tmaze = new RoundsTMaze(anjiProps);
