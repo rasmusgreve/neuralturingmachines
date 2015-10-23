@@ -6,7 +6,7 @@ import com.anji.util.Properties;
 
 public class RoundsTMaze extends TMaze {
 	
-	private static final boolean DEBUG = false; // True if it should print scores for each round
+	private static final boolean DEBUG = true; // True if it should print scores for each round
 
 	private final boolean SWAP_FIX;
 	private double swapFraction; // The center fraction of the stepLength
@@ -26,7 +26,6 @@ public class RoundsTMaze extends TMaze {
 
 	private final int numGoals;
 	private HashSet<Integer> highCanBeIn;
-	private int maxScore;
 
 	private int mistakePenalty;
 
@@ -43,7 +42,6 @@ public class RoundsTMaze extends TMaze {
 		this.rounds = roundsPerPer * (swapCount+1) * pairGoals;
 		this.swapRounds = (int) (this.swapFraction * roundsPerPer * pairGoals); // For each swap
 		
-		this.maxScore = (rounds - (this.numGoals-1) * (swapCount+1)) * super.getHighReward();
 		this.highCanBeIn = new HashSet<>(this.numGoals);
 		
 //		System.out.println("Rounds: "+this.rounds);
@@ -114,33 +112,44 @@ public class RoundsTMaze extends TMaze {
 				System.out.printf("Round %d: %.0f (G%s) step=%02d %s",curRound,super.getCurrentScore(),super.getGoalId(super.getPositionTile()),getStep(),swapRound(curRound) > -1 ? "~" : "");
 				System.out.println();
 			}
-			// Determine score
-			if(swapRound(curRound) > -1) {
-				resetHashSet();
-			}
 			
+			// Determine score
 			int curGoal = super.getGoalId(super.getPositionTile());
+			if(this.highCanBeIn.contains(curGoal))
+				this.totalScore++;
 			
 			if(curGoal < 0) { // Stop hitting the wall...
 				if(DEBUG) System.out.println("> Crash");
+				
 			}else if(this.highCanBeIn.size() == 1 && this.highCanBeIn.contains(curGoal)) { // You should know this one
-				this.totalScore += super.getCurrentScore();
-				if(DEBUG) System.out.println("> Exploiting: SUCCESS");
+				if(super.isInHighGoal()) {
+					if(DEBUG) System.out.println("> Exploiting: SUCCESS");
+				} else {
+					if(DEBUG) System.out.println("> Exploiting: SUCCESS (but has moved)");
+					resetHashSet();
+					this.highCanBeIn.remove(curGoal);
+				}
 				
 			} else if(this.highCanBeIn.size() == 1 && !this.highCanBeIn.contains(curGoal)){ // Revisit, MISTAKE
-				this.totalScore -= this.mistakePenalty;
 				if(DEBUG) System.out.println("> Exploiting: MISTAKE! (know the right one)");
+				
 			} else if(!this.highCanBeIn.contains(curGoal)) { // Exploring multiple times
-				this.totalScore -= this.mistakePenalty;
 				if (DEBUG) System.out.println("> Exploring: MISTAKE! (explored before)");
+				
 			} else if(super.isInHighGoal()) { // Found right by chance
+				if(DEBUG) System.out.println("> Exploring: Found");
 				this.highCanBeIn.clear();
 				this.highCanBeIn.add(curGoal);
-					
-				if(DEBUG) System.out.println("> Exploring: Found");
+				
 			} else { // Didn't find correct one by chance
+				if(this.highCanBeIn.isEmpty()) {
+					if(DEBUG) System.out.println("> Exploring: Miss (must have moved)");
+					resetHashSet();
+				} else {
+					if(DEBUG) System.out.println("> Exploring: Miss");
+				}
 				this.highCanBeIn.remove(curGoal);
-				if(DEBUG) System.out.println("> Exploring: Miss");
+				
 			}
 			
 			isResetting = true;
@@ -158,13 +167,13 @@ public class RoundsTMaze extends TMaze {
 
 	@Override
 	public double getCurrentScore() {
-//		System.out.println(totalScore+" of "+getMaxScore());
+		if(DEBUG) System.out.println("Score = "+totalScore+" / "+this.rounds);
 		return totalScore;
 	}
 
 	@Override
 	public int getMaxScore() {
-		return maxScore;
+		return this.rounds;
 	}
 	
 	@Override
