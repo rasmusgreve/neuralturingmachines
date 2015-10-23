@@ -16,8 +16,11 @@ import dk.itu.ejuuragr.turing.TuringController;
 public class HyperTMazeEvaluator extends BulkFitnessFunctionMT {
 
 	private static final long serialVersionUID = 1L;
-	private RoundsTMaze tmaze;
-	private TuringController controller;
+//	private RoundsTMaze tmaze;
+//	private TuringController controller;
+	private Properties properties;
+	private com.anji.util.Properties anjiProps;
+	
 	
 	private com.anji.util.Properties convertProps(Properties props){
 		com.anji.util.Properties anjiProps = new com.anji.util.Properties();
@@ -33,9 +36,8 @@ public class HyperTMazeEvaluator extends BulkFitnessFunctionMT {
 	@Override
 	public void init(Properties props) {
 		super.init(props);
-		com.anji.util.Properties anjiProps = convertProps(props);
-		tmaze = new RoundsTMaze(anjiProps);
-		controller = new TuringController(anjiProps, tmaze);
+		this.properties = props;
+		this.anjiProps = convertProps(props);
 	}
 
 	@Override
@@ -118,10 +120,16 @@ public class HyperTMazeEvaluator extends BulkFitnessFunctionMT {
 	}
 	
 	public double _evaluate(Chromosome genotype, Activator substrate, String baseFileName, boolean logText, boolean logImage) {
+		RoundsTMaze tmaze = new RoundsTMaze(anjiProps);
+		TuringController controller = new TuringController(anjiProps, tmaze);
+		
 		ActivatorProxy proxy = new ActivatorProxy(substrate);
 		//controller.reset();
-		double fitness = controller.evaluate(proxy);
+		double fitness = controller.evaluate(proxy) / controller.getMaxScore();
+		
 		genotype.setFitnessValue(fitness);
+		genotype.setPerformanceValue(fitness);
+		
 		return fitness;
 	}
 	
