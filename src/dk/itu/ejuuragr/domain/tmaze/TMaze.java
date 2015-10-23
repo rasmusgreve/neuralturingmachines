@@ -265,6 +265,18 @@ public class TMaze extends BaseSimulator {
 		return this.stepCounter;
 	}
 	
+	public boolean isInHighGoal() {
+		return this.getReward() == this.highReward;
+	}
+	
+	public int getHighReward() {
+		return this.highReward;
+	}
+	
+	public int getLowReward() {
+		return this.lowReward;
+	}
+	
 	// HELPER METHODS
 	
 	private void init() {

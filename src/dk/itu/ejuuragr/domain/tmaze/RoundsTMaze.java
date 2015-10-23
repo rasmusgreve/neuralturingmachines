@@ -1,5 +1,7 @@
 package dk.itu.ejuuragr.domain.tmaze;
 
+import java.util.HashSet;
+
 import com.anji.util.Properties;
 
 public class RoundsTMaze extends TMaze {
@@ -22,16 +24,25 @@ public class RoundsTMaze extends TMaze {
 
 	private RestartListener listener; // Hack for letting the controller know 
 
+	private final int numGoals;
+	private HashSet<Integer> highCanBeIn;
+
+	private int mistakePenalty;
+
 	public RoundsTMaze(Properties props) {
 		super(props);
-		int roundsPerPer = props.getIntProperty("simulator.tmaze.rounds", 10);
+		int roundsPerPer = props.getIntProperty("simulator.tmaze.rounds", 5);
 		this.swapFraction = props.getDoubleProperty("simulator.tmaze.swap.fraction", 0.3);
 		this.swapCount = props.getIntProperty("simulator.tmaze.swap.swapcount",1);
 		this.SWAP_FIX = props.getBooleanProperty("simulator.tmaze.swapfix", false);
+		this.mistakePenalty = props.getIntProperty("simulator.tmaze.mistake.penalty", 0);
 		
-		int pairGoals = this.getMap().getOfType(MAP_TYPE.goal).size() / 2;
+		this.numGoals = this.getMap().getOfType(MAP_TYPE.goal).size();
+		int pairGoals = numGoals / 2;
 		this.rounds = roundsPerPer * (swapCount+1) * pairGoals;
 		this.swapRounds = (int) (this.swapFraction * roundsPerPer * pairGoals); // For each swap
+		
+		this.highCanBeIn = new HashSet<>(this.numGoals);
 		
 //		System.out.println("Rounds: "+this.rounds);
 //		System.out.println("Swap Rounds: "+this.swapRounds);
@@ -46,6 +57,7 @@ public class RoundsTMaze extends TMaze {
 		this.goals[0] = getGoalId(goal);
 		curRound = 0;
 		totalScore = 0;
+		resetHashSet();
 		
 		switchSpots = new int[swapCount];
 		int goalCount = this.getMap().getOfType(MAP_TYPE.goal).size();
@@ -64,6 +76,12 @@ public class RoundsTMaze extends TMaze {
 		
 		if(this.listener != null)
 			this.listener.onRestart(this);
+	}
+
+	private void resetHashSet() {
+		highCanBeIn.clear();
+		for(int i = 0; i < numGoals; i++)
+			highCanBeIn.add(i);
 	}
 
 	private int swapRound(int round){
@@ -94,7 +112,46 @@ public class RoundsTMaze extends TMaze {
 				System.out.printf("Round %d: %.0f (G%s) step=%02d %s",curRound,super.getCurrentScore(),super.getGoalId(super.getPositionTile()),getStep(),swapRound(curRound) > -1 ? "~" : "");
 				System.out.println();
 			}
-			this.totalScore += super.getCurrentScore();
+			
+			// Determine score
+			int curGoal = super.getGoalId(super.getPositionTile());
+			if(this.highCanBeIn.contains(curGoal))
+				this.totalScore++;
+			
+			if(curGoal < 0) { // Stop hitting the wall...
+				if(DEBUG) System.out.println("> Crash");
+				
+			}else if(this.highCanBeIn.size() == 1 && this.highCanBeIn.contains(curGoal)) { // You should know this one
+				if(super.isInHighGoal()) {
+					if(DEBUG) System.out.println("> Exploiting: SUCCESS");
+				} else {
+					if(DEBUG) System.out.println("> Exploiting: SUCCESS (but has moved)");
+					resetHashSet();
+					this.highCanBeIn.remove(curGoal);
+				}
+				
+			} else if(this.highCanBeIn.size() == 1 && !this.highCanBeIn.contains(curGoal)){ // Revisit, MISTAKE
+				if(DEBUG) System.out.println("> Exploiting: MISTAKE! (know the right one)");
+				
+			} else if(!this.highCanBeIn.contains(curGoal)) { // Exploring multiple times
+				if (DEBUG) System.out.println("> Exploring: MISTAKE! (explored before)");
+				
+			} else if(super.isInHighGoal()) { // Found right by chance
+				if(DEBUG) System.out.println("> Exploring: Found");
+				this.highCanBeIn.clear();
+				this.highCanBeIn.add(curGoal);
+				
+			} else { // Didn't find correct one by chance
+				if(this.highCanBeIn.isEmpty()) {
+					if(DEBUG) System.out.println("> Exploring: Miss (must have moved)");
+					resetHashSet();
+				} else {
+					if(DEBUG) System.out.println("> Exploring: Miss");
+				}
+				this.highCanBeIn.remove(curGoal);
+				
+			}
+			
 			isResetting = true;
 		}
 		
@@ -110,13 +167,13 @@ public class RoundsTMaze extends TMaze {
 
 	@Override
 	public double getCurrentScore() {
-//		System.out.println(totalScore+" of "+getMaxScore());
+		if(DEBUG) System.out.println("Score = "+totalScore+" / "+this.rounds);
 		return totalScore;
 	}
 
 	@Override
 	public int getMaxScore() {
-		return super.getMaxScore() * rounds;
+		return this.rounds;
 	}
 	
 	@Override
