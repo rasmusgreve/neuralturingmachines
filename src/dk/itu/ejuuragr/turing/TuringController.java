@@ -8,6 +8,7 @@ import dk.itu.ejuuragr.domain.Simulator;
 import dk.itu.ejuuragr.domain.tmaze.RoundsTMaze;
 import dk.itu.ejuuragr.fitness.BaseController;
 import dk.itu.ejuuragr.fitness.Utilities;
+import dk.itu.ejuuragr.replay.StepSimulator;
 
 /**
  * A Controller which adds a Turing Machine to the 
@@ -33,8 +34,15 @@ public class TuringController extends BaseController implements RoundsTMaze.Rest
 		// Initialize everything (using properties)
 		this.tm = (TuringMachine) Utilities.instantiateObject(props.getProperty("tm.class"), new Object[]{props}, null);
 		
+		// Don't look at me! I'm hideous!
 		if(this.sim instanceof RoundsTMaze) {
 			((RoundsTMaze)sim).setRestartListener(this);
+		} else if(this.sim instanceof StepSimulator){
+			StepSimulator ss = (StepSimulator)this.sim;
+			Simulator subSim = ss.getSimulator();
+			if(subSim instanceof RoundsTMaze) {
+				((RoundsTMaze)subSim).setRestartListener(this);
+			}
 		}
 	}
 

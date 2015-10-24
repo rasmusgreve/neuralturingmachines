@@ -88,4 +88,8 @@ public class StepSimulator implements Simulator {
 	public Controller getController() {
 		return simulator.getController();
 	}
+
+	public Simulator getSimulator() {
+		return simulator;
+	}
 }
