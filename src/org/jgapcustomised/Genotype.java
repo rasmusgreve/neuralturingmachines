@@ -325,8 +325,10 @@ public class Genotype implements Serializable {
 				Chromosome c = chromItr.next();
 				double f = ArrayUtil.sum(c.getFitnessValues());
 				if (Double.isNaN(f) || f == 0) {
-					chromItr.remove();
 					zeroFitnessCount++;
+					if (m_chromosomes.size() > 1){ //Modified: Will not allow removal of the last element 
+						chromItr.remove();
+					}
 				}
 			}
 			
