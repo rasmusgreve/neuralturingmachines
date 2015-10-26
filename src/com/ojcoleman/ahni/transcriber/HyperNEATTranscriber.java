@@ -426,7 +426,7 @@ public abstract class HyperNEATTranscriber<T extends Activator> extends Transcri
 				// If the fitness function does define some neuron positions for this layer.
 				if (neuronPositionsForLayer[layer] != null) {
 					if (neuronPositionsForLayer[layer].length != width[layer] * height[layer]) {
-						throw new IllegalArgumentException("The number of neuron positions specified by the fitness function for " + layer + " does not match the number of neurons for the layer.");
+						throw new IllegalArgumentException("The number of neuron positions specified by the fitness function for " + layer + " does not match the number of neurons for the layer ("+width[layer] + " * " + height[layer]+").");
 					}
 					StringBuilder logStr = new StringBuilder("Fitness function defines neuron positions for layer " + layer + ": ");
 					for (Point p : neuronPositionsForLayer[layer]) {

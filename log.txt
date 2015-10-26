@@ -1,0 +1,15 @@
+INFO  loaded properties from tmaze-turingmachine-plastic.properties
+INFO  Using 8 threads for transcription and evaluation.
+INFO  Number of objectives is 1.
+INFO  Normalised fitness function weightings: [1.0]
+INFO  Fitness function defines dimensions for layer 0: 6x1
+INFO  Fitness function defines dimensions for layer 2: 8x1
+INFO  CPPN: Added sx, sy, tx, ty inputs.
+INFO  CPPN: Added tz input.
+INFO  CPPN: Added delta x and y inputs.
+INFO  CPPN: Added 1 bias output(s).
+INFO  CPPN: Added 1 synapse type selector outputs.
+INFO  CPPN: Added 2 weight output(s).
+INFO  CPPN: Added 2 link expression output(s) (LEO).
+INFO  CPPN: Added 2 x 4 = 8 synapse parameter outputs (number of synapse model types times number of parameters).
+INFO  CPPN input/output size: 7/14
