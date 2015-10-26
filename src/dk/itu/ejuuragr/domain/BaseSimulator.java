@@ -24,7 +24,7 @@ public abstract class BaseSimulator implements Simulator {
 	private Controller controller = null;
 
 	public BaseSimulator(Properties props) {
-		this.randomSeed = props.getIntProperty("random.seed", (int)(System.currentTimeMillis() % Integer.MAX_VALUE));
+		this.randomSeed = props.getIntProperty("random.seed", props.getIntProperty("random.seed.simulator.fallback", 0));
 		this.offset = 0;
 		resetRandom();
 	}
