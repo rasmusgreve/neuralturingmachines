@@ -492,7 +492,7 @@ public class Evolver implements Configurable {
 			// na.init( props );
 			// logger.info( "\n" + na.displayActivation( "" +evolver.getChamp().getId() ) );
 
-			System.exit(0);
+			System.exit(0); 
 		} catch (Throwable th) {
 			logger.error("", th);
 			throw th;

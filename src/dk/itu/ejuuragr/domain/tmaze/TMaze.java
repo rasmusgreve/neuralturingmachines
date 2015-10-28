@@ -116,7 +116,7 @@ public class TMaze extends BaseSimulator {
 
 	@Override
 	public int getOutputCount() {
-		return 3 + 1; // Distance sensor at 45, 90 and 135 degrees + 1*reward
+		return 3 + 1; // Distance sensor at 45, 90 and 135 degrees + 1 * reward
 	}
 
 	@Override

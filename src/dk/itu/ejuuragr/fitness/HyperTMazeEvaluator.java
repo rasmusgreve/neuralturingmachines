@@ -22,6 +22,7 @@ public class HyperTMazeEvaluator extends BulkFitnessFunctionMT {
 //	private TuringController controller;
 	private Properties properties;
 	private com.anji.util.Properties anjiProps;
+	private int m;
 	
 	
 	private com.anji.util.Properties convertProps(Properties props){
@@ -40,6 +41,8 @@ public class HyperTMazeEvaluator extends BulkFitnessFunctionMT {
 		super.init(props);
 		this.properties = props;
 		this.anjiProps = convertProps(props);
+		
+		this.m = props.getIntProperty("tm.m");
 	}
 
 	@Override
@@ -75,10 +78,10 @@ public class HyperTMazeEvaluator extends BulkFitnessFunctionMT {
 	public int[] getLayerDimensions(int layer, int totalLayerCount) {
 		//TODO: HARDCODED M=2
 		if (layer == 0){ // Input layer.
-			// 3 range sensors plus reward plus TM 1+2.
-			return new int[] { 3+1+2, 1 };
+			// 3 range sensors plus reward plus TM 1+2 (or whatever m is).
+			return new int[] { 3+1+this.m, 1 };
 		} else if (layer == totalLayerCount - 1) { // Output layer.
-			return new int[] { 1+2+5, 1 }; // 1 Domain (S), 2 TM data, 5 TM control (W,J,L,S,R)
+			return new int[] { 1+this.m+5, 1 }; // 1 Domain (S), 2 TM data, 5 TM control (W,J,L,S,R)
 		}
 		return null;
 	}
@@ -88,26 +91,30 @@ public class HyperTMazeEvaluator extends BulkFitnessFunctionMT {
 		// Coordinates are given in unit ranges and translated to whatever range is specified by the
 		// experiment properties.
 		Point[] positions = null;
-		//TODO: HARDCODED M=2
+		double space = 1.0 / (this.m-1);
 		if (layer == 0) { // Input layer.
-			positions = new Point[6];
+			positions = new Point[4 + this.m];
 			positions[0] = new Point(0,   0, 0);
 			positions[1] = new Point(0.5, 0, 0);
 			positions[2] = new Point(1,   0, 0);
-			positions[3] = new Point(0.25, 0.25, 0);
-			positions[4] = new Point(0.75, 0.25, 0);
-			positions[5] = new Point(0.5, 0.4, 0);
-//			positions[6] = new Point(0.5, 0.6, 0);
+			positions[3] = new Point(0.5, 0.4, 0);
+			
+			
+			for(int i = 0; i < this.m; i++) {
+				positions[4+i] = new Point(space*i, 0.25, 0);
+			}
+
 		} else if (layer == totalLayerCount - 1) { // Output layer.
-			positions = new Point[8];
+			positions = new Point[1+5+this.m];
 			positions[0] = new Point(0.5,  0.6, 0);
-			positions[1] = new Point(0.25, 0.75, 0);
-			positions[2] = new Point(0.75, 0.75, 0);
-			positions[3] = new Point(0,    1, 0);
-			positions[4] = new Point(1,    1, 0);
-			positions[5] = new Point(0.4,  1, 0);
-			positions[6] = new Point(0.5,  1, 0);
-			positions[7] = new Point(0.6,  1, 0);
+			for(int i = 0; i < this.m; i++) {
+				positions[1+i] = new Point(space*i, 0.75, 0);
+			}
+			positions[1+this.m] = new Point(0,    1, 0);
+			positions[1+this.m+1] = new Point(1,    1, 0);
+			positions[1+this.m+2] = new Point(0.4,  1, 0);
+			positions[1+this.m+3] = new Point(0.5,  1, 0);
+			positions[1+this.m+4] = new Point(0.6,  1, 0);
 
 		}
 		return positions;
