@@ -125,7 +125,8 @@ public class ParameterTuner implements Serializable {
 		File checkPoint = new File("checkpoint");
 		if (checkPoint.exists() && checkPoint.isFile()) {
 			System.out.println("Resume previous session?");
-			if (System.console().readLine().toLowerCase().matches("yes|y")) {
+			String line = System.console() == null ? null : System.console().readLine();
+			if (line != null && line.toLowerCase().matches("yes|y")) {
 				try {
 					ObjectInputStream ois = new ObjectInputStream(new FileInputStream(checkPoint));
 					ParameterTuner pt = (ParameterTuner) ois.readObject();
