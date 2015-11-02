@@ -1,5 +1,7 @@
 package com.ojcoleman.ahni.hyperneat;
 
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -18,6 +20,8 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 
 import javax.imageio.ImageIO;
+
+
 
 
 
@@ -663,8 +667,10 @@ public class HyperNEATEvolver implements Configurable, GeneticEventListener {
 					}
 
 					if (logImage) {
-						BufferedImage image = new BufferedImage(800, 800, BufferedImage.TYPE_3BYTE_BGR);
-						boolean success = substrate.render(image.createGraphics(), image.getWidth(), image.getHeight(), 30);
+						BufferedImage image = new BufferedImage(1200, 1200, BufferedImage.TYPE_3BYTE_BGR);
+						Graphics2D g = image.createGraphics();
+						g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+						boolean success = substrate.render(g, image.getWidth(), image.getHeight(), 30);
 						if (success) {
 							File outputfile = new File(baseFileName + ".png");
 							ImageIO.write(image, "png", outputfile);
