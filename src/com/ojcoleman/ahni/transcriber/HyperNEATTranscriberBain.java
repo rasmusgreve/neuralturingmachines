@@ -49,6 +49,8 @@ public class HyperNEATTranscriberBain extends HyperNEATTranscriberBainBase {
 	 * network is used for any given network.
 	 */
 	public static final String SUBSTRATE_MAX_RECURRENT_CYCLE = "ann.transcriber.bain.maxrecurrentcyclesearchlength";
+	
+	public static final String SUBSTRATE_CONNECT_ALL = "ann.transcriber.bain.substrate.connect.all";
 
 	private final static Logger logger = Logger.getLogger(HyperNEATTranscriberBain.class);
 	private final static DecimalFormat nf = new DecimalFormat(" 0.00;-0.00");
@@ -58,6 +60,7 @@ public class HyperNEATTranscriberBain extends HyperNEATTranscriberBainBase {
 	// ff = feed-forward
 	private int[] neuronLayerSize, bainIndexForNeuronLayer, ffSynapseLayerSize, bainIndexForFFSynapseLayer;
 	private int neuronCount, synapseCount;
+	private boolean substrateConnectAll;
 	
 
 	public HyperNEATTranscriberBain() {
@@ -71,6 +74,7 @@ public class HyperNEATTranscriberBain extends HyperNEATTranscriberBainBase {
 	public void init(Properties props) {
 		super.init(props);
 		this.properties = props;
+		substrateConnectAll = props.getBooleanProperty(SUBSTRATE_CONNECT_ALL, false);
 		
 		neuronLayerSize = new int[depth];
 		bainIndexForNeuronLayer = new int[depth];
@@ -256,8 +260,13 @@ public class HyperNEATTranscriberBain extends HyperNEATTranscriberBainBase {
 					
 					cppn.setTargetCoordinatesFromGridIndices(tx, ty, tz);
 					
+					int sz_start = substrateConnectAll ? 0 : (feedForward ? tz - 1 : 0);
+					int sz_end = substrateConnectAll ? tz : (feedForward ? tz : depth);
+					
 					// Iteration over layers for the source neuron is only used for recurrent networks.
-					for (int sz = (feedForward ? tz - 1 : 0); sz < (feedForward ? tz : depth); sz++) {
+//					for (int sz = (feedForward ? tz - 1 : 0); sz < (feedForward ? tz : depth); sz++) {
+//					for (int sz = 0; sz < tz; sz++) {
+					for (int sz = sz_start; sz < sz_end; sz++) {
 						for (int sy = 0; sy < height[sz]; sy++) {
 							for (int sx = 0; sx < width[sz]; sx++) {
 								cppn.setSourceCoordinatesFromGridIndices(sx, sy, sz);
@@ -371,7 +380,7 @@ public class HyperNEATTranscriberBain extends HyperNEATTranscriberBainBase {
 				synapseCount += ffSynapseLayerSize[l - 1];
 			}
 		}
-		if (!feedForward) {
+		if (!feedForward || substrateConnectAll) {
 			// All possible connections between all neurons except connections going to the input layer 
 			// (including connections amongst the input layer).
 			synapseCount = neuronCount * (neuronCount - neuronLayerSize[0]);
