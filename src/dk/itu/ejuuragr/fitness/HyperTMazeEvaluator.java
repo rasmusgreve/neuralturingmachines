@@ -48,7 +48,7 @@ public class HyperTMazeEvaluator extends BulkFitnessFunctionMT {
 		this.anjiProps = convertProps(props);
 		
 		this.m = props.getIntProperty("tm.m");
-		this.hidden = props.getIntProperty("initial.topology.num.hidden.neurons");
+		this.hidden = props.getIntProperty("ann.topology.num.hidden.neurons", 0);
 	}
 
 	@Override
