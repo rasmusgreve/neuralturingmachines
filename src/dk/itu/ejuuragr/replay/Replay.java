@@ -99,31 +99,31 @@ public class Replay {
 		}
 		
 		//In the TMaze we want to be able to step through the simulation
-//		if (simulator instanceof TMaze)
-//		{
-//			final TMaze tmaze = (TMaze)simulator;
-//			final TMazeVisualizer mazeViz = new TMazeVisualizer(tmaze, false);
-//			final TMazeStepReplayVisualizer memViz = 
-//					(controller instanceof TuringControllerRecorder) ? 
-//							new TMazeStepReplayVisualizer(((TuringControllerRecorder)controller).getRecording())
-//							:null;
-//			memViz.show();
-//			stepSim.setStepper(new Stepper(){
-//
-//				@Override
-//				public void step() {
-//					mazeViz.update();
-//					if (memViz != null){
-//						memViz.update();
-//					}
-//					while (true){
-//						if (mazeViz.getDoProgressAndReset())
-//							break;
-//					}
-//				}
-//				
-//			});
-//		}
+		if (simulator instanceof TMaze)
+		{
+			final TMaze tmaze = (TMaze)simulator;
+			final TMazeVisualizer mazeViz = new TMazeVisualizer(tmaze, false);
+			final TMazeStepReplayVisualizer memViz = 
+					(controller instanceof TuringControllerRecorder) ? 
+							new TMazeStepReplayVisualizer(((TuringControllerRecorder)controller).getRecording())
+							:null;
+			memViz.show();
+			stepSim.setStepper(new Stepper(){
+
+				@Override
+				public void step() {
+					mazeViz.update();
+					if (memViz != null){
+						memViz.update();
+					}
+					while (true){
+						if (mazeViz.getDoProgressAndReset())
+							break;
+					}
+				}
+				
+			});
+		}
 		
 		//Simulator and controller
 
@@ -134,7 +134,7 @@ public class Replay {
 			
 			Recording<?> recording = ((TuringControllerRecorder)controller).getRecording();
 //			new StaticReplayVisualizer(recording).show();
-			new StaticMemoryFocusVisualizer(recording).show();
+//			new StaticMemoryFocusVisualizer(recording).show();
 //			new StepReplayVisualizer(recording).show();
 //			new ReplayStepVisualizer().show((List<TimeStep<GravesTuringMachineTimeStep>>)timeSteps);
 		}

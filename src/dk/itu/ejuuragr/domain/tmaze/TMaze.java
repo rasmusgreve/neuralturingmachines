@@ -41,7 +41,8 @@ public class TMaze extends BaseSimulator {
 	public String START_DIRECTION; // The initial orientation of the agent (N, S, E or W)
 	public final double START_DIR_OFFSET; // The actual initial orientation will be randomly offset by this number of degrees
 	public final double START_POS_OFFSET; // The actual initial position will be randomly offset by this amount in X and Y direction
- 
+	public final boolean TURN_SIGNAL; // True if the agent should get an input for when it is in an intersection
+	
 	// Things
 	private int maxSteps;
 	private int maxStepsPerNewTile;
@@ -86,6 +87,7 @@ public class TMaze extends BaseSimulator {
 		START_DIRECTION = props.getProperty("simulator.tmaze.dir.initial", null);
 		START_DIR_OFFSET = (props.getIntProperty("simulator.tmaze.dir.offset", 0) / 180.0) * Math.PI;
 		START_POS_OFFSET = props.getDoubleProperty("simulator.tmaze.pos.offset", 0.0);
+		TURN_SIGNAL = props.getBooleanProperty("simulator.tmaze.turnsignal", false);
 	
 		String mapFile = props.getProperty("simulator.tmaze.map", "tmaze.bmp");
 		loadMap(mapFile);
@@ -116,7 +118,7 @@ public class TMaze extends BaseSimulator {
 
 	@Override
 	public int getOutputCount() {
-		return 3 + 1; // Distance sensor at 45, 90 and 135 degrees + 1 * reward
+		return 3 + 1 + (TURN_SIGNAL ? 1 : 0); // Distance sensor at 45, 90 and 135 degrees + 1 * reward + possible turn signal
 	}
 
 	@Override
@@ -314,7 +316,7 @@ public class TMaze extends BaseSimulator {
 		if(DEBUG){
 			System.out.println("----------------------");
 			printMap();
-			System.out.printf("\n Pos: %s, Angle: %.2f�, Steer: %.2f, sensors: %s\n",Arrays.toString(getPosition()),(angle / (2*Math.PI))*360,steer,Arrays.toString(sensors));
+			System.out.printf("\n Pos: %s, Angle: %.2f, Steer: %.2f, sensors: %s\n",Arrays.toString(getPosition()),(angle / (2*Math.PI))*360,steer,Arrays.toString(sensors));
 		}
 	}
 	
@@ -377,7 +379,7 @@ public class TMaze extends BaseSimulator {
 	}
 	
 	private double[] getObservation() {
-		double[] result = new double[SENSOR_ANGLES.length + 1];
+		double[] result = new double[SENSOR_ANGLES.length + 1 + (TURN_SIGNAL ? 1 : 0)];
 		
 		for(int i = 0; i < SENSOR_ANGLES.length; i++) {
 			double sensorAngle = angle + SENSOR_ANGLES[i];
@@ -390,7 +392,13 @@ public class TMaze extends BaseSimulator {
 			
 			result[i] = Math.min(SENSOR_CUTOFF, closest) / SENSOR_CUTOFF;
 		}
-		result[result.length-1] = getReward() / (double)highReward;
+		result[SENSOR_ANGLES.length] = getReward() / (double)highReward;
+		
+		if(TURN_SIGNAL) {
+			if(this.getMap().isIntersection(getPositionTile())) {
+				result[SENSOR_ANGLES.length + 1] = 1.0;
+			}
+		}
 		
 		return result;
 	}
@@ -529,6 +537,19 @@ public class TMaze extends BaseSimulator {
 			}
 		}
 		
+		public boolean isIntersection(int[] pos) {
+			if(this.getType(pos[0], pos[1]) != MAP_TYPE.empty)
+				return false;
+			int counter = 0;
+			int[] dirs = new int[]{-1,0, 1,0, 0,-1, 0,1};
+			for(int i = 0; i < dirs.length/2; i++) {
+				if(this.getType(pos[0] + dirs[i*2], pos[1] + dirs[i*2 + 1]) == MAP_TYPE.empty)
+					counter++;
+			}
+			
+			return counter > 2;
+		}
+
 		public int getHeight() {
 			return map[0].length;
 		}
