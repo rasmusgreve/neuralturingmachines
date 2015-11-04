@@ -127,22 +127,22 @@ public class HyperTMazeEvaluator extends BulkFitnessFunctionMT {
 			
 			double space = 1.0 / (this.hidden-1);
 			for(int i = 0; i < this.hidden; i++) {
-				positions[i] = new Point(this.hidden == 1 ? 0.5 : space*i, 0.5, 0);
+				positions[i] = new Point(this.hidden == 1 ? 0.5 : space*i, 0.5, 0.5);
 			}
 			
 		}else if (layer == totalLayerCount - 1) { // Output layer.
 			positions = new Point[1+5+this.m];
-			positions[0] = new Point(0.5,  0.6, 0);			// steer
+			positions[0] = new Point(0.5,  0.6, 1);			// steer
 			
 			double space = 1.0 / (this.m-1);
 			for(int i = 0; i < this.m; i++) {				// TM write vector
-				positions[1+i] = new Point(this.m == 1 ? 0.5 : space*i, 0.75, 0);
+				positions[1+i] = new Point(this.m == 1 ? 0.5 : space*i, 0.75, 1);
 			}
-			positions[1+this.m  ] = new Point(0,    1, 0);	// write control
-			positions[1+this.m+1] = new Point(1,    1, 0);	// jump control
-			positions[1+this.m+2] = new Point(0.4,  1, 0);	// shift L
-			positions[1+this.m+3] = new Point(0.5,  1, 0);	// shift S
-			positions[1+this.m+4] = new Point(0.6,  1, 0);	// shift R
+			positions[1+this.m  ] = new Point(0,    1, 1);	// write control
+			positions[1+this.m+1] = new Point(1,    1, 1);	// jump control
+			positions[1+this.m+2] = new Point(0.4,  1, 1);	// shift L
+			positions[1+this.m+3] = new Point(0.5,  1, 1);	// shift S
+			positions[1+this.m+4] = new Point(0.6,  1, 1);	// shift R
 		}
 		return positions;
 	}
