@@ -6,12 +6,9 @@ import java.util.SortedSet;
 
 import org.jgapcustomised.Allele;
 import org.jgapcustomised.Chromosome;
-import org.jgapcustomised.ChromosomeMaterial;
 
 import com.anji_ahni.integration.Activator;
-import com.anji_ahni.neat.ConnectionAllele;
 import com.anji_ahni.neat.NeuronAllele;
-import com.anji_ahni.neat.NeuronType;
 import com.ojcoleman.ahni.evaluation.BulkFitnessFunctionMT;
 import com.ojcoleman.ahni.hyperneat.Properties;
 import com.ojcoleman.ahni.util.Point;
@@ -28,6 +25,7 @@ public class HyperTMazeEvaluator extends BulkFitnessFunctionMT {
 	private com.anji.util.Properties anjiProps;
 	private int m;
 	private int hidden;
+	private boolean turnsignal;
 	
 	
 	private com.anji.util.Properties convertProps(Properties props){
@@ -49,6 +47,7 @@ public class HyperTMazeEvaluator extends BulkFitnessFunctionMT {
 		
 		this.m = props.getIntProperty("tm.m");
 		this.hidden = props.getIntProperty("ann.topology.num.hidden.neurons", 0);
+		this.turnsignal = props.getBooleanProperty("simulator.tmaze.turnsignal", false);
 	}
 
 	@Override
@@ -93,8 +92,8 @@ public class HyperTMazeEvaluator extends BulkFitnessFunctionMT {
 	@Override
 	public int[] getLayerDimensions(int layer, int totalLayerCount) {
 		if (layer == 0){ // Input layer.
-			// 3 range sensors plus reward plus TM 1+2 (or whatever m is).
-			return new int[] { 3+1+this.m, 1 };
+			// 3 range sensors plus reward plus TM 1+2 (or whatever m is) + possible turn signal.
+			return new int[] { 3+1 + this.m + (this.turnsignal ? 1 : 0), 1 };
 		} else if (this.hidden > 0 && layer == 1) {
 			return new int[] { this.hidden, 1};
 		} else if (layer == totalLayerCount - 1) { // Output layer.
@@ -110,15 +109,17 @@ public class HyperTMazeEvaluator extends BulkFitnessFunctionMT {
 		Point[] positions = null;
 		
 		if (layer == 0) { // Input layer.
-			positions = new Point[4 + this.m];
-			positions[0] = new Point(0,   0, 0);
-			positions[1] = new Point(0.5, 0, 0);
-			positions[2] = new Point(1,   0, 0);
-			positions[3] = new Point(0.5, 0.4, 0);
+			positions = new Point[4 + this.m + (this.turnsignal ? 1 : 0)];
+			positions[0] = new Point(0,   0, 0);	// sensor L
+			positions[1] = new Point(0.5, 0, 0);	// sensor S
+			positions[2] = new Point(1,   0, 0);	// sensor R
+			positions[3] = new Point(0.5, 0.4, 0);	// Reward
+			if(this.turnsignal)
+				positions[4] = new Point(0.5, 0.1, 0);
 			
 			double space = 1.0 / (this.m-1);
-			for(int i = 0; i < this.m; i++) {
-				positions[4+i] = new Point(this.m == 1 ? 0.5 : space*i, 0.25, 0);
+			for(int i = 0; i < this.m; i++) {		// TM read vector
+				positions[4+(this.turnsignal ? 1 : 0)+i] = new Point(this.m == 1 ? 0.5 : space*i, 0.25, 0);
 			}
 
 		} else if (this.hidden > 0 && layer == 1) {
@@ -131,18 +132,17 @@ public class HyperTMazeEvaluator extends BulkFitnessFunctionMT {
 			
 		}else if (layer == totalLayerCount - 1) { // Output layer.
 			positions = new Point[1+5+this.m];
-			positions[0] = new Point(0.5,  0.6, 0);
+			positions[0] = new Point(0.5,  0.6, 0);			// steer
 			
 			double space = 1.0 / (this.m-1);
-			for(int i = 0; i < this.m; i++) {
+			for(int i = 0; i < this.m; i++) {				// TM write vector
 				positions[1+i] = new Point(this.m == 1 ? 0.5 : space*i, 0.75, 0);
 			}
-			positions[1+this.m] = new Point(0,    1, 0);
-			positions[1+this.m+1] = new Point(1,    1, 0);
-			positions[1+this.m+2] = new Point(0.4,  1, 0);
-			positions[1+this.m+3] = new Point(0.5,  1, 0);
-			positions[1+this.m+4] = new Point(0.6,  1, 0);
-
+			positions[1+this.m  ] = new Point(0,    1, 0);	// write control
+			positions[1+this.m+1] = new Point(1,    1, 0);	// jump control
+			positions[1+this.m+2] = new Point(0.4,  1, 0);	// shift L
+			positions[1+this.m+3] = new Point(0.5,  1, 0);	// shift S
+			positions[1+this.m+4] = new Point(0.6,  1, 0);	// shift R
 		}
 		return positions;
 	}

@@ -68,8 +68,6 @@ public class TMaze extends BaseSimulator {
 	
 	private int finished = -1;
 
-
-	
 	/**
 	 * The required constructor to instantiate the Simulator through
 	 * recursion.
