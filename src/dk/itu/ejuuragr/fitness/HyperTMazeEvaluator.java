@@ -104,6 +104,10 @@ public class HyperTMazeEvaluator extends BulkFitnessFunctionMT {
 
 	@Override
 	public Point[] getNeuronPositions(int layer, int totalLayerCount) {
+		return methodTwo(layer, totalLayerCount);
+	}
+
+	private Point[] methodOne(int layer, int totalLayerCount) {
 		// Coordinates are given in unit ranges and translated to whatever range is specified by the
 		// experiment properties.
 		Point[] positions = null;
@@ -146,5 +150,48 @@ public class HyperTMazeEvaluator extends BulkFitnessFunctionMT {
 		}
 		return positions;
 	}
+	
+	private Point[] methodTwo(int layer, int totalLayerCount) {
+		// Coordinates are given in unit ranges and translated to whatever range is specified by the
+		// experiment properties.
+		Point[] positions = null;
+		
+		if (layer == 0) { // Input layer.
+			positions = new Point[4 + this.m + (this.turnsignal ? 1 : 0)];
+			positions[0] = new Point(0.25,	0.25, 0);	// sensor L
+			positions[1] = new Point(0.5,	0.25, 0);	// sensor S
+			positions[2] = new Point(0.75,	0.25, 0);	// sensor R
+			positions[3] = new Point(0.25,	0,    0);	// Reward
+			if(this.turnsignal)
+				positions[4] = new Point(0.75, 0, 0);
+			
+			double space = 1.0 / (this.m-1);
+			for(int i = 0; i < this.m; i++) {		// TM read vector
+				positions[4+(this.turnsignal ? 1 : 0)+i] = new Point(this.m == 1 ? 0.5 : space*i, 0.25, 0);
+			}
 
+		} else if (this.hidden > 0 && layer == 1) {
+			positions = new Point[this.hidden];
+			
+			double space = 1.0 / (this.hidden-1);
+			for(int i = 0; i < this.hidden; i++) {
+				positions[i] = new Point(this.hidden == 1 ? 0.5 : space*i, 0.5, 1);
+			}
+			
+		}else if (layer == totalLayerCount - 1) { // Output layer.
+			positions = new Point[1+5+this.m];
+			positions[0] = new Point(0.5,  1, 1);			// steer
+			
+			double space = 1.0 / (this.m-1);
+			for(int i = 0; i < this.m; i++) {				// TM write vector
+				positions[1+i] = new Point(this.m == 1 ? 0.5 : space*i, 0.75, 1);
+			}
+			positions[1+this.m  ] = new Point(0.25,	1, 1);	// write control
+			positions[1+this.m+1] = new Point(0.75,	1, 1);	// jump control
+			positions[1+this.m+2] = new Point(0.25,	0.75, 1);	// shift L
+			positions[1+this.m+3] = new Point(0.5,	0.75, 1);	// shift S
+			positions[1+this.m+4] = new Point(0.75,	0.75, 1);	// shift R
+		}
+		return positions;
+	}
 }

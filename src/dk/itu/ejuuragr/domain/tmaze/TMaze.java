@@ -18,6 +18,7 @@ import org.apache.commons.math3.util.Pair;
 import com.anji.util.Properties;
 
 import dk.itu.ejuuragr.domain.BaseSimulator;
+import dk.itu.ejuuragr.fitness.Utilities;
 
 /**
  * The classical T-Maze of Machine Learning for challenging
@@ -42,6 +43,7 @@ public class TMaze extends BaseSimulator {
 	public final double START_DIR_OFFSET; // The actual initial orientation will be randomly offset by this number of degrees
 	public final double START_POS_OFFSET; // The actual initial position will be randomly offset by this amount in X and Y direction
 	public final boolean TURN_SIGNAL; // True if the agent should get an input for when it is in an intersection
+	public final boolean STEER_SINGLE; // If the steering should be one (STEER_AMOUNT) or multiple with highest taking effect
 	
 	// Things
 	private int maxSteps;
@@ -68,6 +70,8 @@ public class TMaze extends BaseSimulator {
 	
 	private int finished = -1;
 
+
+
 	/**
 	 * The required constructor to instantiate the Simulator through
 	 * recursion.
@@ -86,6 +90,7 @@ public class TMaze extends BaseSimulator {
 		START_DIR_OFFSET = (props.getIntProperty("simulator.tmaze.dir.offset", 0) / 180.0) * Math.PI;
 		START_POS_OFFSET = props.getDoubleProperty("simulator.tmaze.pos.offset", 0.0);
 		TURN_SIGNAL = props.getBooleanProperty("simulator.tmaze.turnsignal", false);
+		STEER_SINGLE = props.getProperty("simulator.tmaze.game.steer.mode", "single").toLowerCase().equals("single");
 	
 		String mapFile = props.getProperty("simulator.tmaze.map", "tmaze.bmp");
 		loadMap(mapFile);
@@ -111,7 +116,7 @@ public class TMaze extends BaseSimulator {
 
 	@Override
 	public int getInputCount() {
-		return 1; // The angle of stearing. 0.0 = Right, 1.0 Left
+		return (STEER_SINGLE ? 1 : 3); // The angle of stearing. 0.0 = Right, 1.0 Left, or 3 separate inputs
 	}
 
 	@Override
@@ -128,7 +133,7 @@ public class TMaze extends BaseSimulator {
 
 	@Override
 	public double[] performAction(double[] action) {
-		steer(action[0]);
+		steer(action);
 		moveAgent();
 		
 		if(isWithinGoal()) {
@@ -140,7 +145,7 @@ public class TMaze extends BaseSimulator {
 		stepCounter++; // next round
 		
 		double[] obs = getObservation();
-		printState(action[0], obs);
+		printState(action, obs);
 		//System.out.println("is within goal: " + isWithinGoal() + " obs: " + obs[3]);
 		return obs;
 	}
@@ -310,11 +315,11 @@ public class TMaze extends BaseSimulator {
 		return result;
 	}
 
-	private void printState(double steer, double[] sensors) {
+	private void printState(double[] steer, double[] sensors) {
 		if(DEBUG){
 			System.out.println("----------------------");
 			printMap();
-			System.out.printf("\n Pos: %s, Angle: %.2f, Steer: %.2f, sensors: %s\n",Arrays.toString(getPosition()),(angle / (2*Math.PI))*360,steer,Arrays.toString(sensors));
+			System.out.printf("\n Pos: %s, Angle: %.2f, Steer: %s, sensors: %s\n",Arrays.toString(getPosition()),(angle / (2*Math.PI))*360,Utilities.toString(steer,"%.2f"),Arrays.toString(sensors));
 		}
 	}
 	
@@ -364,9 +369,24 @@ public class TMaze extends BaseSimulator {
 		}
 	}
 	
-	private void steer(double dir) {
-		dir = dir * 2 - 1;
-		angle += dir * STEER_AMOUNT;
+	private void steer(double[] dir) {
+		double steer = 0.0;
+		if(STEER_SINGLE) {
+			steer = dir[0] * 2 - 1;
+		} else {
+			int highest = Utilities.maxPos(dir);
+			switch(highest) {
+				case 0: { // Left
+					steer = -1.0;
+					break;
+				}
+				case 2: { // Right
+					steer = 1.0;
+					break;
+				}
+			}
+		}
+		angle += steer * STEER_AMOUNT;
 	}
 	
 	private void moveAgent() {
