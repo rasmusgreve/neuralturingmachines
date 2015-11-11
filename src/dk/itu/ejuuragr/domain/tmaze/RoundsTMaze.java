@@ -129,10 +129,16 @@ public class RoundsTMaze extends TMaze {
 				
 			} else if(this.highCanBeIn.size() == 1 && !this.highCanBeIn.contains(curGoal)){ // Revisit, MISTAKE
 				if(DEBUG) System.out.println("> Exploiting: MISTAKE! (know the right one)");
-				
+				if(super.isInHighGoal()) { // But was swapped, so got lucky. No score but should know for future.
+					this.highCanBeIn.clear();
+					this.highCanBeIn.add(curGoal);
+				}
 			} else if(!this.highCanBeIn.contains(curGoal)) { // Exploring multiple times
 				if (DEBUG) System.out.println("> Exploring: MISTAKE! (explored before)");
-				
+				if(super.isInHighGoal()) { // But was swapped, so got lucky. No score but should know for future.
+					this.highCanBeIn.clear();
+					this.highCanBeIn.add(curGoal);
+				}
 			} else if(super.isInHighGoal()) { // Found right by chance
 				if(DEBUG) System.out.println("> Exploring: Found");
 				this.highCanBeIn.clear();
@@ -146,7 +152,6 @@ public class RoundsTMaze extends TMaze {
 					if(DEBUG) System.out.println("> Exploring: Miss");
 				}
 				this.highCanBeIn.remove(curGoal);
-				
 			}
 			
 			isResetting = true;

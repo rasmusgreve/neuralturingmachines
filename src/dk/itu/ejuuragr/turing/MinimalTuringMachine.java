@@ -78,6 +78,7 @@ public class MinimalTuringMachine implements TuringMachine, Replayable<MinimalTu
 		for(double d : fromNN) queue.add(d);
 		
 		double[][] result = new double[heads][];
+		
 		double[][] writeKeys = new double[heads][];
 		double[] interps = new double[heads];
 		double[] contents = new double[heads];
