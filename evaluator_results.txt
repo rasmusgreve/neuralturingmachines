@@ -16,7 +16,7 @@ popul.size : 300
 simulator.tmaze.swap.swapcount : 1
 prune.mutation.rate : 1.00
 initial.topology.num.hidden.neurons : 0
-fitness.threshold : 0.7
+fitness.threshold : 0.95
 persist.last : true
 log4j.appender.A1.layout.ConversionPattern : %-5p %m%x%n
 simulator.steps.tile.max : 20
@@ -25,10 +25,10 @@ initial.topology.activation.input : linear
 initial.topology.fully.connected : true
 log4j.appender.A1.layout : org.apache.log4j.PatternLayout
 weight.mutation.rate : 0.6
+simulator.tmaze.turnsignal : true
 weight.min : -10.0
-run.name : tmaze26
+run.name : tmaze34
 controller.class : dk.itu.ejuuragr.turing.TuringController
-replay.simulator.class : dk.itu.ejuuragr.domain.tmaze.RoundsTMaze
 add.connection.mutation.rate : 0.02
 topology.mutation.classic : true
 simulator.tmaze.swap.fraction : 0.6
@@ -45,7 +45,7 @@ chrom.compat.excess.coeff : 1.0
 weight.max : 10.0
 survival.rate : 0.2
 tm.sharpening.factor : 1
-simulator.tmaze.game.steer.max : 45
+simulator.tmaze.game.steer.max : 22
 tm.heads.write : 1
 ann.type : anji
 log4j.appender.A1 : org.apache.log4j.ConsoleAppender
@@ -57,25 +57,26 @@ tm.heads.read : 1
 tm.class : dk.itu.ejuuragr.turing.MinimalTuringMachine
 weight.mutation.std.dev : 3
 remove.connection.max.weight : 5
-simulate.generations.identical : 1
+simulate.generations.identical : -1
 initial.topology.activation : sigmoid
 controller.iterations : 1
 thread.pooling : true
+simulator.tmaze.game.steer.mode : multiple
 selector.roulette : false
 neat.id.file : ./db/neatid.xml
 tm.heads.readwrite : 1
-fitness.target : 0.87
+fitness.target : 0.999
 persistence.base.dir : ./db
 tm.shift.length : 3
 simulator.tmaze.reward.high : 10
-evaluator.num.tests : 10000
+evaluator.num.tests : 20000
 simulator.steps.max : 100
 threading : false
 persist.champions : true
 simulator.tmaze.rounds : 5
 remove.connection.mutation.rate : 0.05
 tm.enabled : true
-simulator.class : dk.itu.ejuuragr.domain.tmaze.PermutationsTMaze
-random.seed : 0
+simulator.class : dk.itu.ejuuragr.domain.tmaze.RoundsTMaze
+random.seed : -1
 --------------------------------------------------
-[0,190000 - 1,000000] mean: 0,600985 +- 0,266230
+[1,000000 - 1,000000] mean: 1,000000 +- 0,000000

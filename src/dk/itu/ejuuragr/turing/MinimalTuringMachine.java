@@ -116,19 +116,20 @@ public class MinimalTuringMachine implements TuringMachine, Replayable<MinimalTu
 			result[i] = headResult;
 			
 			if (recordTimeSteps){
-//				int readPosition = pointers[i];
-//				int correctedWritePosition = writePosition - zeroPosition;
-//				
-//				if (increasedSizeDown) {
-//					writePosition++;
-//					zeroPosition++;
-//				}
-//				int correctedReadPosition = readPosition - zeroPosition;
-//				lastTimeStep = new MinimalTuringMachineTimeStep(writeKeys[i], interps[i], contents[i], shifts[i], headResult, writePosition, readPosition, zeroPosition, correctedWritePosition, correctedReadPosition);
-//			
-//				int correctedReadPosition = readPosition - zeroPosition;
-//				lastTimeStep = new MinimalTuringMachineTimeStep(writeKey, interp, content, shift, internalLastTimeStep.read, writePosition, internalLastTimeStep.readPosition, zeroPosition, internalLastTimeStep.readZeroPosition, correctedWritePosition, internalLastTimeStep.correctedReadPosition);
-//				internalLastTimeStep = new MinimalTuringMachineTimeStep(writeKey, interp, content, shift, result, writePosition, readPosition, zeroPosition, zeroPosition, correctedWritePosition, correctedReadPosition);
+				int readPosition = pointers[i];
+				int correctedWritePosition = writePosition - zeroPosition;
+				
+				if (increasedSizeDown) {
+					writePosition++;
+					zeroPosition++;
+				}
+				int correctedReadPosition = readPosition - zeroPosition;
+				lastTimeStep = new MinimalTuringMachineTimeStep(writeKeys[i], interps[i]  , contents[i], shifts[i]     , headResult, writePosition    , readPosition    , zeroPosition         , zeroPosition          , correctedWritePosition, correctedReadPosition);
+//				                                               (double[] key, double write, double jump, double[] shift, double[] read, int writePosition, int readPosition, int writeZeroPosition, int readZeroPosition  , int correctedWritePosition, int correctedReadPosition){
+			
+//				correctedReadPosition = readPosition - zeroPosition;
+				lastTimeStep =         new MinimalTuringMachineTimeStep(writeKeys[i], interps[i], contents[i], shifts[i], headResult, writePosition    , readPosition    , zeroPosition, zeroPosition, correctedWritePosition, correctedReadPosition);
+				internalLastTimeStep = new MinimalTuringMachineTimeStep(writeKeys[i], interps[i], contents[i], shifts[i], headResult, writePosition    , readPosition    , zeroPosition, zeroPosition, correctedWritePosition, correctedReadPosition);
 			}
 		}
 		

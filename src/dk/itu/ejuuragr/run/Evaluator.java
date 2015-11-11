@@ -6,12 +6,16 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.apache.commons.math3.stat.descriptive.SummaryStatistics;
 import org.jgap.Chromosome;
 
 import com.anji.integration.Activator;
 import com.anji.integration.ActivatorTranscriber;
+import com.anji.integration.TranscriberException;
 import com.anji.persistence.FilePersistence;
 import com.anji.util.DummyConfiguration;
 import com.anji.util.Properties;
@@ -21,7 +25,7 @@ import dk.itu.ejuuragr.fitness.Controller;
 import dk.itu.ejuuragr.fitness.Utilities;
 
 public class Evaluator {
-
+	
 	public static void main(String[] args) throws Exception {
 		if (args.length == 0){
 			args = getArgsFromStdIn();
@@ -42,7 +46,7 @@ public class Evaluator {
 		
 		props.setProperty("base.dir", "./db");
 		props.setProperty("controller.iterations", "1");
-		Chromosome chrom = loadChromosome(args.length > 1 ? args[1] : prompt("Chromosome ID: "), props);
+		final Chromosome chrom = loadChromosome(args.length > 1 ? args[1] : prompt("Chromosome ID: "), props);
 		
 
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -64,16 +68,40 @@ public class Evaluator {
 	
 		
 		
-		int numberOfTests = props.getIntProperty("evaluator.num.tests", 500_000);
+		final int numberOfTests = props.getIntProperty("evaluator.num.tests", 500_000);
 		
+//		SummaryStatistics stats = new SummaryStatistics();
+//		
+//		for (int run = 0; run < numberOfTests; run++){
+//			controller.getSimulator().setRandomOffset(run);
+//			double score = controller.evaluate(activator) / (1.0 * controller.getMaxScore());
+//			stats.addValue(score);
+//			if (run % (numberOfTests / 100) == 0)
+//				System.out.printf("%.0f%% - %s\n",(run*1.0/numberOfTests*100),controller.getSimulator().toString());
+//		}
+		
+		final int numCores = Runtime.getRuntime().availableProcessors();
+		final Collection[] results = new Collection[numCores];
+		Thread[] threads = new Thread[numCores];
+		final AtomicInteger progressCounter = new AtomicInteger(0);
+		for (int core = 0; core < numCores; core++){
+			final int c = core;
+			threads[core] = new Thread(new Runnable() {
+				
+				@Override
+				public void run() {
+					results[c] = handleSubset((numberOfTests / numCores) * c, numberOfTests/numCores, numberOfTests, props, chrom, progressCounter);
+				}
+			});
+			threads[core].start();
+		}
+		for (Thread t : threads){
+			t.join();
+		}
 		SummaryStatistics stats = new SummaryStatistics();
-		
-		for (int run = 0; run < numberOfTests; run++){
-			controller.getSimulator().setRandomOffset(run);
-			double score = controller.evaluate(activator) / (1.0 * controller.getMaxScore());
-			stats.addValue(score);
-			if (run % (numberOfTests / 100) == 0)
-				System.out.printf("%.0f%% - %s\n",(run*1.0/numberOfTests*100),controller.getSimulator().toString());
+		for (Collection c : results){
+			for (Object o : c)
+			stats.addValue((Double)o);
 		}
 		
 		System.out.println("All done, " + numberOfTests + " runs! Results:");
@@ -90,6 +118,32 @@ public class Evaluator {
 		fw.write(String.format("[%f - %f] mean: %f +- %f\n", stats.getMin(), stats.getMax(), stats.getMean(), stats.getStandardDeviation()));
 		fw.flush();
 		fw.close();
+	}
+	
+	private static Collection<Double> handleSubset(int start, int count, int totalCount, Properties props, Chromosome chrom, AtomicInteger progressCounter) {
+		ArrayList<Double> results = new ArrayList<Double>();
+		ActivatorTranscriber activatorFactory = (ActivatorTranscriber) props.singletonObjectProperty(ActivatorTranscriber.class);
+		Activator activator;
+		try {
+			activator = activatorFactory.newActivator(chrom);
+		} catch (TranscriberException e) {
+			throw new RuntimeException(e);
+		}
+	
+		//Initiate simulator and controller from properties to test their types
+		Simulator simulator = (Simulator) Utilities.instantiateObject(props.getProperty("replay.simulator.class", props.getProperty("simulator.class")),new Object[]{props},null);
+		Controller controller = (Controller) Utilities.instantiateObject(props.getProperty("controller.class"),new Object[]{props,simulator}, new Class<?>[]{Properties.class,Simulator.class});
+		
+		for (int run = start; run < start+count; run++){
+			controller.getSimulator().setRandomOffset(run);
+			double score = controller.evaluate(activator) / (1.0 * controller.getMaxScore());
+			results.add(score);
+			if (run % (count / 100) == 0){
+				int progress = progressCounter.addAndGet(count/100);
+				System.out.printf("%.0f%% - %s\n",((progress/(totalCount*1.0)) *100),controller.getSimulator().toString());
+			}
+		}
+		return results;
 	}
 	
 	public static void ask(java.util.Properties props, BufferedReader br, String key) throws IOException{
