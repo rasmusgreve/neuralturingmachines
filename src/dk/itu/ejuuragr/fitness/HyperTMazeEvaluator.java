@@ -19,6 +19,11 @@ import dk.itu.ejuuragr.fitness.Utilities.ActivatorProxy;
 public class HyperTMazeEvaluator extends BulkFitnessFunctionMT {
 
 	private static final long serialVersionUID = 1L;
+	private static final String SIMULATOR_COPYTASK = "dk.itu.ejuuragr.domain.CopyTask";
+	private static final String SIMULATOR_TMAZE = "dk.itu.ejuuragr.domain.tmaze.TMaze";
+	private static final String SIMULATOR_ROUNDS_TMAZE = "dk.itu.ejuuragr.domain.tmaze.RoundsTMaze";
+	private static final String SIMULATOR_PERMUTATIONS_TMAZE = "dk.itu.ejuuragr.domain.tmaze.PermutationsTMaze";
+	
 //	private RoundsTMaze tmaze;
 //	private TuringController controller;
 	private Properties properties;
@@ -26,6 +31,7 @@ public class HyperTMazeEvaluator extends BulkFitnessFunctionMT {
 	private int m;
 	private int hidden;
 	private boolean turnsignal;
+	private String simulator;
 	
 	
 	private com.anji.util.Properties convertProps(Properties props){
@@ -45,6 +51,7 @@ public class HyperTMazeEvaluator extends BulkFitnessFunctionMT {
 		this.properties = props;
 		this.anjiProps = convertProps(props);
 		
+		this.simulator = props.getProperty("simulator.class");
 		this.m = props.getIntProperty("tm.m");
 		this.hidden = props.getIntProperty("ann.topology.num.hidden.neurons", 0);
 		this.turnsignal = props.getBooleanProperty("simulator.tmaze.turnsignal", false);
@@ -91,6 +98,35 @@ public class HyperTMazeEvaluator extends BulkFitnessFunctionMT {
 
 	@Override
 	public int[] getLayerDimensions(int layer, int totalLayerCount) {
+		switch(this.simulator) {
+		case SIMULATOR_TMAZE:
+		case SIMULATOR_ROUNDS_TMAZE:
+		case SIMULATOR_PERMUTATIONS_TMAZE:
+			return getTMazeDimensions(layer, totalLayerCount);
+		case SIMULATOR_COPYTASK:
+			return getCopyTaskDimensions(layer, totalLayerCount);
+		}
+		System.out.println("No simulator match: "+this.simulator);
+		return null;
+	}
+
+	private int[] getCopyTaskDimensions(int layer, int totalLayerCount) {
+		if (layer == 0){ // Input layer.
+			// CopyTask: start-bit, delimiter-bit, m inputs
+			// TM: m (read vector)
+			return new int[] { 2*this.m + 2, 1};
+		} else if (this.hidden > 0 && layer == 1) {
+			return new int[] { this.hidden, 1};
+		} else if (layer == totalLayerCount - 1) { // Output layer.
+			// CopyTask: m outputs
+			// TM: m (write vector), 5 TM control (W,J,L,S,R)
+			return new int[] { this.m + this.m + 5, 1};
+		}
+		return null;
+	}
+
+
+	private int[] getTMazeDimensions(int layer, int totalLayerCount) {
 		if (layer == 0){ // Input layer.
 			// 3 range sensors plus reward plus TM 1+2 (or whatever m is) + possible turn signal.
 			return new int[] { 3+1 + this.m + (this.turnsignal ? 1 : 0), 1 };
@@ -102,12 +138,55 @@ public class HyperTMazeEvaluator extends BulkFitnessFunctionMT {
 		return null;
 	}
 
+
 	@Override
 	public Point[] getNeuronPositions(int layer, int totalLayerCount) {
-		return methodTwo(layer, totalLayerCount);
+		switch(this.simulator) {
+		case SIMULATOR_TMAZE:
+			return tmazeMethodTwo(layer, totalLayerCount);
+		case SIMULATOR_COPYTASK:
+			return getCopyTaskNeuronPositions(layer, totalLayerCount);
+		}
+		return null;
 	}
 
-	private Point[] methodOne(int layer, int totalLayerCount) {
+	private Point[] getCopyTaskNeuronPositions(int layer, int totalLayerCount) {
+		// Coordinates are given in unit ranges and translated to whatever range is specified by the
+		// experiment properties.
+		int inLayer = getCopyTaskDimensions(layer,totalLayerCount)[0];
+		if(inLayer == 0) return null;
+		Point[] positions = new Point[inLayer];
+		
+		if (layer == 0) { // Input layer.
+			positions[0] = new Point(0, 0, 0); // start
+			positions[1] = new Point(1, 0, 0); // delimiter
+			this.setEqually(positions, 2, this.m, 1.0/6, 0); // ct input
+			this.setEqually(positions, 2+this.m, this.m, 2.0/6, 0); // tm read
+
+		} else if (this.hidden > 0 && layer == 1) {
+			this.setEqually(positions, 0, this.hidden, 0.5, 0.5);
+			
+		}else if (layer == totalLayerCount - 1) { // Output layer.
+			this.setEqually(positions, 0, this.m, 5.0/6, 1.0); // ct output
+			this.setEqually(positions, this.m, this.m, 1.0, 1.0); // tm write
+			positions[2*this.m] = new Point(0.0, 1.0, 1.0); // write
+			positions[2*this.m + 1] = new Point(1.0, 1.0, 1.0); // jump
+			positions[2*this.m + 2] = new Point(1.0/4, 1.0, 1.0); // shift L
+			positions[2*this.m + 3] = new Point(2.0/4, 1.0, 1.0); // shift S
+			positions[2*this.m + 4] = new Point(3.0/4, 1.0, 1.0); // shift R
+		}
+		return positions;
+	}
+	
+	private void setEqually(Point[] array, int startIndex, int number, double y, double z) {
+		double space = 1.0 / (number-1);
+		for(int i = startIndex; i < number; i++) {
+			array[1+i] = new Point(number == 1 ? 0.5 : space*i, y, z);
+		}
+	}
+
+
+	private Point[] tmazeMethodOne(int layer, int totalLayerCount) {
 		// Coordinates are given in unit ranges and translated to whatever range is specified by the
 		// experiment properties.
 		Point[] positions = null;
@@ -151,7 +230,7 @@ public class HyperTMazeEvaluator extends BulkFitnessFunctionMT {
 		return positions;
 	}
 	
-	private Point[] methodTwo(int layer, int totalLayerCount) {
+	private Point[] tmazeMethodTwo(int layer, int totalLayerCount) {
 		// Coordinates are given in unit ranges and translated to whatever range is specified by the
 		// experiment properties.
 		Point[] positions = null;
