@@ -143,6 +143,8 @@ public class HyperTMazeEvaluator extends BulkFitnessFunctionMT {
 	public Point[] getNeuronPositions(int layer, int totalLayerCount) {
 		switch(this.simulator) {
 		case SIMULATOR_TMAZE:
+		case SIMULATOR_ROUNDS_TMAZE:
+		case SIMULATOR_PERMUTATIONS_TMAZE:
 			return tmazeMethodTwo(layer, totalLayerCount);
 		case SIMULATOR_COPYTASK:
 			return getCopyTaskNeuronPositions(layer, totalLayerCount);
@@ -271,6 +273,7 @@ public class HyperTMazeEvaluator extends BulkFitnessFunctionMT {
 			positions[1+this.m+3] = new Point(0.5,	0.75, 1);	// shift S
 			positions[1+this.m+4] = new Point(0.75,	0.75, 1);	// shift R
 		}
+		System.out.println(positions.toString());
 		return positions;
 	}
 }
