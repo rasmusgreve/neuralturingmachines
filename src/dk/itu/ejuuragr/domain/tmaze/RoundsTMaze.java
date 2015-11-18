@@ -1,7 +1,5 @@
 package dk.itu.ejuuragr.domain.tmaze;
 
-import java.util.HashSet;
-
 import com.anji.util.Properties;
 
 import dk.itu.ejuuragr.fitness.Utilities;

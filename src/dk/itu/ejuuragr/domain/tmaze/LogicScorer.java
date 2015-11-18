@@ -14,11 +14,18 @@ public class LogicScorer implements RoundScorer {
 		this.numGoals = tmaze.getMap().getOfType(MAP_TYPE.goal).size();
 		this.highCanBeIn = new HashSet<>();
 		this.tmaze = tmaze;
+		
+		resetHashSet();
 	}
 
 	@Override
 	public double scoreRound() {
+		int result = 0;
 		int curGoal = tmaze.getGoalId(tmaze.getPositionTile());
+		
+		if(this.highCanBeIn.contains(curGoal)) {
+			result = 1;
+		}
 		
 		if(curGoal < 0) { // Stop hitting the wall...
 			if(RoundsTMaze.DEBUG) System.out.println("> Crash");
@@ -58,11 +65,8 @@ public class LogicScorer implements RoundScorer {
 			}
 			this.highCanBeIn.remove(curGoal);
 		}
-		
-		if(this.highCanBeIn.contains(curGoal)) {
-			return 1.0;
-		}
-		return 0.0;
+
+		return result;
 	}
 	
 	private void resetHashSet() {
@@ -70,5 +74,4 @@ public class LogicScorer implements RoundScorer {
 		for(int i = 0; i < numGoals; i++)
 			highCanBeIn.add(i);
 	}
-
 }
