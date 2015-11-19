@@ -1,12 +1,12 @@
 package dk.itu.ejuuragr.domain.tmaze;
 
-import java.util.HashSet;
-
 import com.anji.util.Properties;
+
+import dk.itu.ejuuragr.fitness.Utilities;
 
 public class RoundsTMaze extends TMaze {
 	
-	private static final boolean DEBUG = false; // True if it should print scores for each round
+	public static final boolean DEBUG = false; // True if it should print scores for each round
 
 	private final boolean SWAP_FIX;
 	private double swapFraction; // The center fraction of the stepLength
@@ -23,9 +23,11 @@ public class RoundsTMaze extends TMaze {
 	private boolean isResetting = false;
 
 	private RestartListener listener; // Hack for letting the controller know 
+	private RoundScorer scorer; // The scoring method currently used
 
 	private final int numGoals;
-	private HashSet<Integer> highCanBeIn;
+
+	private String scorerClass;
 
 	public RoundsTMaze(Properties props) {
 		super(props);
@@ -39,7 +41,7 @@ public class RoundsTMaze extends TMaze {
 		this.rounds = roundsPerPer * (swapCount+1) * pairGoals;
 		this.swapRounds = (int) (this.swapFraction * roundsPerPer * pairGoals); // For each swap
 		
-		this.highCanBeIn = new HashSet<>(this.numGoals);
+		this.scorerClass = props.getProperty("simulator.tmaze.scorer.class", "dk.itu.ejuuragr.domain.tmaze.LogicScorer");
 		
 //		System.out.println("Rounds: "+this.rounds);
 //		System.out.println("Swap Rounds: "+this.swapRounds);
@@ -54,7 +56,7 @@ public class RoundsTMaze extends TMaze {
 		this.goals[0] = getGoalId(goal);
 		curRound = 0;
 		totalScore = 0;
-		resetHashSet();
+		loadScorer();
 		
 		switchSpots = new int[swapCount];
 		int goalCount = this.getMap().getOfType(MAP_TYPE.goal).size();
@@ -73,20 +75,6 @@ public class RoundsTMaze extends TMaze {
 		
 		if(this.listener != null)
 			this.listener.onRestart(this);
-	}
-
-	private void resetHashSet() {
-		highCanBeIn.clear();
-		for(int i = 0; i < numGoals; i++)
-			highCanBeIn.add(i);
-	}
-
-	private int swapRound(int round){
-		for (int index = 0; index < switchSpots.length; index++) {
-			if (round == switchSpots[index])
-				return index;
-		}
-		return -1;
 	}
 	
 	@Override
@@ -111,48 +99,7 @@ public class RoundsTMaze extends TMaze {
 			}
 			
 			// Determine score
-			int curGoal = super.getGoalId(super.getPositionTile());
-			if(this.highCanBeIn.contains(curGoal))
-				this.totalScore++;
-			
-			if(curGoal < 0) { // Stop hitting the wall...
-				if(DEBUG) System.out.println("> Crash");
-				
-			}else if(this.highCanBeIn.size() == 1 && this.highCanBeIn.contains(curGoal)) { // You should know this one
-				if(super.isInHighGoal()) {
-					if(DEBUG) System.out.println("> Exploiting: SUCCESS");
-				} else {
-					if(DEBUG) System.out.println("> Exploiting: SUCCESS (but has moved)");
-					resetHashSet();
-					this.highCanBeIn.remove(curGoal);
-				}
-				
-			} else if(this.highCanBeIn.size() == 1 && !this.highCanBeIn.contains(curGoal)){ // Revisit, MISTAKE
-				if(DEBUG) System.out.println("> Exploiting: MISTAKE! (know the right one)");
-				if(super.isInHighGoal()) { // But was swapped, so got lucky. No score but should know for future.
-					this.highCanBeIn.clear();
-					this.highCanBeIn.add(curGoal);
-				}
-			} else if(!this.highCanBeIn.contains(curGoal)) { // Exploring multiple times
-				if (DEBUG) System.out.println("> Exploring: MISTAKE! (explored before)");
-				if(super.isInHighGoal()) { // But was swapped, so got lucky. No score but should know for future.
-					this.highCanBeIn.clear();
-					this.highCanBeIn.add(curGoal);
-				}
-			} else if(super.isInHighGoal()) { // Found right by chance
-				if(DEBUG) System.out.println("> Exploring: Found");
-				this.highCanBeIn.clear();
-				this.highCanBeIn.add(curGoal);
-				
-			} else { // Didn't find correct one by chance
-				if(this.highCanBeIn.isEmpty()) {
-					if(DEBUG) System.out.println("> Exploring: Miss (must have moved)");
-					resetHashSet();
-				} else {
-					if(DEBUG) System.out.println("> Exploring: Miss");
-				}
-				this.highCanBeIn.remove(curGoal);
-			}
+			totalScore += scorer.scoreRound();
 			
 			isResetting = true;
 		}
@@ -215,5 +162,22 @@ public class RoundsTMaze extends TMaze {
 	
 	public interface RestartListener {
 		void onRestart(RoundsTMaze tmaze);
+	}
+	
+	// PRIVATE HELPER METHODS
+	
+	private void loadScorer() {
+		this.scorer = (RoundScorer) Utilities.instantiateObject(
+				this.scorerClass, 
+				new Object[]{this}, 
+				new Class<?>[]{RoundsTMaze.class});
+	}
+
+	private int swapRound(int round){
+		for (int index = 0; index < switchSpots.length; index++) {
+			if (round == switchSpots[index])
+				return index;
+		}
+		return -1;
 	}
 }
