@@ -32,6 +32,7 @@ public class HyperTMazeEvaluator extends BulkFitnessFunctionMT {
 	private int hidden;
 	private boolean turnsignal;
 	private String simulator;
+	private int numSteer;
 	
 	
 	private com.anji.util.Properties convertProps(Properties props){
@@ -55,6 +56,7 @@ public class HyperTMazeEvaluator extends BulkFitnessFunctionMT {
 		this.m = props.getIntProperty("tm.m");
 		this.hidden = props.getIntProperty("ann.topology.num.hidden.neurons", 0);
 		this.turnsignal = props.getBooleanProperty("simulator.tmaze.turnsignal", false);
+		this.numSteer = "single".equals(props.getProperty("simulator.tmaze.game.steer.mode", "single")) ? 1 : 3;
 	}
 
 	@Override
@@ -133,7 +135,7 @@ public class HyperTMazeEvaluator extends BulkFitnessFunctionMT {
 		} else if (this.hidden > 0 && layer == 1) {
 			return new int[] { this.hidden, 1};
 		} else if (layer == totalLayerCount - 1) { // Output layer.
-			return new int[] { 1+this.m+5, 1}; // 1 Domain (S), 2 TM data, 5 TM control (W,J,L,S,R)
+			return new int[] { this.numSteer+this.m+5, 1}; // 1 Domain (S), 2 TM data, 5 TM control (W,J,L,S,R)
 		}
 		return null;
 	}
@@ -145,7 +147,9 @@ public class HyperTMazeEvaluator extends BulkFitnessFunctionMT {
 		case SIMULATOR_TMAZE:
 		case SIMULATOR_ROUNDS_TMAZE:
 		case SIMULATOR_PERMUTATIONS_TMAZE:
-			return tmazeMethodTwo(layer, totalLayerCount);
+//			return tmazeMethodTwo(layer, totalLayerCount);
+//			return tmazeMethodThree(layer, totalLayerCount);
+			return tmazeMethodFour(layer, totalLayerCount);
 		case SIMULATOR_COPYTASK:
 			return getCopyTaskNeuronPositions(layer, totalLayerCount);
 		}
@@ -261,12 +265,14 @@ public class HyperTMazeEvaluator extends BulkFitnessFunctionMT {
 			
 		}else if (layer == totalLayerCount - 1) { // Output layer.
 			positions = new Point[1+5+this.m];
-			positions[0] = new Point(0.5,  1, 1);			// steer
+			
+			positions[0] = new Point(0.5,  1, 1);
 			
 			double space = 1.0 / (this.m-1);
 			for(int i = 0; i < this.m; i++) {				// TM write vector
 				positions[1+i] = new Point(this.m == 1 ? 0.5 : space*i, 0.75, 1);
 			}
+			
 			positions[1+this.m  ] = new Point(0.25,	1, 1);	// write control
 			positions[1+this.m+1] = new Point(0.75,	1, 1);	// jump control
 			positions[1+this.m+2] = new Point(0.25,	0.75, 1);	// shift L
@@ -274,6 +280,113 @@ public class HyperTMazeEvaluator extends BulkFitnessFunctionMT {
 			positions[1+this.m+4] = new Point(0.75,	0.75, 1);	// shift R
 		}
 		System.out.println(positions.toString());
+		return positions;
+	}
+	
+	private Point[] tmazeMethodThree(int layer, int totalLayerCount) {
+		// Coordinates are given in unit ranges and translated to whatever range is specified by the
+		// experiment properties.
+		Point[] positions = null;
+		
+		if (layer == 0) { // Input layer.
+			positions = new Point[4 + this.m + (this.turnsignal ? 1 : 0)];
+			positions[0] = new Point(0.0,	0.0, 0);	// sensor L
+			positions[1] = new Point(0.5,	0.0, 0);	// sensor S
+			positions[2] = new Point(1.0,	0.0, 0);	// sensor R
+			positions[3] = new Point(0.33,	0.25,0);	// Reward
+			if(this.turnsignal)
+				positions[4] = new Point(0.66, 0.25, 0);
+			
+			double space = 1.0 / (this.m-1);
+			for(int i = 0; i < this.m; i++) {		// TM read vector
+				positions[4+(this.turnsignal ? 1 : 0)+i] = new Point(this.m == 1 ? 0.5 : space*i, 0.25, 0);
+			}
+
+		} else if (this.hidden > 0 && layer == 1) {
+			positions = new Point[this.hidden];
+			
+			double space = 1.0 / (this.hidden-1);
+			for(int i = 0; i < this.hidden; i++) {
+				positions[i] = new Point(this.hidden == 1 ? 0.5 : space*i, 0.5, 0);
+			}
+			
+		}else if (layer == totalLayerCount - 1) { // Output layer.
+			positions = new Point[numSteer+5+this.m];
+			if (numSteer == 1){
+				positions[0] = new Point(0.5,  0.75, 0);
+			}
+			else
+			{
+				positions[0] = new Point(0.4,  0.75, 0);			// steer
+				positions[1] = new Point(0.5,  0.75, 0);			// steer
+				positions[2] = new Point(0.6,  0.75, 0);			// steer
+			}
+			
+			double space = 1.0 / (this.m-1);
+			for(int i = 0; i < this.m; i++) {				// TM write vector
+				positions[numSteer+i] = new Point(this.m == 1 ? 0.5 : space*i, 0.75, 0);
+			}
+			
+			positions[numSteer+this.m  ] = new Point(0.0,	1, 0);	// write control
+			positions[numSteer+this.m+1] = new Point(1.0,	1, 0);	// jump control
+			positions[numSteer+this.m+2] = new Point(0.4,	1, 0);	// shift L
+			positions[numSteer+this.m+3] = new Point(0.5,	1, 0);	// shift S
+			positions[numSteer+this.m+4] = new Point(0.6,	1, 0);	// shift R
+		}
+		System.out.println(positions.toString());
+		return positions;
+	}
+		
+	private Point[] tmazeMethodFour(int layer, int totalLayerCount) {
+		// Coordinates are given in unit ranges and translated to whatever range is specified by the
+		// experiment properties.
+		Point[] positions = null;
+		
+		if (layer == 0) { // Input layer.
+			positions = new Point[4 + this.m + (this.turnsignal ? 1 : 0)];
+			positions[0] = new Point(0.0,	0.0, 1);	// sensor L
+			positions[1] = new Point(0.5,	0.0, 1);	// sensor S
+			positions[2] = new Point(1.0,	0.0, 1);	// sensor R
+			positions[3] = new Point(0.25,	0.5, 1);	// Reward
+			if(this.turnsignal)
+				positions[4] = new Point(0.75, 0.5, 1);
+			
+			double space = 1.0 / (this.m-1);
+			for(int i = 0; i < this.m; i++) {		// TM read vector
+				positions[4+(this.turnsignal ? 1 : 0)+i] = new Point(this.m == 1 ? 0.5 : space*i, 0, 0);
+			}
+
+		} else if (this.hidden > 0 && layer == 1) {
+			positions = new Point[this.hidden];
+			
+			double space = 1.0 / (this.hidden-1);
+			for(int i = 0; i < this.hidden; i++) {
+				positions[i] = new Point(this.hidden == 1 ? 0.5 : space*i, 0.5, 0.5);
+			}
+			
+		}else if (layer == totalLayerCount - 1) { // Output layer.
+			positions = new Point[numSteer+5+this.m];
+			if (numSteer == 1){
+				positions[0] = new Point(0.5,  1, 1);
+			}
+			else
+			{
+				positions[0] = new Point(0.0,  1, 1);			// steer
+				positions[1] = new Point(0.5,  1, 1);			// steer
+				positions[2] = new Point(1.0,  1, 1);			// steer
+			}
+			
+			double space = 1.0 / (this.m-1);
+			for(int i = 0; i < this.m; i++) {				// TM write vector
+				positions[numSteer+i] = new Point(this.m == 1 ? 0.5 : space*i, 1, 0);
+			}
+			
+			positions[numSteer+this.m  ] = new Point(0.0,	0.5, 0);	// write control
+			positions[numSteer+this.m+1] = new Point(1.0,	0.5, 0);	// jump control
+			positions[numSteer+this.m+2] = new Point(0.4,	0.5, 0);	// shift L
+			positions[numSteer+this.m+3] = new Point(0.5,	0.5, 0);	// shift S
+			positions[numSteer+this.m+4] = new Point(0.6,	0.5, 0);	// shift R
+		}
 		return positions;
 	}
 }
