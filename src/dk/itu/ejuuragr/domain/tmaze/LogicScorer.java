@@ -41,16 +41,16 @@ public class LogicScorer implements RoundScorer {
 			
 		} else if(this.highCanBeIn.size() == 1 && !this.highCanBeIn.contains(curGoal)){ // Revisit, MISTAKE
 			if(RoundsTMaze.DEBUG) System.out.println("> Exploiting: MISTAKE! (know the right one)");
-			if(tmaze.isInHighGoal()) { // But was swapped, so got lucky. No score but should know for future.
-				this.highCanBeIn.clear();
-				this.highCanBeIn.add(curGoal);
-			}
+//			if(tmaze.isInHighGoal()) { // But was swapped, so got lucky. No score but should know for future.
+//				this.highCanBeIn.clear();
+//				this.highCanBeIn.add(curGoal);
+//			}
 		} else if(!this.highCanBeIn.contains(curGoal)) { // Exploring multiple times
 			if (RoundsTMaze.DEBUG) System.out.println("> Exploring: MISTAKE! (explored before)");
-			if(tmaze.isInHighGoal()) { // But was swapped, so got lucky. No score but should know for future.
-				this.highCanBeIn.clear();
-				this.highCanBeIn.add(curGoal);
-			}
+//			if(tmaze.isInHighGoal()) { // But was swapped, so got lucky. No score but should know for future.
+//				this.highCanBeIn.clear();
+//				this.highCanBeIn.add(curGoal);
+//			}
 		} else if(tmaze.isInHighGoal()) { // Found right by chance
 			if(RoundsTMaze.DEBUG) System.out.println("> Exploring: Found");
 			this.highCanBeIn.clear();
