@@ -17,12 +17,20 @@ public class Evolver {
 	public static void main(String[] args) throws Throwable {
 		java.util.Properties p1 = new java.util.Properties();
 		p1.load(ClassLoader.getSystemResourceAsStream( args[0] ));
-		
+		String seedFromStdIn = (args.length < 2) ? null : args[1];
 		if (!p1.containsKey("random.seed")){
-			System.out.println("Properties contain no random seed!");
-			System.out.println("Enter desired random seed:");
-			BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-			String seed = br.readLine();
+			String seed;
+			if (seedFromStdIn == null){
+				System.out.println("Properties contain no random seed!");
+				System.out.println("Enter desired random seed:");
+				BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+				seed = br.readLine();
+			}
+			else
+			{
+				System.out.println("Loaded seed from std in: " + seedFromStdIn);
+				seed = seedFromStdIn.toString();
+			}
 			p1.setProperty("random.seed", seed);
 			p1.setProperty("log4j.appender.A1.File", "./db/log" + seed + ".txt");
 			p1.setProperty("persistence.base.dir", "./db"+seed);

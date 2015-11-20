@@ -25,6 +25,12 @@ public class MultiEvolver {
 			props.load(new FileReader(file));
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		
+		if (args.length > 1){
+			props.setProperty("random.seed", args[1]);
+			System.out.println("Setting seed from stdin: " + args[1]);
+			
+		}
+		
 		ask(props,br,"tm.m");
 		ask(props,br,"popul.size");
 		ask(props,br,"controller.iterations");
