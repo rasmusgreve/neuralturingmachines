@@ -32,7 +32,7 @@ public class RoundsTMaze extends TMaze {
 	public RoundsTMaze(Properties props) {
 		super(props);
 		int roundsPerPer = props.getIntProperty("simulator.tmaze.rounds", 5);
-		this.swapFraction = props.getDoubleProperty("simulator.tmaze.swap.fraction", 0.3);
+		this.swapFraction = props.getDoubleProperty("simulator.tmaze.swap.fraction", 0.6);
 		this.swapCount = props.getIntProperty("simulator.tmaze.swap.swapcount",1);
 		this.SWAP_FIX = props.getBooleanProperty("simulator.tmaze.swapfix", false);
 		
