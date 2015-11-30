@@ -147,7 +147,7 @@ public class Evaluator {
 			controller.getSimulator().setRandomOffset(run);
 			double score = controller.evaluate(activator) / (1.0 * controller.getMaxScore());
 			results.add(score);
-			if (run % (count / 100) == 0){
+			if (totalCount >= 1000 && (run % (count / 100) == 0)){
 				int progress = progressCounter.addAndGet(count/100);
 				System.out.printf("%.0f%% - %s\n",((progress/(totalCount*1.0)) *100),controller.getSimulator().toString());
 			}
