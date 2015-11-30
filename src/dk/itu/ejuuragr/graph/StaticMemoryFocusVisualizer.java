@@ -9,6 +9,13 @@ import dk.itu.ejuuragr.replay.TuringTimeStep;
 import dk.itu.ejuuragr.turing.GravesTuringMachine.GravesTuringMachineTimeStep;
 import dk.itu.ejuuragr.turing.MinimalTuringMachine.MinimalTuringMachineTimeStep;
 
+/**
+ * Visualizes the memory usage for a memory
+ * model which does not expand runtime.
+ * 
+ * @author Rasmus
+ *
+ */
 public class StaticMemoryFocusVisualizer extends AbstractReplayVisualizer {
 
 	

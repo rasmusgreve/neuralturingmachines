@@ -14,6 +14,15 @@ import dk.itu.ejuuragr.fitness.FitnessEvaluator;
 import dk.itu.ejuuragr.turing.TuringController;
 import dk.itu.ejuuragr.turing.TuringMachine;
 
+/**
+ * Our version of the ANJI evolver which is capable
+ * of querying for missing properties so it is easy
+ * to de deploy the evolutions on multiple systems
+ * with different properties.
+ * 
+ * @author Emil
+ *
+ */
 public class MultiEvolver {
 
 	public static void main(String[] args) throws Throwable {

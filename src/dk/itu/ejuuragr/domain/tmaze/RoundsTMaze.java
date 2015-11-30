@@ -4,6 +4,20 @@ import com.anji.util.Properties;
 
 import dk.itu.ejuuragr.fitness.Utilities;
 
+/**
+ * The extension to the TMaze which only
+ * involved one round going from the initial
+ * position to a goal. Here the agent will
+ * be reset to the initial position for
+ * multiple rounds and a score will be
+ * aggregated over the number of rounds. The
+ * high reward can switch position between
+ * rounds such that the agent will have to
+ * explore again.
+ * 
+ * @author Emil
+ *
+ */
 public class RoundsTMaze extends TMaze {
 	
 	public static final boolean DEBUG = false; // True if it should print scores for each round
@@ -42,9 +56,6 @@ public class RoundsTMaze extends TMaze {
 		this.swapRounds = (int) (this.swapFraction * roundsPerPer * pairGoals); // For each swap
 		
 		this.scorerClass = props.getProperty("simulator.tmaze.scorer.class", "dk.itu.ejuuragr.domain.tmaze.LogicScorer");
-		
-//		System.out.println("Rounds: "+this.rounds);
-//		System.out.println("Swap Rounds: "+this.swapRounds);
 	}
 
 	@Override

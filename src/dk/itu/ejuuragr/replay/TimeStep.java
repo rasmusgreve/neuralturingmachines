@@ -1,6 +1,13 @@
 package dk.itu.ejuuragr.replay;
 
-
+/**
+ * A specific TimeStep for the ANN input
+ * and output.
+ * 
+ * @author Rasmus
+ *
+ * @param <T>
+ */
 public class TimeStep<T extends TuringTimeStep>{
 	T turingStep;
 	double[] domainInput;

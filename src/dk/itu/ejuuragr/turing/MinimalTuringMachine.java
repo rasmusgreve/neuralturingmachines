@@ -11,6 +11,15 @@ import dk.itu.ejuuragr.replay.Replayable;
 import dk.itu.ejuuragr.replay.TuringTimeStep;
 import dk.itu.ejuuragr.turing.MinimalTuringMachine.MinimalTuringMachineTimeStep;
 
+/**
+ * Our simplified version of a Turing Machine for
+ * use with a neural network. It uses the general
+ * TuringMachine interface so can be used in the
+ * same contexts as the GravesTuringMachine.
+ * 
+ * @author Emil
+ *
+ */
 public class MinimalTuringMachine implements TuringMachine, Replayable<MinimalTuringMachineTimeStep> {
 
 	private static final boolean DEBUG = false;

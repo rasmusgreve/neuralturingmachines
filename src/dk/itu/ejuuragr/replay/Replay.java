@@ -18,7 +18,6 @@ import com.anji.integration.ActivatorTranscriber;
 import com.anji.persistence.FilePersistence;
 import com.anji.util.DummyConfiguration;
 import com.anji.util.Properties;
-import com.anji_ahni.integration.Transcriber;
 import com.ojcoleman.ahni.transcriber.HyperNEATTranscriberBain;
 
 import dk.itu.ejuuragr.domain.Simulator;
@@ -26,12 +25,19 @@ import dk.itu.ejuuragr.domain.tmaze.TMaze;
 import dk.itu.ejuuragr.fitness.Controller;
 import dk.itu.ejuuragr.fitness.Utilities;
 import dk.itu.ejuuragr.fitness.Utilities.ActivatorProxy;
-import dk.itu.ejuuragr.graph.StaticMemoryFocusVisualizer;
 import dk.itu.ejuuragr.graph.TMazeStepReplayVisualizer;
 import dk.itu.ejuuragr.graph.TMazeVisualizer;
 import dk.itu.ejuuragr.replay.StepSimulator.Stepper;
 import dk.itu.ejuuragr.turing.TuringController;
 
+/**
+ * The class responsible for Replaying an activation
+ * of a chromosome in its domain, to visualize how
+ * it performs.
+ * 
+ * @author Rasmus
+ *
+ */
 public class Replay {
 
 	private static com.ojcoleman.ahni.hyperneat.Properties convertProps(Properties props){
@@ -79,12 +85,6 @@ public class Replay {
 			ActivatorTranscriber activatorFactory = (ActivatorTranscriber) props.singletonObjectProperty(ActivatorTranscriber.class);
 			activator = activatorFactory.newActivator(chrom);
 		}
-//		Chromosome chrom = loadChromosome(args.length > 1 ? args[1] : prompt("Chromosome ID: "), props);
-//		
-//		
-//		//Setup activator
-//		ActivatorTranscriber activatorFactory = (ActivatorTranscriber) props.singletonObjectProperty(ActivatorTranscriber.class);
-//		Activator activator = activatorFactory.newActivator(chrom);
 	
 		//Initiate simulator and controller from properties to test their types
 		Simulator simulator = (Simulator) Utilities.instantiateObject(props.getProperty("simulator.class"),new Object[]{props},null);

@@ -11,18 +11,22 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Line2D;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 
 import javax.swing.JComponent;
 import javax.swing.JFrame;
-
-import com.anji.util.Properties;
 
 import dk.itu.ejuuragr.domain.tmaze.TMaze;
 import dk.itu.ejuuragr.domain.tmaze.TMaze.MAP_TYPE;
 import dk.itu.ejuuragr.domain.tmaze.TMaze.MazeMap;
 
+/**
+ * Visualizes the replay of a game of
+ * T-Maze with the settings (map etc) from
+ * the used properties file.
+ * 
+ * @author Rasmus
+ *
+ */
 public class TMazeVisualizer {
 
 	final TMaze maze;
@@ -118,7 +122,6 @@ public class TMazeVisualizer {
 			g.setColor(Color.green);
 			g.setTransform(new AffineTransform());
 			g.setFont(rewardFont);
-//			g.drawString("Reward: " + maze.getCurrentScore(), 5, 25);
 			
 		}
 	}
@@ -226,39 +229,4 @@ public class TMazeVisualizer {
 			g.drawString("R",x * blockSize + (int)(size*blockSize / 1.30),y * blockSize + (int)(size * blockSize/1.35));
 		}
 	}
-	
-//	
-//	//Quick and dirty test main
-//	public static void main(String[] args) throws Exception {
-//		String chromosomeId, propertiesFile;
-//		if (args.length == 0){
-//			BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-//			System.out.println("Properties filename: ");
-//			propertiesFile = br.readLine();
-//			System.out.println("Chromosome ID: ");
-//			chromosomeId = br.readLine();
-//		}
-//		else
-//		{
-//			propertiesFile = args[0];
-//			chromosomeId = args[1];
-//		}
-//		
-//		try{
-//			//Setup
-//			Properties props = new Properties(propertiesFile); // "turingmachine.properties"
-//			props.setProperty("base.dir", "./db");
-//			
-//			TMaze maze = new TMaze(props);
-//			maze.reset();
-//			maze.restart();
-//			TMazeVisualizer viz = new TMazeVisualizer(maze, true);
-//
-//		}
-//		catch (Exception e){
-//			System.out.println("!!! Warning!");
-//			System.out.println("Chromosome load failed!");
-//		}
-//	}
-	
 }

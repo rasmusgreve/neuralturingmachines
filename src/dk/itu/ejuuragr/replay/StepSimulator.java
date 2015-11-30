@@ -5,6 +5,13 @@ import java.util.Random;
 import dk.itu.ejuuragr.domain.Simulator;
 import dk.itu.ejuuragr.fitness.Controller;
 
+/**
+ * A simulator proxy which will store the data
+ * from each step.
+ * 
+ * @author Rasmus
+ *
+ */
 public class StepSimulator implements Simulator {
 
 	Simulator simulator;

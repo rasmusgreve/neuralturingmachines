@@ -6,7 +6,11 @@ import java.util.Arrays;
 
 import com.anji_ahni.integration.Activator;
 
-
+/**
+ * Various static helper methods used throughout
+ * the project.
+ *
+ */
 public class Utilities {
 
 	/**

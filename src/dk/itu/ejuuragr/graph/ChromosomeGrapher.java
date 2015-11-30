@@ -17,6 +17,7 @@ import org.xml.sax.helpers.XMLReaderFactory;
 
 /**
  * A helper class for creating an image from an ANN structure.
+ * 
  * @author Rasmus
  *
  */
@@ -34,7 +35,6 @@ public class ChromosomeGrapher {
 	 */
 	public static void main(String[] args) throws Exception {
 		processSingleByStdIn();
-//		processFamilyByStdIn();
 	}
 	
 	

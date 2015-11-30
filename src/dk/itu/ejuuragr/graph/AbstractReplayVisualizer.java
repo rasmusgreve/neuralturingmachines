@@ -15,6 +15,13 @@ import javax.swing.JFrame;
 
 import dk.itu.ejuuragr.replay.Recording;
 
+/**
+ * Basic functioanlity for visualizing a replay of
+ * a chromosome evolved through NEAT.
+ * 
+ * @author Rasmus
+ *
+ */
 public abstract class AbstractReplayVisualizer {
 
 	public static int pixelSize = 25;

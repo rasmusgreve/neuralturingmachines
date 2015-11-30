@@ -12,6 +12,13 @@ import dk.itu.ejuuragr.replay.TuringTimeStep;
 import dk.itu.ejuuragr.turing.GravesTuringMachine.GravesTuringMachineTimeStep;
 import dk.itu.ejuuragr.turing.MinimalTuringMachine.MinimalTuringMachineTimeStep;
 
+/**
+ * Enables Visualizers to step around in the replay
+ * such that the memory usage can be explored.
+ * 
+ * @author Rasmus
+ *
+ */
 public class StepReplayVisualizer extends AbstractReplayVisualizer {
 
 	protected int stepIndex = 0;

@@ -16,6 +16,7 @@ import dk.itu.ejuuragr.replay.StepSimulator;
  * and gives its output (read) to the inputs of the NN.
  * This way the NN has the capability to save data in
  * memory.
+ * 
  * @author Emil
  *
  */

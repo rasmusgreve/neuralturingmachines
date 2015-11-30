@@ -69,9 +69,7 @@ public class TMaze extends BaseSimulator {
 	private HashSet<Pair<Integer, Integer>> visitedTiles;
 	
 	private int finished = -1;
-
-
-
+	
 	/**
 	 * The required constructor to instantiate the Simulator through
 	 * recursion.
@@ -162,10 +160,7 @@ public class TMaze extends BaseSimulator {
 
 	@Override
 	public boolean isTerminated() {
-		boolean result = isInWall() || finishedLastStep() || stepCounter >= maxSteps-1 || (stepCounter >= this.maxStepsPerNewTile * this.visitedTiles.size());
-//	if(result)
-//		System.out.println(this.visitedTiles.size());
-	return result;
+	return isInWall() || finishedLastStep() || stepCounter >= maxSteps-1 || (stepCounter >= this.maxStepsPerNewTile * this.visitedTiles.size());
 	}
 
 	// SPECIFIC PUBLIC METHODS

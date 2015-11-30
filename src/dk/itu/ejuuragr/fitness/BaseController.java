@@ -6,11 +6,11 @@ import com.anji.integration.Activator;
 import com.anji.util.Properties;
 
 import dk.itu.ejuuragr.domain.Simulator;
-import dk.itu.ejuuragr.domain.tmaze.RoundsTMaze;
 
 /**
  * Abstracts the flow of evaluating away from subclasses
  * who just have to handle their part of the process
+ * 
  * @author Emil
  *
  */
@@ -70,11 +70,9 @@ public abstract class BaseController implements Controller {
 			}
 
 			totalScore += sim.getCurrentScore();
-//			System.out.println("Map "+(i+1)+": "+sim.toString());
 		}
 		
 		double result = Math.max(0.0, totalScore);
-//		System.out.printf("One Chromosome evaluated: nn = %d ms, tm = %d ms, sim = %d ms (%d steps)\n",nnTime,contTime,simTime,steps);
 		return result;
 	}
 	
@@ -84,9 +82,6 @@ public abstract class BaseController implements Controller {
 	}
 
 	protected double[] activateNeuralNetwork(Activator nn, double[] domainInput, double[] controllerInput) {
-//		System.out.println("Activate from Domain: "+Utilities.toString(domainInput));
-//		System.out.println("Activate from Controller: "+Utilities.toString(controllerInput));
-//		System.out.println("Wanted length = "+inputTotal);
 		
 		double[] input = new double[domainInput.length + controllerInput.length + 1];
 		Utilities.copy(domainInput,input,0);
@@ -102,8 +97,6 @@ public abstract class BaseController implements Controller {
 	private void cleanInput(double[] array) {
 		for(int i = 0; i < array.length; i++) {
 			if(array[i] > 1.0) {
-//				System.out.printf("WARNING: Input value (%f, index=%d) to NN is greater than 1.0, truncating.",array[i],i);
-//				System.out.println();
 				array[i] = 1.0;
 			}
 		}

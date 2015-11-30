@@ -9,6 +9,7 @@ import dk.itu.ejuuragr.fitness.Utilities;
  * Scissors againt the agent. This opponent is predictable
  * (just cycles through the options) so an agent with
  * memory should be able to easily beat it.)
+ * 
  * @author Emil
  *
  */
@@ -77,8 +78,6 @@ public class RPSSimulator extends BaseSimulator {
 
 	@Override
 	public boolean isTerminated() {
-//		System.out.printf("Step=%d, Total=%d",score,stepsTotal);
-//		System.out.println();
 		return step >= (stepsTotal * sequence.length);
 	}
 
@@ -108,8 +107,6 @@ public class RPSSimulator extends BaseSimulator {
 		default:
 			throw new IllegalArgumentException(mode+" is not a legal mode");
 		}
-
-		//System.out.println(Arrays.toString(sequence));
 	}
 
 	private int[] swapSequence() {

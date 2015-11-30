@@ -6,7 +6,6 @@ import org.junit.Test;
 
 import com.anji.util.Properties;
 
-import dk.itu.ejuuragr.fitness.Utilities;
 import dk.itu.ejuuragr.turing.MinimalTuringMachine;
 
 public class MinimalTuringMachineTest {
