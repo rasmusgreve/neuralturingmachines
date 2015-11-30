@@ -8,6 +8,8 @@ This simpler architecture is possible, because evolved NTMs need not adhere to t
 Our proposed NTM architecture has far less parameters and simpler calculations, which mitigates the concerns raised for the current NTMs scalability, both in terms of network complexity as well as computation time. 
 Our evolutionary NTMs succeed in solving the Continuous Double T-Maze, which to the best of our knowledge have not been solved before.
 
+[Preliminary results have been published as part of the *Reasoning, Attention and Memory workshop* (RAM), at the NIPS 2015 conference.](http://sebastianrisi.com/wp-content/uploads/greve_ram15.pdf)
+
 How to use
 -------------
 4 bat files exist in the root of the project:
