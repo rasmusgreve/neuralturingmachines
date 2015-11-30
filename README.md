@@ -1,9 +1,27 @@
 Neural turing machines evolved through NEAT
 ===========================================
 
+How to use
+-------------
+4 bat files exist in the root of the project:
+
+* **RUN Evaluate NEAT T-Maze.bat** is used to evaluate the Double T-Maze champion. The settings in the bat file will automatically use tmaze.properties and the champion chromosome (id 2331278). Notice that this will fail if you run *RUN Evolve NEAT T-Maze.bat*, as this operation overwrites the chromosome files.
+
+* **RUN Evolve HyperNEAT T-Maze.bat** is used to start HyperNEAT evolution of a Double T-Maze agent.
+
+* **RUN Evolve NEAT T-Maze.bat** is used to start NEAT evolution of a Double T-Maze agent.
+
+* **RUN Replay NEAT T-Maze.bat** is used to replay the Double T-Maze champion. The settings in the bat file will automatically use tmaze.properties and the champion chromosome (id 2331278). Notice that this will fail if you run *RUN Evolve NEAT T-Maze.bat*, as this operation overwrites the chromosome files.
+The replay consists of two windows - one showing the memory contents and another showing the location of the agent in the maze. **Press space to advance one time-step.**
+
+
+
+
+
+
 Introduction
 -------------
-Artificial neural networks (ANNs) are a machine learning technique used to estimate a function possibly of multiple inputs and multiple outputs. They are represented by a network of interconnected ‘neurons’ imitating the way biological neural networks works, with distinct sets of input neurons and output neurons and a number of ‘hidden’ neurons in between. The connection from one neuron to another is called a synapse and has a strength determining how much it contributes to the activation of the latter.
+Artificial neural networks (ANNs) are a machine learning technique used to estimate a function possibly of multiple inputs and multiple outputs. They are represented by a network of interconnected 'neurons' imitating the way biological neural networks works, with distinct sets of input neurons and output neurons and a number of 'hidden' neurons in between. The connection from one neuron to another is called a synapse and has a strength determining how much it contributes to the activation of the latter.
 There are multiple ways to construct and adjust ANNs; hand crafting, back propagation, evolutionary algorithms and multiple others.
 
 The Turing Machine (TM) is a simple (theoretical) machine which has access to an infinite memory tape where it can write to, erase, read from and move the cursor. Using the current state and the data in the current location on the tape the machine will have instructions for further manipulations [0].
@@ -13,7 +31,7 @@ Combined with the ANN the memory tape from the TM could be a simple way of stori
 
 State of the art
 ----------------------
-In 2014, Graves et al. at Google DeepMind published an article describing their implementation of “Neural Turing Machines” [1]. They coupled an ANN with an external memory tape and introduced multiple addressing options for the network to use when reading and writing. Their approach rely on training the ANN with backpropagation, requiring that all functions and operations be differentiable.
+In 2014, Graves et al. at Google DeepMind published an article describing their implementation of 'Neural Turing Machines' [1]. They coupled an ANN with an external memory tape and introduced multiple addressing options for the network to use when reading and writing. Their approach rely on training the ANN with backpropagation, requiring that all functions and operations be differentiable.
 
 Several techniques already exists for allowing ANNs to adapt to direct changes in the environment after the learning phase. The first is called Recurrent Neural Networks [2] which have a feedback loop from neurons to upstream neurons which persists over activations. This allows them to remember information while it is actively preserved. Another technique is to simply allow the network to adjust weights after the initial training by plasticity which can be facilitated through neuromodulation [3]. 
 
@@ -28,7 +46,7 @@ This difference to existing means of online memory in ANNs might have great adva
 
 Evaluation
 ------------------
-The most common way of evaluating an agent’s ability to adapt to online changes in the environment is the T-Maze where the goal moves during the evaluation.
+The most common way of evaluating an agent's ability to adapt to online changes in the environment is the T-Maze where the goal moves during the evaluation.
 
 Similarly the Double T-Maze offers a greater challenge to the adaptability of the agent. 
 
