@@ -1,6 +1,13 @@
 Neural turing machines evolved through NEAT
 ===========================================
 
+We construct Neural Turing Machines (NTMs) using the neuroevolutionary approach *NEAT*, in order to evaluate the feasibility of evolutionary methods in combination with NTMs.
+NEAT has the advantage that it is an unsupervised learning algorithm, and therefore does not need training data which is not available in some domains.
+When using evolution rather than backpropagation to generate NTMs for the Copytask, the Single T-Maze and the Double T-Maze learning tasks, the differentiable NTM proposed by Graves *et al.* performs significantly worse than our newly proposed simplified NTM.
+This simpler architecture is possible, because evolved NTMs need not adhere to the differentiability restrictions of the backpropagation training method. 
+Our proposed NTM architecture has far less parameters and simpler calculations, which mitigates the concerns raised for the current NTMs scalability, both in terms of network complexity as well as computation time. 
+Our evolutionary NTMs succeed in solving the Continuous Double T-Maze, which to the best of our knowledge have not been solved before.
+
 How to use
 -------------
 4 bat files exist in the root of the project:
