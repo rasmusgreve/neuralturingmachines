@@ -4,6 +4,14 @@ import java.util.HashSet;
 
 import dk.itu.ejuuragr.domain.tmaze.TMaze.MAP_TYPE;
 
+/**
+ * The scoring function for RoundsTMaze which counts
+ * the number of logically sound choices the agent
+ * makes in its choice of goal.
+ * 
+ * @author Emil
+ *
+ */
 public class LogicScorer implements RoundScorer {
 	
 	private HashSet<Integer> highCanBeIn;
@@ -41,16 +49,16 @@ public class LogicScorer implements RoundScorer {
 			
 		} else if(this.highCanBeIn.size() == 1 && !this.highCanBeIn.contains(curGoal)){ // Revisit, MISTAKE
 			if(RoundsTMaze.DEBUG) System.out.println("> Exploiting: MISTAKE! (know the right one)");
-//			if(tmaze.isInHighGoal()) { // But was swapped, so got lucky. No score but should know for future.
-//				this.highCanBeIn.clear();
-//				this.highCanBeIn.add(curGoal);
-//			}
+			if(tmaze.isInHighGoal()) { // But was swapped, so got lucky. No score but should know for future.
+				this.highCanBeIn.clear();
+				this.highCanBeIn.add(curGoal);
+			}
 		} else if(!this.highCanBeIn.contains(curGoal)) { // Exploring multiple times
 			if (RoundsTMaze.DEBUG) System.out.println("> Exploring: MISTAKE! (explored before)");
-//			if(tmaze.isInHighGoal()) { // But was swapped, so got lucky. No score but should know for future.
-//				this.highCanBeIn.clear();
-//				this.highCanBeIn.add(curGoal);
-//			}
+			if(tmaze.isInHighGoal()) { // But was swapped, so got lucky. No score but should know for future.
+				this.highCanBeIn.clear();
+				this.highCanBeIn.add(curGoal);
+			}
 		} else if(tmaze.isInHighGoal()) { // Found right by chance
 			if(RoundsTMaze.DEBUG) System.out.println("> Exploring: Found");
 			this.highCanBeIn.clear();

@@ -1,5 +1,13 @@
 package dk.itu.ejuuragr.domain.tmaze;
 
+/**
+ * The basic scoring function for RoundsTMaze which
+ * simply sums up the reward collected when reaching
+ * goals.
+ * 
+ * @author Emil
+ *
+ */
 public class RewardScorer implements RoundScorer {
 
 	private RoundsTMaze tmaze;

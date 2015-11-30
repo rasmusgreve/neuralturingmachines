@@ -15,6 +15,7 @@ import dk.itu.ejuuragr.turing.GravesTuringMachine.GravesTuringMachineTimeStep;
 /**
  * The Turing Machine for integration with ANNs as described
  * by Graves et.al.
+ * 
  * @author Emil
  *
  */

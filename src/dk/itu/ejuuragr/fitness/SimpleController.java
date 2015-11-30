@@ -9,6 +9,7 @@ import dk.itu.ejuuragr.domain.Simulator;
  * and nothing else. The numbers in the properties file
  * obviously still have to reflect this (same number of
  * stimulus and responses as the simulator requires)
+ * 
  * @author Emil
  *
  */

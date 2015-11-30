@@ -34,6 +34,15 @@ import dk.itu.ejuuragr.domain.Simulator;
 import dk.itu.ejuuragr.fitness.Controller;
 import dk.itu.ejuuragr.fitness.Utilities;
 
+/**
+ * Visualizes the evaluation of a Copytask
+ * agent such that the expected sequence
+ * and the one reproduced by the ANN can
+ * be compared.
+ * 
+ * @author Rasmus
+ *
+ */
 public class CopyTaskEvaluationVisualizer {
 
 
@@ -231,7 +240,6 @@ public class CopyTaskEvaluationVisualizer {
 	public static void main(String[] args) throws IOException, TranscriberException{
 		Properties props = new Properties("copytask.properties");
 		props.setProperty("base.dir", "./db");
-//		Chromosome chrom = loadChromosome(args.length > 1 ? args[1] : prompt("Chromosome ID: "), props);
 		Chromosome chrom = loadChromosome("2388977", props);
 		
 		//Setup activator

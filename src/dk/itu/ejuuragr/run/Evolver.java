@@ -12,6 +12,15 @@ import dk.itu.ejuuragr.fitness.FitnessEvaluator;
 import dk.itu.ejuuragr.turing.TuringController;
 import dk.itu.ejuuragr.turing.TuringMachine;
 
+/**
+ * Our version of the ANJI evolver which will
+ * calculate the number of stimulus and response
+ * neurons in the ANN based on the domain and TM
+ * defined in properties.
+ * 
+ * @author Rasmus
+ *
+ */
 public class Evolver {
 
 	public static void main(String[] args) throws Throwable {

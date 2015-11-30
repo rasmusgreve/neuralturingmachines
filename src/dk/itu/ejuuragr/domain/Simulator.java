@@ -7,6 +7,7 @@ import dk.itu.ejuuragr.fitness.Controller;
 /**
  * A Simulator should have a constructor taking a single Properties object.
  * This way it can be used by simply referencing it in the properties file.
+ * 
  * @author Emil
  *
  */

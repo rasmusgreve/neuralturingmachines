@@ -19,7 +19,7 @@ import dk.itu.ejuuragr.fitness.Utilities;
  * have the maximum nutritional value, and especially avoid
  * those who are poisonous (negative nutritional value).
  * 
- * @author Emil Juul Jacobsen
+ * @author Emil
  *
  */
 public class HuntingSimulator extends BaseSimulator {

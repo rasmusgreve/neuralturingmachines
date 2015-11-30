@@ -24,6 +24,15 @@ import dk.itu.ejuuragr.domain.Simulator;
 import dk.itu.ejuuragr.fitness.Controller;
 import dk.itu.ejuuragr.fitness.Utilities;
 
+/**
+ * The class for evaluating a chromosome on
+ * multiple instances of its domain differently
+ * seeded. The results will be min, max and average
+ * score and the standard deviation.
+ * 
+ * @author Rasmus
+ *
+ */
 public class Evaluator {
 	
 	public static void main(String[] args) throws Exception {

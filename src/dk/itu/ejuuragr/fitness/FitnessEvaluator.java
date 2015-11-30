@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 
 import org.jgap.BulkFitnessFunction;
 import org.jgap.Chromosome;
@@ -17,6 +16,17 @@ import com.anji.util.Properties;
 import dk.itu.ejuuragr.domain.Simulator;
 import dk.itu.ejuuragr.turing.TuringController;
 
+/**
+ * The FitnessFunction class required by ANJI to evaluate
+ * a generation of ANNs. This class will use the properties
+ * file to load the chosen Controller and Simulator via
+ * reflection and get our various properties for the
+ * settings. The actual evaluations can be done multithreaded
+ * (through setting a specific property).
+ * 
+ * @author Emil
+ *
+ */
 public class FitnessEvaluator implements BulkFitnessFunction, Configurable {
 	private static final long serialVersionUID = 1L;
 
@@ -129,7 +139,6 @@ public class FitnessEvaluator implements BulkFitnessFunction, Configurable {
 		else {
 			result = controllers[0].getMaxScore();
 		}
-		// System.out.println("Max Score: "+result);
 		return result;
 	}
 

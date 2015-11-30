@@ -11,18 +11,22 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Line2D;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 
 import javax.swing.JComponent;
 import javax.swing.JFrame;
-
-import com.anji.util.Properties;
 
 import dk.itu.ejuuragr.domain.tmaze.TMaze;
 import dk.itu.ejuuragr.domain.tmaze.TMaze.MAP_TYPE;
 import dk.itu.ejuuragr.domain.tmaze.TMaze.MazeMap;
 
+/**
+ * Allows you to only see the inputs the ANN gets
+ * such that you have a chance to experience the
+ * problem.
+ * 
+ * @author Rasmus
+ *
+ */
 public class TMazeVisualizerAsNN {
 
 	final TMaze maze;
@@ -209,23 +213,4 @@ public class TMazeVisualizerAsNN {
 		double ny = (y + (0.5 - size)) * blockSize;
 		drawCircle(g, nx, ny, size);
 	}
-//	
-//	//Quick and dirty test main
-//	public static void main(String[] args) throws Exception {
-//		
-//		try{
-//			//Setup
-//			Properties props = new Properties("turingmachine.properties");
-//			props.setProperty("base.dir", "./db");
-//			
-//			TMaze maze = new TMaze(props);
-//			maze.reset();
-//			TMazeVisualizerAsNN viz = new TMazeVisualizerAsNN(maze);
-//
-//		}
-//		catch (Exception e){
-//			System.out.println("!!! Warning!");
-//			System.out.println("Chromosome load failed!");
-//		}
-//	}
 }

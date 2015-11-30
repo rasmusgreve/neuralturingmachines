@@ -11,6 +11,13 @@ import dk.itu.ejuuragr.domain.tmaze.TMaze;
 import dk.itu.ejuuragr.graph.TMazeVisualizer;
 import dk.itu.ejuuragr.graph.TMazeVisualizerAsNN;
 
+/**
+ * Allows you to play T-Maze yourself rather than
+ * seeing an ANN play it. Use the arrow keys.
+ * 
+ * @author Rasmus
+ *
+ */
 public class PlayTMaze {
 
 	public static void main(String[] args) throws IOException{

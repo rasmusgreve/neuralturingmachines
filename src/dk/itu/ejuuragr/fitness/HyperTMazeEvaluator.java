@@ -16,6 +16,14 @@ import com.ojcoleman.ahni.util.Point;
 import dk.itu.ejuuragr.domain.Simulator;
 import dk.itu.ejuuragr.fitness.Utilities.ActivatorProxy;
 
+/**
+ * The FitnessFunction class required by AHNI to evaluate
+ * an entire generation for HyperNEAT. This class also
+ * has to define the substrate geometry of the controller.
+ * 
+ * @author Emil
+ *
+ */
 public class HyperTMazeEvaluator extends BulkFitnessFunctionMT {
 
 	private static final long serialVersionUID = 1L;
@@ -24,8 +32,6 @@ public class HyperTMazeEvaluator extends BulkFitnessFunctionMT {
 	private static final String SIMULATOR_ROUNDS_TMAZE = "dk.itu.ejuuragr.domain.tmaze.RoundsTMaze";
 	private static final String SIMULATOR_PERMUTATIONS_TMAZE = "dk.itu.ejuuragr.domain.tmaze.PermutationsTMaze";
 	
-//	private RoundsTMaze tmaze;
-//	private TuringController controller;
 	private Properties properties;
 	private com.anji.util.Properties anjiProps;
 	private int m;

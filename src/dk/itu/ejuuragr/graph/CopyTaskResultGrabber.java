@@ -6,6 +6,14 @@ import com.anji.util.Properties;
 
 import dk.itu.ejuuragr.domain.CopyTask;
 
+/**
+ * An extension to CopyTask which stores
+ * the output from the ANN to be visualized
+ * elsewhere.
+ * 
+ * @author Rasmus
+ *
+ */
 public class CopyTaskResultGrabber extends CopyTask {
 
 	double[][] received;

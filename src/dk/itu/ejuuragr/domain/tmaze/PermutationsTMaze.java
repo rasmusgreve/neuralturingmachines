@@ -110,7 +110,6 @@ public class PermutationsTMaze extends RoundsTMaze {
 				if(DEBUG) System.out.println(completedRounds+": "+Arrays.toString(currentPermutation));
 				return;
 			}
-			//if(DEBUG) System.out.println("> "+completedRounds+": "+Arrays.toString(currentPermutation));
 		}
 	}
 }

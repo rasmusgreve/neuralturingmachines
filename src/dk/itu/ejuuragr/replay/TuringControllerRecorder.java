@@ -6,9 +6,16 @@ import com.anji.integration.Activator;
 import com.anji.util.Properties;
 
 import dk.itu.ejuuragr.domain.Simulator;
-import dk.itu.ejuuragr.turing.MinimalTuringMachine;
 import dk.itu.ejuuragr.turing.TuringController;
 
+/**
+ * A proxy for TuringController which saves
+ * the time steps for the processes with the
+ * Turing Machine to be replayed later.
+ * 
+ * @author Rasmus
+ *
+ */
 public class TuringControllerRecorder extends TuringController{
 
 	Recording recording = new Recording();
