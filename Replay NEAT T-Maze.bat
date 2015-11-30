@@ -1,4 +1,2 @@
-cd bin/
-java -Xmx4G -Xms2G -cp ".;../lib/*;../properties;../db" dk/itu/ejuuragr/run/MultiEvolver ../tmaze.properties
-cd ..
+java -Xmx4G -Xms2G -cp "bin;./lib/*;properties;db" dk.itu.ejuuragr.replay.Replay tmaze.properties 2331278
 pause

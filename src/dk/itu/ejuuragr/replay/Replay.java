@@ -63,10 +63,18 @@ public class Replay {
 		Properties props = new Properties(propsFilename);
 		props.setProperty("base.dir", "./db");
 		
+		String chromFile;
+		if (args.length < 2){
+			chromFile = prompt("Chromosome ID: ");
+		}
+		else
+		{
+			chromFile = args[1];
+		}
+		
 		//Load activator
 		Activator activator;
 		
-		String chromFile = prompt("Chromosome ID: ");
 		if (new File("db/chromosome/"+chromFile+".ahni.xml").exists()){
 			String seedStr = IOUtils.toString(new FileInputStream("db/chromosome/"+chromFile+".ahni.xml"), Charset.defaultCharset());
 			ChromosomeMaterial seedMaterial = ChromosomeMaterial.fromXML(seedStr);
